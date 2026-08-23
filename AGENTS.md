@@ -16,6 +16,10 @@ blog, resume. Deployed on Vercel.
 `CLAUDE.md` is a one-line pointer to this file, so Claude Code, Codex, and
 Cursor all read the same instructions. Edit this file, never that one.
 
+`DESIGN.md` holds design principles and the visual system. Read it before
+making any visual change, and record decisions there as they are made — this
+file covers architecture, that one covers how the site should look and why.
+
 ## Commands
 
 ```bash
