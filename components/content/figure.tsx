@@ -6,21 +6,42 @@ import { cn } from "@/lib/utils";
 /** How far an image is allowed to break out of the prose column. */
 export type Bleed = "prose" | "wide" | "full";
 
-const BLEED_CLASS: Record<Bleed, string> = {
-  prose: "",
-  wide: "lg:-mx-24 xl:-mx-32",
-  full: "lg:-mx-24 xl:-mx-40",
+/**
+ * The class sets the negative margin; `lg` and `xl` repeat it in rem per side
+ * so `sizes` can be derived from it. Change both together — Tailwind needs the
+ * class as a literal string, so it can't be generated from the numbers.
+ */
+const BLEED: Record<Bleed, { className: string; lg: number; xl: number }> = {
+  prose: { className: "", lg: 0, xl: 0 },
+  wide: { className: "lg:-mx-24 xl:-mx-32", lg: 6, xl: 8 },
+  full: { className: "lg:-mx-24 xl:-mx-40", lg: 6, xl: 10 },
 };
 
+/** `Container size="prose"`: max-w-2xl (42rem) less sm:px-8 on both sides. */
+const COLUMN = 38;
+/** The column caps out once the viewport reaches max-w-2xl. */
+const COLUMN_CAP = "672px";
+/** Gallery `sm:gap-4`. Below `sm` the gallery is a single column. */
+const GAP = 1;
+
 /**
- * `sizes` has to match the rendered width or the browser downloads the wrong
- * candidate. These track the max-widths in `components/content/mdx.tsx`.
+ * `sizes` has to match the rendered width or the browser downloads a larger
+ * candidate than it needs. Derived from the layout above rather than written
+ * by hand so the two can't drift. Rounded up to the next quarter rem.
  */
-const BLEED_SIZES: Record<Bleed, string> = {
-  prose: "(min-width: 768px) 42rem, 100vw",
-  wide: "(min-width: 1280px) 64rem, (min-width: 1024px) 56rem, 100vw",
-  full: "(min-width: 1280px) 72rem, (min-width: 1024px) 60rem, 100vw",
-};
+function imageSizes(bleed: Bleed, columns = 1): string {
+  const { lg, xl } = BLEED[bleed];
+  const gaps = GAP * (columns - 1);
+  const col = (width: number) => `${Math.ceil(((width - gaps) / columns) * 4) / 4}rem`;
+
+  return [
+    `(min-width: 1280px) ${col(COLUMN + 2 * xl)}`,
+    `(min-width: 1024px) ${col(COLUMN + 2 * lg)}`,
+    `(min-width: ${COLUMN_CAP}) ${col(COLUMN)}`,
+    `(min-width: 640px) calc((100vw - 4rem - ${gaps}rem) / ${columns})`,
+    "calc(100vw - 3rem)",
+  ].join(", ");
+}
 
 export type FigureProps = {
   collection: Collection;
@@ -53,13 +74,13 @@ export async function Figure({
   const image = await loadContentImage(collection, slug, src);
 
   return (
-    <figure className={cn("my-10", BLEED_CLASS[bleed], className)}>
+    <figure className={cn("my-10", BLEED[bleed].className, className)}>
       <Image
         src={image}
         alt={alt ?? caption ?? ""}
         placeholder="blur"
         priority={priority}
-        sizes={BLEED_SIZES[bleed]}
+        sizes={imageSizes(bleed)}
         className="bg-muted h-auto w-full rounded-lg"
       />
       {caption ? (
@@ -96,7 +117,7 @@ export async function Gallery({
   );
 
   return (
-    <figure className={cn("my-10", BLEED_CLASS[bleed])}>
+    <figure className={cn("my-10", BLEED[bleed].className)}>
       <div
         className={cn(
           "grid gap-3 sm:gap-4",
@@ -109,11 +130,7 @@ export async function Gallery({
             src={image}
             alt={alt ? `${alt} (${i + 1} of ${resolved.length})` : ""}
             placeholder="blur"
-            sizes={
-              columns === 3
-                ? "(min-width: 640px) 20rem, 100vw"
-                : "(min-width: 640px) 30rem, 100vw"
-            }
+            sizes={imageSizes(bleed, columns)}
             className="bg-muted h-auto w-full rounded-lg"
           />
         ))}
