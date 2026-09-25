@@ -1,6 +1,6 @@
 # Lane G — Theming
 
-The lane for the theme nobody opened. Most apps are built in one color scheme and *have* a second one. The second gets a token flip, a glance at the homepage, and ships with invisible cards, unreadable badges, and a logo that disappears. This lane is a defect sweep of the other theme, not a redesign of it. Owning skills: `emil-surfaces` (shadows, borders, dark surfaces) and `emil-color` (values, contrast).
+The lane for the theme nobody opened. Most apps are built in one color scheme and *have* a second one. The second gets a token flip, a glance at the homepage, and ships with invisible cards, unreadable badges, and a logo that disappears. This lane is a defect sweep of the other theme, not a redesign of it. Owning skills: `surfaces` (shadows, borders, dark surfaces) and `color` (values, contrast).
 
 First, from recon, establish which case you're in:
 
@@ -70,7 +70,7 @@ Stacked translucent black shadows are invisible against a dark surface, so cards
 }
 ```
 
-If the project has shadow tokens, add the dark value at the token. If every component hand-writes its shadow, that's a bigger job; list the surfaces that disappear and name `emil-surfaces`. Image outlines flip too: black at 10% in light, white at 10% in dark, never tinted.
+If the project has shadow tokens, add the dark value at the token. If every component hand-writes its shadow, that's a bigger job; list the surfaces that disappear and name `surfaces`. Image outlines flip too: black at 10% in light, white at 10% in dark, never tinted.
 
 ## G6. Images and media work on both backgrounds — SHOULD FIX
 

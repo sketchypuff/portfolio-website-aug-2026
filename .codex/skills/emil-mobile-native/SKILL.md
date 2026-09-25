@@ -7,7 +7,7 @@ description: Make a web app feel native on a phone. The small CSS and meta-tag f
 
 A fix-it skill. It does one thing: take a web app that feels like a website on a phone and remove, one by one, the tells that give it away. The rules here are about the platform layer (viewport, touch, scroll, safe areas, the keyboard, the browser chrome), where a handful of lines decide whether the app feels installed or embedded.
 
-It does not design motion (that's `emil-animations`), cover keyboard and screen-reader access (that's `emil-touch-and-accessibility`), or sweep a whole app before launch (that's `emil-prep-for-prod`, which runs a subset of this skill as its mobile lane).
+It does not design motion (that's `animations`), cover keyboard and screen-reader access (that's `touch-and-accessibility`), or sweep a whole app before launch (that's `emil-prep-for-prod`, which runs a subset of this skill as its mobile lane).
 
 All CSS below is plain CSS for clarity. When implementing, write it in the project's existing styling system (Tailwind, CSS Modules, CSS-in-JS). The values matter, the syntax doesn't.
 
@@ -118,7 +118,7 @@ If the design calls for smaller text in inputs on desktop, scale it up only wher
 
 In Tailwind: `text-base md:text-sm`. `text-sm` alone on an input is the bug.
 
-While you're in the inputs, set the keyboard: `inputmode="numeric"` for codes, `inputmode="decimal"` for amounts, `type="email"` and `type="tel"` for their fields, `autocapitalize="none"` and `autocorrect="off"` on usernames and codes, `autocomplete="one-time-code"` on verification inputs so iOS offers the SMS code, `enterkeyhint="send"` / `"search"` / `"done"` so the return key says what it does. The rest of form behavior lives in `emil-forms-and-inputs`.
+While you're in the inputs, set the keyboard: `inputmode="numeric"` for codes, `inputmode="decimal"` for amounts, `type="email"` and `type="tel"` for their fields, `autocapitalize="none"` and `autocorrect="off"` on usernames and codes, `autocomplete="one-time-code"` on verification inputs so iOS offers the SMS code, `enterkeyhint="send"` / `"search"` / `"done"` so the return key says what it does. The rest of form behavior lives in `forms-and-inputs`.
 
 ### 5. Tap feels laggy
 
@@ -144,7 +144,7 @@ button, a, input, [role="button"], .tappable {
 }
 ```
 
-The *feedback* fires on press; the *action* still fires on `click`, so the user can cancel by sliding their finger off. Keep press feedback at 100–160ms and `ease-out`, never below `scale(0.95)`. If the codebase already has easing tokens (see `emil-animations`), use them. Don't fork a new curve.
+The *feedback* fires on press; the *action* still fires on `click`, so the user can cancel by sliding their finger off. Keep press feedback at 100–160ms and `ease-out`, never below `scale(0.95)`. If the codebase already has easing tokens (see `animations`), use them. Don't fork a new curve.
 
 ### 6. Taps miss small buttons
 
@@ -272,7 +272,7 @@ A horizontal swipe on a carousel is ambiguous to the browser. It doesn't know wh
 
 The values name what the *browser* may still do. `pan-y` on a horizontal carousel means "browser, you keep vertical panning; I'm handling horizontal". `none` means the element handles everything. Use it only on elements that really do, or the user won't be able to scroll past them.
 
-If the carousel is native scroll rather than a JS gesture, prefer `scroll-snap-type: x mandatory` on the track and `scroll-snap-align: start` on slides. The browser's own physics beat a hand-rolled spring, and `touch-action` becomes unnecessary. Gesture-driven motion that you do hand-roll (drag-to-dismiss, sheets) uses springs so it keeps the finger's velocity; see `emil-animations`.
+If the carousel is native scroll rather than a JS gesture, prefer `scroll-snap-type: x mandatory` on the track and `scroll-snap-align: start` on slides. The browser's own physics beat a hand-rolled spring, and `touch-action` becomes unnecessary. Gesture-driven motion that you do hand-roll (drag-to-dismiss, sheets) uses springs so it keeps the finger's velocity; see `animations`.
 
 ### 12. Video opens fullscreen or won't autoplay
 
@@ -284,7 +284,7 @@ Without `muted`, iOS refuses to autoplay. Without `playsinline`, it hijacks the 
 </video>
 ```
 
-Under `prefers-reduced-motion: reduce`, don't autoplay; show controls instead (`autoPlay={!prefersReducedMotion} controls={prefersReducedMotion}`). Pause it when it scrolls out of view. A looping video below the fold drains a phone battery for nothing; the IntersectionObserver pattern is in `emil-performance`.
+Under `prefers-reduced-motion: reduce`, don't autoplay; show controls instead (`autoPlay={!prefersReducedMotion} controls={prefersReducedMotion}`). Pause it when it scrolls out of view. A looping video below the fold drains a phone battery for nothing; the IntersectionObserver pattern is in `performance`.
 
 ### 13. Status bar color doesn't match
 

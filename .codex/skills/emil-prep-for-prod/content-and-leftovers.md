@@ -1,6 +1,6 @@
 # Lane H — Content & Leftovers
 
-Two halves. **Content** is the text and type a visitor reads: whether it's real, whether it renders the way it was designed, whether it survives real data. **Leftovers** are what the build process left behind: debug output, dev tools, scaffolding routes, and the tells an agent leaves in a diff. Owning skills: `emil-typography` and `emil-design-foundations` for content, `emil-unslop-code` and `emil-unslop-design` for leftovers.
+Two halves. **Content** is the text and type a visitor reads: whether it's real, whether it renders the way it was designed, whether it survives real data. **Leftovers** are what the build process left behind: debug output, dev tools, scaffolding routes, and the tells an agent leaves in a diff. Owning skills: `typography` and `design-foundations` for content, `emil-unslop-code` and `emil-unslop-design` for leftovers.
 
 This lane finds more blockers per minute than any other, because nothing in it shows up as a bug. The app works. It just says "Lorem ipsum" on the pricing page and logs the session token to the console.
 
@@ -104,7 +104,7 @@ if (import.meta.env.DEV) {
 }
 ```
 
-A dynamic import behind the gate keeps the package out of the production bundle; a static import with a gated render still ships the bytes. `<Leva hidden>` hides the panel but `useControls` values still drive the UI, so check that the shipped defaults are the approved ones. When a control panel was used to dial something in (`emil-prototype`, `emil-build-a-tool`), the approved values live in a saved config file that production imports, never in a panel default.
+A dynamic import behind the gate keeps the package out of the production bundle; a static import with a gated render still ships the bytes. `<Leva hidden>` hides the panel but `useControls` values still drive the UI, so check that the shipped defaults are the approved ones. When a control panel was used to dial something in (`prototype`, `build-a-tool`), the approved values live in a saved config file that production imports, never in a panel default.
 
 ### H10. Scaffolding routes aren't publicly reachable — BLOCKER
 
@@ -112,7 +112,7 @@ A dynamic import behind the gate keeps the package out of the production bundle;
 
 **Hunt for:** route directories with those names; pages imported by nothing and linked from nowhere; a `sitemap` that lists them.
 
-Hard Rule 9: finding them is the job; deleting them is not. `emil-prototype` directories are throwaway by design and the user usually wants them gone; `emil-build-a-tool` leaves tools in place on purpose. Gate them out of production and let the user decide:
+Hard Rule 9: finding them is the job; deleting them is not. `prototype` directories are throwaway by design and the user usually wants them gone; `build-a-tool` leaves tools in place on purpose. Gate them out of production and let the user decide:
 
 ```ts
 // in the route

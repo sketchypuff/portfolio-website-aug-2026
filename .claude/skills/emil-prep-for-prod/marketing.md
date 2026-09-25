@@ -1,6 +1,6 @@
 # Lane I — Marketing & SEO
 
-Runs only when the recon found marketing routes: a landing page, pricing, blog, docs, or changelog. These are the pages a stranger sees first, the pages that get shared, and the pages a crawler reads. They get one visit to make their case, so the failures here are different from product UI: the link preview with no image, the page that performs at the visitor instead of answering them, the blog that's fetched from the CMS on every request. Owning skill: `emil-marketing-pages`.
+Runs only when the recon found marketing routes: a landing page, pricing, blog, docs, or changelog. These are the pages a stranger sees first, the pages that get shared, and the pages a crawler reads. They get one visit to make their case, so the failures here are different from product UI: the link preview with no image, the page that performs at the visitor instead of answering them, the blog that's fetched from the CMS on every request. Owning skill: `marketing-pages`.
 
 Static generation of content routes is B15. Fabricated proof is H2. Count each once.
 

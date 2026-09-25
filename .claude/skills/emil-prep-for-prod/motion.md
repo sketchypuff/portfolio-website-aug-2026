@@ -1,6 +1,6 @@
 # Lane F — Motion
 
-The ship-check subset of motion: the mistakes that read as *broken* or *slow* to a user, not the ones that read as unrefined to a designer. This lane doesn't re-time the app or pick nicer curves. It catches what's objectively wrong and hands taste to `emil-animations` after launch. If you need to see what an animation is doing frame by frame before judging it, that's `emil-ask-lapse`.
+The ship-check subset of motion: the mistakes that read as *broken* or *slow* to a user, not the ones that read as unrefined to a designer. This lane doesn't re-time the app or pick nicer curves. It catches what's objectively wrong and hands taste to `animations` after launch. If you need to see what an animation is doing frame by frame before judging it, that's `ask-lapse`.
 
 Layout-property animation and `transition: all` are performance checks (B5, B6). Reduced motion is an accessibility check (A8). Count each once.
 
