@@ -122,6 +122,9 @@ Every motion component early-returns a static version under
 - Colors are shadcn CSS variables in `app/globals.css` — a deliberately
   pure-neutral OKLCH ramp. Use `bg-background`, `text-muted-foreground`, etc.
   Never hardcode a hex value.
+- Git: commit and push to the branch that is checked out, including `main`.
+  Never create a branch, or commit or push to a new one, unless Yash
+  explicitly asks for it.
 
 ## Open graph
 
