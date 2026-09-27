@@ -61,9 +61,9 @@ export default async function PostPage(props: PageProps<"/blog/[slug]">) {
       <Container size="article" className="mt-4">
         <article>
           <header className="border-border flex flex-col gap-3 border-b pb-3">
-            <h1 className="text-3xl font-bold text-balance sm:text-4xl">{post.meta.title}</h1>
-            <p className="text-muted-foreground text-3xl text-pretty sm:text-4xl">{post.meta.summary}</p>
-            <p className="text-xl leading-8">
+            <h1 className="text-2xl font-bold">{post.meta.title}</h1>
+            <p className="text-muted-foreground text-2xl">{post.meta.summary}</p>
+            <p className="text-2xl">
               {readingTime(post.body)} min. read •{" "}
               <time dateTime={post.meta.date}>{formatDate(post.meta.date)}</time>
             </p>

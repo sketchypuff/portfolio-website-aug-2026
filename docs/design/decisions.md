@@ -6,6 +6,16 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-27** — Bold text in post body (`strong`) is semibold (600), not
+  bold. From Yash.
+- **2026-09-27** — Post paragraphs and lists are regular (400), not the
+  page's medium.
+  From Yash.
+- **2026-09-27** — Post title, subtitle, `h2`, and `h3` wrap normally, filling
+  the column edge to edge, instead of `text-balance`/`text-pretty`. From Yash.
+- **2026-09-27** — Post header scaled down from the Figma frame: title,
+  summary, and meta all 24px (title and summary were 30/36px, meta 20px).
+  Blockquotes set to body size (20/32). From Yash.
 - **2026-09-27** — The cat uses onekocord's `silversky` skin instead of the
   default oneko sprite.
 - **2026-09-27** — A oneko.js pixel cat chases the cursor on home. The one

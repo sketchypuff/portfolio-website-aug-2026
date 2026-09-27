@@ -27,20 +27,21 @@ Hierarchy on home comes from weight and case, not size. Everything is 16px or
 ## Post page (Decided — Figma "Blog", node `1132:2209`)
 
 The page wrapper in `app/blog/[slug]/page.tsx` sets `font-medium`; every size
-below is medium unless it says bold. The header lives in that page; the body
+below is medium unless it says bold or regular. The header lives in that page; the body
 comes from the `prose` map in `components/content/mdx.tsx`. Tune the body there;
 never restyle prose elements at a call site.
 
 | Element | Classes | Notes |
 | --- | --- | --- |
-| Title `h1` | `text-3xl sm:text-4xl font-bold` | 36/40 in Figma; 30px below `sm` |
-| Subtitle (`summary`) | `text-3xl sm:text-4xl text-muted-foreground` | Figma black 40% → muted |
-| Meta | `text-xl leading-8` | `6 min. read • 15 Aug, 2026` |
-| `p`, `ul`, `ol` | `text-xl leading-8` (20/32) | `my-6`; consecutive `p` get `mt-8` (one blank line) |
+| Title `h1` | `text-2xl font-bold` | 24px at every width (from Yash; Figma had 36/40). No `text-balance` |
+| Subtitle (`summary`) | `text-2xl text-muted-foreground` | Figma black 40% → muted. No `text-pretty` |
+| Meta | `text-2xl` | `6 min. read • 15 Aug, 2026` |
+| `p`, `ul`, `ol` | `text-xl leading-8 font-normal` (20/32, regular) | `my-6`; consecutive `p` get `mt-8` (one blank line) |
 | `ol` numbers | `font-mono text-muted-foreground` | hang 2px left of the text, text at `pl-[50px]` |
-| `h2` | `text-2xl font-bold` | `mt-20 mb-6` — 80px before a section, 24px inside |
-| `strong` | `font-bold` | not in Figma; bold because body is already medium |
-| `h3`, `blockquote`, `code`, `pre`, `table` | — | **Provisional**: not in the frame, only re-scaled to sit with 20px body |
+| `h2` | `text-2xl font-bold` | `mt-20 mb-6` — 80px before a section, 24px inside. No `text-balance` |
+| `strong` | `font-semibold` | not in Figma; semibold against the regular body (from Yash) |
+| `blockquote` | `text-xl leading-8 italic text-muted-foreground` | matches body size |
+| `h3`, `code`, `pre`, `table` | — | **Provisional**: not in the frame; only re-scaled to sit with 20px body |
 | `figcaption` | `text-sm` | muted, `leading-relaxed`, centered (`text-center text-balance`, from Yash) |
 
 Figma sets body and meta at black 80%; they use `foreground` instead, so the
@@ -50,11 +51,11 @@ site keeps two text levels (decided 2026-09-27).
 
 - **Floor is 12px** (`text-xs`). Never use `text-[11px]` or smaller.
 - **Sizes in use:** `text-xs`, `text-sm`, `text-base` (home), and on the
-  post page only `text-xl` (body), `text-2xl` (`h2`), `text-3xl`/`text-4xl`
-  (title, subtitle). Nothing else exists.
-- **Weights in use:** medium (500) default, semibold (600) only in
-  `SectionLabel`, bold (700) for the home headline and post headings and
-  `strong`. Never `font-light` or `font-black`.
+  post page `text-xl` (body, `h3`), `text-2xl` (`h2`, title, subtitle,
+  meta). Nothing else exists.
+- **Weights in use:** medium (500) default, regular (400) only for post
+  paragraphs and lists, semibold (600) in `SectionLabel` and post `strong`,
+  bold (700) for the home headline and post headings. Never `font-light` or `font-black`.
 - Site pages use default tracking. No `tracking-tight` on page content.
 - Numbers that update in place (the clock) use `tabular-nums`.
 - Use real typographic characters in copy: `’` `“ ”` `—` `é` (as in "resumé").
