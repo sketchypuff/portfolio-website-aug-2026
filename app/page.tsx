@@ -63,7 +63,7 @@ export default function HomePage() {
   const lastUpdated = new Date();
 
   return (
-    <div className="overflow-x-clip">
+    <div className="@container overflow-x-clip">
       <Container size="home" className="flex flex-col gap-20 pt-14 pb-16 text-base leading-snug font-medium">
         <Reveal as="header" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex max-w-[436px] flex-col gap-4">
@@ -87,7 +87,7 @@ export default function HomePage() {
           </div>
 
           <nav aria-label="Main" className="flex flex-col items-start gap-0.5 sm:items-end">
-            <TextLink href="/resume" icon="arrow-up-right">
+            <TextLink href={site.resume} icon="arrow-up-right">
               Open resumé
             </TextLink>
             <TextLink href="/about" icon="smiley-x-eyes">
@@ -171,9 +171,14 @@ export default function HomePage() {
                 )}
               </li>
               <li>
-                <Link href="/resume" className="hover:text-muted-foreground transition-colors">
+                <a
+                  href={site.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-muted-foreground transition-colors"
+                >
                   Resumé
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -204,25 +209,39 @@ function SectionLabel({ icon, children }: { icon: IconName; children: React.Reac
   );
 }
 
+/** Blue nav link. Absolute URLs open in a new tab; site paths use client routing. */
 function TextLink({ href, icon, children }: { href: string; icon: IconName; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="text-link group inline-flex items-center gap-0.5 transition-opacity hover:opacity-70"
-    >
+  const className = "text-link group inline-flex items-center gap-0.5 transition-opacity hover:opacity-70";
+  const content = (
+    <>
       {children}
       <Icon name={icon} className="transition-transform duration-300 ease-out group-hover:translate-x-0.5" />
+    </>
+  );
+
+  return href.startsWith("http") ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      {content}
+    </a>
+  ) : (
+    <Link href={href} className={className}>
+      {content}
     </Link>
   );
 }
 
 /**
- * Horizontal strip of cards. It starts on the content column and bleeds to the
- * right edge of the viewport, so the cut-off card signals that it scrolls.
+ * Horizontal strip of cards. It spans the full viewport so cards flow off both
+ * edges while scrolling, but padding and scroll-padding equal to the page
+ * gutter keep the first card (and every snap point) aligned to the column.
+ *
+ * The gutter is computed in `cqw` against the page wrapper rather than `vw`,
+ * so it excludes the scrollbar. 875px is the `home` Container width; the
+ * 1.5rem / 2rem minimums are its px-6 / sm:px-8 padding.
  */
 function WorkStrip({ children }: { children: React.ReactNode }) {
   return (
-    <RevealGroup className="mr-[calc(50%-50vw)] flex snap-x snap-mandatory gap-6 overflow-x-auto pr-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <RevealGroup className="mx-[calc(50%-50cqw)] flex snap-x snap-mandatory scroll-px-(--gutter) gap-6 overflow-x-auto px-(--gutter) [--gutter:max(1.5rem,calc((100cqw-875px)/2))] [scrollbar-width:none] sm:[--gutter:max(2rem,calc((100cqw-875px)/2))] [&::-webkit-scrollbar]:hidden">
       {children}
     </RevealGroup>
   );

@@ -27,6 +27,24 @@ export function SiteHeader() {
           <div className="flex items-center gap-1 sm:gap-2">
             <ul className="flex items-center gap-1 sm:gap-2">
               {site.nav.map((item) => {
+                const itemClass = "rounded-md px-2 py-1 text-sm transition-colors sm:px-3";
+
+                // External items (the resume on Drive) open in a new tab and are never "active".
+                if (item.href.startsWith("http")) {
+                  return (
+                    <li key={item.href}>
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cn(itemClass, "text-muted-foreground hover:text-foreground")}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  );
+                }
+
                 const active =
                   pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
@@ -35,7 +53,7 @@ export function SiteHeader() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "rounded-md px-2 py-1 text-sm transition-colors sm:px-3",
+                        itemClass,
                         active
                           ? "text-foreground"
                           : "text-muted-foreground hover:text-foreground",

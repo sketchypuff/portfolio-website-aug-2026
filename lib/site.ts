@@ -3,6 +3,10 @@
  * Anything that appears in metadata, the nav, or the footer lives here.
  */
 
+/** Resume PDF on Google Drive. Every link to it opens in a new tab. */
+const RESUME_URL =
+  "https://drive.google.com/file/d/1h_eagfw47RlClGJTtwSf4VkBmmaUEd9K/view?usp=sharing";
+
 export const site = {
   name: "Yash Shenai",
   role: "Product Designer",
@@ -14,8 +18,9 @@ export const site = {
     { href: "/projects", label: "Projects" },
     { href: "/blog", label: "Blog" },
     { href: "/about", label: "About" },
-    { href: "/resume", label: "Resume" },
+    { href: RESUME_URL, label: "Resume" },
   ],
+  resume: RESUME_URL,
   social: {
     email: "yashshenai@gmail.com",
     github: "https://github.com/yashshenai",

@@ -11,7 +11,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # yashshenai.com
 
 Personal portfolio for Yash Shenai, a product designer. Home, about, projects,
-blog, resume. Deployed on Vercel.
+blog. The resume is a PDF on Google Drive (`site.resume` in `lib/site.ts`),
+not a page — every resume link opens it in a new tab. Deployed on Vercel.
 
 `CLAUDE.md` is a one-line pointer to this file, so Claude Code, Codex, and
 Cursor all read the same instructions. Edit this file, never that one.
@@ -148,9 +149,9 @@ directory.
 
 The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its
 project cards and writing rows are hardcoded arrays for now and are not linked;
-move them to `content/` once real entries exist. The other page bodies
-(`app/about/page.tsx`, `app/resume/page.tsx`) are still placeholders with
-filler copy marked with comments. The infrastructure below them is real and tested.
+move them to `content/` once real entries exist. The about page
+(`app/about/page.tsx`) is still a placeholder with filler copy marked with
+comments. The infrastructure below the pages is real and tested.
 
 `content/*/example/` are throwaway reference entries documenting the
 frontmatter and components. Delete once real content exists — but keep at
