@@ -21,7 +21,8 @@ const STEP = 40;
  * 1.5rem / 2rem minimums are its px-6 / sm:px-8 padding.
  *
  * `heading` is the section's `SectionLabel`; `name` labels the stepper group; `labels` names each card for its
- * screen-reader text, in order.
+ * screen-reader text, in order. `dimOnHover` fades every card but the hovered
+ * one (hovering devices only).
  *
  * Needs an `@container` ancestor spanning the viewport (with `overflow-x-clip`)
  * — the home page wrapper is one.
@@ -30,11 +31,13 @@ export function WorkStrip({
   heading,
   name,
   labels,
+  dimOnHover = false,
   children,
 }: {
   heading: React.ReactNode;
   name: string;
   labels: string[];
+  dimOnHover?: boolean;
   children: React.ReactNode;
 }) {
   // Typed as a div because RevealGroup models its props on the div variant
@@ -133,7 +136,7 @@ export function WorkStrip({
                   onPointerDown={() => play("tick")}
                   onClick={() => goTo(i)}
                   style={{ width: STEP }}
-                  className="group focus-visible:ring-ring flex h-8 items-center justify-center rounded-md focus-visible:ring-2 focus-visible:outline-none"
+                  className="group focus-visible:ring-ring flex h-8 cursor-pointer items-center justify-center rounded-md focus-visible:ring-2 focus-visible:outline-none"
                 >
                   <span className="sr-only">{label}</span>
                   <span
@@ -149,19 +152,37 @@ export function WorkStrip({
           </ul>
         </div>
       </Reveal>
-      <RevealGroup as="ul" ref={listRef} className="mx-[calc(50%-50cqw)] flex snap-x snap-mandatory scroll-px-(--gutter) gap-6 overflow-x-auto px-(--gutter) [--gutter:max(1.5rem,calc((100cqw-875px)/2))] [scrollbar-width:none] sm:[--gutter:max(2rem,calc((100cqw-875px)/2))] [&::-webkit-scrollbar]:hidden">
+      <RevealGroup
+        as="ul"
+        ref={listRef}
+        className={cn(
+          "mx-[calc(50%-50cqw)] flex snap-x snap-mandatory scroll-px-(--gutter) gap-6 overflow-x-auto px-(--gutter) [--gutter:max(1.5rem,calc((100cqw-875px)/2))] [scrollbar-width:none] sm:[--gutter:max(2rem,calc((100cqw-875px)/2))] [&::-webkit-scrollbar]:hidden",
+          // Keyed on a hovered <li>, not the <ul>, so the gaps between cards
+          // don't dim everything. Dimming is immediate (delay-0); un-dimming
+          // waits 100ms (WorkCard's base delay), so crossing a gap to the next
+          // card doesn't flash every card back to full.
+          dimOnHover &&
+            "[@media(hover:hover)]:[&:has(>li:hover)>li:not(:hover)>*]:opacity-50 [@media(hover:hover)]:[&:has(>li:hover)>li:not(:hover)>*]:delay-0",
+        )}
+      >
         {children}
       </RevealGroup>
     </div>
   );
 }
 
-/** One 570px card: a 4:3 image slot with its text below. */
+/**
+ * One 570px card: a 4:3 image slot with its text below. The inner wrapper is
+ * what `WorkStrip dimOnHover` fades — the <li> can't be, because its reveal
+ * animation sets opacity inline.
+ */
 export function WorkCard({ children }: { children: React.ReactNode }) {
   return (
-    <RevealItem as="li" className="w-[570px] max-w-[85vw] shrink-0 snap-start">
-      <div className="bg-muted aspect-[4/3] rounded-xl" />
-      <div className="mt-5">{children}</div>
+    <RevealItem as="li" className="group/card w-[570px] max-w-[85vw] shrink-0 snap-start">
+      <div className="transition-opacity delay-100 duration-200 ease-out group-hover/card:delay-0 motion-reduce:transition-none">
+        <div className="bg-muted aspect-[4/3] rounded-xl" />
+        <div className="mt-5">{children}</div>
+      </div>
     </RevealItem>
   );
 }

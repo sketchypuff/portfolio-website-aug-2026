@@ -57,6 +57,7 @@ outgoing page holds stale content on screen and reads as lag.
 | Icon nudge | `transition-transform duration-300 ease-out group-hover:translate-x-0.5` | `TextLink` trailing icon |
 | Image zoom | `transition-transform duration-500 ease-out group-hover:scale-[1.02]` | reserved for linked image cards; none exist yet |
 | Stepper | pill `transition-transform duration-500` house curve; tick `transition-[height,background-color] duration-300` | `WorkStrip` |
+| Sibling dim | inner wrapper `transition-opacity duration-200 ease-out`; others `opacity-50` at once, back to full after `delay-100` | `WorkStrip dimOnHover` |
 | Press | `transition-[scale] duration-150 ease-out active:scale-[0.96]` | `ProfessionPill` |
 
 Never `transition-all` — name the property. Never scale above 1.02 on hover.

@@ -6,6 +6,13 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-28** — Stepper ticks get `cursor-pointer`: Tailwind v4 leaves
+  buttons on the default arrow, and the ticks are small enough that the
+  hand is the clearest sign they're clickable.
+- **2026-09-28** — Hovering a "Selected work" card dims the other cards to
+  50% (`WorkStrip dimOnHover`). Replaced a jamiepeak.co.uk-style "See more"
+  cursor pill, tried the same day: dimming the rest points at the hovered
+  card without covering it or hiding the cursor.
 - **2026-09-27** — Bold text in post body (`strong`) is semibold (600), not
   bold. From Yash.
 - **2026-09-27** — Post paragraphs and lists are regular (400), not the

@@ -158,6 +158,7 @@ export default function HomePage() {
           <WorkStrip
             heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
             name="Selected work"
+            dimOnHover
             labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
           >
             {selectedWork.map((item, i) => (

@@ -59,7 +59,8 @@ The section heading and a tick stepper share one row above the strip
 (`justify-between`, `items-center`, `gap-8` to the cards): heading left,
 stepper right. The stepper has one 2px tick
 per card in a 40px-wide, 32px-tall button, the current tick `h-3.5
-bg-foreground`, the rest `h-3 bg-muted-foreground` (hover `bg-foreground`).
+bg-foreground`, the rest `h-3 bg-muted-foreground` (hover `bg-foreground`), with a
+`cursor-pointer` hand.
 A 26×28 `bg-muted rounded-md` pill slides behind the current tick; on the
 last tick its right edge sits on the column edge (`-mr-[7px]` on the group). Clicking a tick
 selects it at once and scrolls its card to the snap edge; scrolling updates the tick (nearest snap

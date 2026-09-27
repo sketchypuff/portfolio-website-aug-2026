@@ -42,6 +42,12 @@ work on the home page. Layout details in [layout.md](layout.md). `WorkStrip` nee
 `@container overflow-x-clip` ancestor spanning the viewport, and its gutter
 assumes it sits in `Container size="home"`.
 
+`dimOnHover` (optional): while a card is hovered, every other card fades
+to `opacity-50`, telling the hovered one apart. Keyed on a hovered `li`, so
+the gaps don't dim anything; un-dimming waits 100ms so crossing a gap
+doesn't flash. Hovering devices only. "Selected work" sets it; "Other work"
+doesn't.
+
 Card text: company in home metadata style, then the title. In "Other work",
 titles are `muted` or not per the Figma — that flag is data, not a variant.
 

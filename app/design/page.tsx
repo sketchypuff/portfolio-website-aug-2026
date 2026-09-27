@@ -189,10 +189,10 @@ export default function DesignPage() {
             <CopyEmail />
           </Specimen>
           <Specimen label="WorkStrip + WorkCard · scrolls sideways">
-            <WorkStrip heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>} name="Specimen" labels={["Work card with company", "Other work card"]}>
+            <WorkStrip heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>} name="Specimen" dimOnHover labels={["Work card with company", "Other work card"]}>
               <WorkCard>
                 <p className="text-muted-foreground font-mono text-sm uppercase">Company</p>
-                <p className="mt-1">A work card with a company line and a title</p>
+                <p className="mt-1">A work card with a company line and a title </p>
               </WorkCard>
               <WorkCard>
                 <p className="text-muted-foreground">An “Other work” card, title only and muted</p>
