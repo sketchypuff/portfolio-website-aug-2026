@@ -19,7 +19,7 @@ export const site = {
   social: {
     email: "yashshenai@gmail.com",
     github: "https://github.com/yashshenai",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/yashshenai",
     x: "",
   },
 } as const;
