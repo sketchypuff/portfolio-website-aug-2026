@@ -49,6 +49,30 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * Blue scale built from the link blue (#2148f9, step 600). One hue (266),
+ * lightness evenly spaced from 0.97 to 0.22, chroma a fraction of the sRGB
+ * ceiling at each step so every value renders faithfully.
+ *
+ * Primitives only: deliberately outside @theme so they generate no utility
+ * classes. Components use semantic tokens (`text-link`); a new use of a step
+ * gets a semantic token that points here. The scale is the same in both
+ * themes — dark mode picks different steps, it doesn't redefine them.
+ */
+:root {
+  --blue-50: oklch(0.97 0.008 266);
+  --blue-100: oklch(0.894 0.033 266);
+  --blue-200: oklch(0.817 0.065 266);
+  --blue-300: oklch(0.741 0.106 266);
+  --blue-400: oklch(0.665 0.159 266);
+  --blue-500: oklch(0.588 0.215 266);
+  --blue-600: oklch(0.512 0.262 266);
+  --blue-700: oklch(0.439 0.263 266);
+  --blue-800: oklch(0.366 0.179 266);
+  --blue-900: oklch(0.293 0.11 266);
+  --blue-950: oklch(0.22 0.06 266);
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -69,7 +93,7 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   /* The one accent on the site, reserved for links. #2148f9 from the Figma file. */
-  --link: oklch(0.512 0.262 266);
+  --link: var(--blue-600);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -105,7 +129,7 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --link: oklch(0.72 0.15 262);
+  --link: var(--blue-300);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

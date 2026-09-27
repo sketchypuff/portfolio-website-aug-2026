@@ -37,6 +37,10 @@ const colors = [
   { token: "destructive", swatch: "bg-destructive", use: "MdxError only", origin: "shadcn neutral" },
 ];
 
+// The blue scale is primitives-only (no utility classes), so swatches read the
+// variables directly. Step 600 is the light-mode link.
+const blueSteps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+
 const containers = [
   { size: "prose", note: "max-w-2xl · reading column" },
   { size: "default", note: "max-w-3xl" },
@@ -86,6 +90,24 @@ export default function DesignPage() {
               <p className="mt-3 font-mono text-xs">{c.token}</p>
               <p className="text-muted-foreground mt-1 text-xs">{c.use}</p>
               <p className="text-muted-foreground mt-1 font-mono text-xs">{c.origin}</p>
+            </li>
+          ))}
+        </ul>
+
+        <p className="text-muted-foreground mt-12 mb-4 text-sm">
+          Blue scale — primitives in <Code>globals.css</Code>, built from the link blue (600).
+          Not used by components directly.
+        </p>
+        <ul role="list" className="grid grid-cols-11 gap-1 sm:gap-2">
+          {blueSteps.map((step) => (
+            <li key={step}>
+              <div
+                className="border-border aspect-square rounded-md border sm:aspect-[3/4]"
+                style={{ backgroundColor: `var(--blue-${step})` }}
+              />
+              <p className={`mt-2 font-mono text-xs ${step === 600 ? "font-semibold" : "text-muted-foreground"}`}>
+                {step}
+              </p>
             </li>
           ))}
         </ul>

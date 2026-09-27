@@ -9,13 +9,37 @@ Source: `app/globals.css`. Light values live on `:root`, dark values on
 | Origin | Tokens | Status |
 | --- | --- | --- |
 | **shadcn `neutral` preset**, verbatim (`components.json` → `"baseColor": "neutral"`) | every gray: `background`, `foreground`, `muted`, `muted-foreground`, `border`, `ring`, plus `destructive` and all the unused ones | **Default** — generated, never compared against Figma |
-| **Project-defined, from Figma** | `link` — `#2148f9` in light; a lighter blue in dark for contrast | **Decided** |
+| **Project-defined, from Figma** | `link` — `#2148f9` in light (`--blue-600`); `--blue-300` in dark for contrast | **Decided** |
+| **Project-defined, derived** | the `--blue-50…950` scale, built from the link blue | **Decided** — primitives, see below |
 | **Tailwind default, not a token** | the shadow color inside `shadow-xs` (black at 5% opacity) | **Default** — the one color on the site outside the token system |
 | **Browser default** | text selection, caret, scrollbars | Unstyled |
 
 The whole ramp has zero chroma — pure gray — so the only hue on the site is
 `link`. Replacing the grays with Figma values is a change to `globals.css`
 only; nothing else hardcodes them.
+
+## Blue scale (primitives)
+
+`--blue-50` … `--blue-950` on `:root` in `globals.css`, built from the link
+blue: hue fixed at 266, lightness evenly spaced from 0.97 (50) to 0.22 (950),
+chroma a fraction of the sRGB ceiling at each step — so every step renders
+faithfully and none drifts toward violet. Step **600 is the link blue
+exactly**; `--link` is `var(--blue-600)` in light and `var(--blue-300)` in
+dark.
+
+| Step | 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| L | 0.97 | 0.894 | 0.817 | 0.741 | 0.665 | 0.588 | 0.512 | 0.439 | 0.366 | 0.293 | 0.22 |
+| C | 0.008 | 0.033 | 0.065 | 0.106 | 0.159 | 0.215 | 0.262 | 0.263 | 0.179 | 0.11 | 0.06 |
+
+Text on white passes WCAG AA (4.5:1) from **600** down; text on the dark
+background (`0.145`) passes from **500** up.
+
+The scale sits outside `@theme` on purpose, so it produces no `bg-blue-500`
+classes. Components never reference a step. To use one, add a semantic token
+in `globals.css` that points at it (`--link-subtle: var(--blue-100)`), give
+it a dark value (the mirrored step: 100 ↔ 900, 200 ↔ 800), and document it
+here. Tailwind's own `blue-*` palette stays banned.
 
 ## The layer rule
 
@@ -34,12 +58,12 @@ only one, so it breaks in the other theme.
 | `bg-muted` | `0.97` | `0.269` | empty image slots (`WorkCard`), image placeholders (`Figure`, `Gallery`), inline `code`, `pre` |
 | `border-border` | `0.922` | white 10% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
 | `ring` (via `outline-ring/50`) | `0.708` | `0.556` | the focus outline on every element (set on `*` in `globals.css`) |
-| `text-link` | `oklch(0.512 0.262 266)` = `#2148f9` | `oklch(0.72 0.15 262)` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon |
+| `text-link` | `var(--blue-600)` = `#2148f9` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon |
 | `text-destructive` / `border-destructive` | red, `0.577 0.245 27` | red, `0.704 0.191 22` | `MdxError` in `components/content/mdx.tsx` only |
 
 Grays are listed by OKLCH lightness (`0.145` = `oklch(0.145 0 0)`). Dark
-`link` is lighter and less saturated than light `link` so it holds contrast
-on the dark background — it is not an inversion. Dark `border` is translucent
+`link` is a lighter step of the same scale (300, not an inversion of 600) so
+it holds 8.5:1 contrast on the dark background. Dark `border` is translucent
 white so it reads on any dark surface.
 
 ## Usage map by file

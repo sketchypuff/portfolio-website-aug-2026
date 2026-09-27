@@ -6,6 +6,12 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-27** — Dark `--link` snapped to `--blue-300` (was
+  `oklch(0.72 0.15 262)`, off the scale). Both link colors now come from one
+  scale; contrast on the dark background rises from 7.9:1 to 8.5:1.
+- **2026-09-27** — Blue scale `--blue-50…950` built from the link blue (600
+  = `#2148f9`): fixed hue, even lightness, gamut-safe chroma. Primitives only,
+  outside `@theme`; light `--link` now points at `--blue-600` (same value).
 - **2026-09-27** — Color doc records where every color comes from (shadcn
   `neutral` preset vs. Figma `link` vs. Tailwind's `shadow-xs` default) and a
   per-file usage map. The grays are marked Default, not Decided.
