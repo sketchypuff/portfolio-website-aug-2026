@@ -1,9 +1,9 @@
 # Components
 
-Every shared component. Check here before building anything. There is no
-`components/ui/` yet — no shadcn primitives are installed. Add one with
-`npx shadcn add <name>` rather than hand-writing a button, dialog, or tooltip,
-then document it here.
+Every shared component. Check here before building anything. shadcn
+primitives live in `components/ui/`; the only one installed is `tooltip`. Add
+more with `npx shadcn add <name>` (fix a `"cn"` import to `@/lib/utils` and
+uninstall `cn`) rather than hand-writing a primitive, then document it here.
 
 Links (`TextLink`, `ThemeTextToggle`, and the other link treatments) are in [links.md](links.md).
 `Container` is in [layout.md](layout.md). Motion components are in
@@ -44,6 +44,8 @@ titles are `muted` or not per the Figma — that flag is data, not a variant.
 
 `components/profession-pill.tsx`. The one-off cycling pill in the home intro.
 Not a general pill or badge — don't reuse it or copy its styling for tags.
+After the first full lap of five it shows one extra label, "that’s all of
+me" (winking smiley), then wraps to "product designer"; later laps skip it.
 Motion spec in [motion.md](motion.md).
 
 ## Figure + Gallery (Decided from Figma "Blog")
@@ -110,7 +112,18 @@ exists. Use this row, not a new one, for any dated list on the home page.
 ## NoidaTime
 
 `components/noida-time.tsx`. Live Asia/Kolkata clock, `tabular-nums`,
-lowercase `10:25pm`. Home footer only.
+lowercase `10:25pm`, plus a muted guess at what Yash is doing, from the
+`weekday` / `weekend` schedules in the file. Home footer only.
+
+## CopyEmail + Tooltip
+
+`components/copy-email.tsx`. Home Contact "Email": a quiet-link button, not
+`mailto:`. Hover: "Click to copy"; click copies `site.social.email` and the
+same bubble morphs (the `ProfessionPill` label swap, 200ms colour fade) into a
+green `bg-success` "✓ Copied" until the pointer leaves (1.5s on touch).
+Falls back to the mail app if copying fails. Bubble: shadcn
+`components/ui/tooltip.tsx` plus an `arrowClassName` prop; wrap each use in a
+`TooltipProvider` and add `motion-reduce:animate-none` to `TooltipContent`.
 
 ## Lists
 

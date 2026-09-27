@@ -2,7 +2,14 @@
 
 import { useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { BooksIcon, PaintBrushIcon, PenNibIcon, RacquetIcon, ShapesIcon } from "@phosphor-icons/react";
+import {
+  BooksIcon,
+  PaintBrushIcon,
+  PenNibIcon,
+  RacquetIcon,
+  ShapesIcon,
+  SmileyWinkIcon,
+} from "@phosphor-icons/react";
 
 // Order and copy from the Figma "profession pill" component set (node
 // `1137:2706`), where each variant changes to the next on click.
@@ -14,11 +21,16 @@ const professions = [
   { label: "book hoarder", icon: BooksIcon },
 ];
 
+// Shown once, after the first full lap, for whoever clicked through all five.
+// Later laps skip it so it stays a reward rather than a sixth profession.
+const outro = { label: "that’s all of me", icon: SmileyWinkIcon };
+
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 /**
  * The "product designer" pill in the home intro. Clicking cycles through the
- * other things Yash is.
+ * other things Yash is. Finishing the first lap earns one extra label
+ * (`outro`) before it wraps back to the start.
  *
  * The outgoing label lifts away while the next one rises in, both with a
  * light blur so the swap reads as one morph rather than two separate fades.
@@ -28,10 +40,23 @@ const EASE_OUT = [0.22, 1, 0.36, 1] as const;
  */
 export function ProfessionPill() {
   const [index, setIndex] = useState(0);
+  // `index === professions.length` means the outro is showing.
+  const [lapped, setLapped] = useState(false);
   const [width, setWidth] = useState<number | null>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
-  const { label, icon: Icon } = professions[index];
+  const { label, icon: Icon } = professions[index] ?? outro;
+
+  function next() {
+    if (index < professions.length - 1) {
+      setIndex(index + 1);
+    } else if (!lapped) {
+      setLapped(true);
+      setIndex(professions.length);
+    } else {
+      setIndex(0);
+    }
+  }
 
   // Track the label's natural width. The exiting label is popped out of flow,
   // so this only ever measures the incoming one.
@@ -46,7 +71,7 @@ export function ProfessionPill() {
   return (
     <button
       type="button"
-      onClick={() => setIndex((i) => (i + 1) % professions.length)}
+      onClick={next}
       className="bg-background border-border inline-flex shrink-0 cursor-pointer items-center rounded-lg border px-2 py-1 shadow-xs transition-[scale] duration-150 ease-out select-none active:scale-[0.96] motion-reduce:transition-none"
     >
       <motion.span

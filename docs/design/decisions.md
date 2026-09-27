@@ -6,6 +6,14 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-27** — Home "Email" copies the address instead of opening a
+  mail app: hover shows "Click to copy", then the same tooltip morphs into a
+  green "✓ Copied". Adds `success` green, the second hue, for confirmation
+  only. First shadcn primitive installed (`tooltip`).
+- **2026-09-27** — Two quiet easter eggs on home, both found rather than
+  performed: the profession pill says "that’s all of me" once after a full
+  lap, and the Noida clock adds a muted line guessing what Yash is doing at
+  that hour. No colour, nothing on load.
 - **2026-09-27** — Figure and Gallery captions are centered, balanced so
   multi-line captions don't leave a lone word.
 - **2026-09-27** — First real post imported from Medium

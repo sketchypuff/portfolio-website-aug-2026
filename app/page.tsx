@@ -10,6 +10,7 @@ import {
   SmileyXEyesIcon,
   WarningCircleIcon,
 } from "@phosphor-icons/react/ssr";
+import { CopyEmail } from "@/components/copy-email";
 import { NoidaTime } from "@/components/noida-time";
 import { ProfessionPill } from "@/components/profession-pill";
 import { ThemeTextToggle } from "@/components/theme-toggle";
@@ -215,9 +216,7 @@ export default function HomePage() {
             </SectionLabel>
             <ul role="list">
               <li>
-                <a href={`mailto:${site.social.email}`} className="hover:text-muted-foreground transition-colors">
-                  Email
-                </a>
+                <CopyEmail />
               </li>
               <li>
                 {site.social.linkedin ? (

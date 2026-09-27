@@ -11,11 +11,12 @@ Source: `app/globals.css`. Light values live on `:root`, dark values on
 | **shadcn `neutral` preset**, verbatim (`components.json` → `"baseColor": "neutral"`) | every gray: `background`, `foreground`, `muted`, `muted-foreground`, `border`, `ring`, plus `destructive` and all the unused ones | **Default** — generated, never compared against Figma |
 | **Project-defined, from Figma** | `link` — `#2148f9` in light (`--blue-600`); `--blue-300` in dark for contrast | **Decided** |
 | **Project-defined, derived** | the `--blue-50…950` scale, built from the link blue | **Decided** — primitives, see below |
+| **Project-defined** | `success` / `success-foreground` — green, hue 150 | **Decided** — confirmation only |
 | **Tailwind default, not a token** | the shadow color inside `shadow-xs` (black at 5% opacity) | **Default** — the one color on the site outside the token system |
 | **Browser default** | text selection, caret, scrollbars | Unstyled |
 
-The whole ramp has zero chroma — pure gray — so the only hue on the site is
-`link`. Replacing the grays with Figma values is a change to `globals.css`
+The whole ramp has zero chroma — pure gray — so the only hues on the site are
+`link` and, for a confirmed action only, `success`. Replacing the grays with Figma values is a change to `globals.css`
 only; nothing else hardcodes them.
 
 ## Blue scale (primitives)
@@ -59,6 +60,7 @@ only one, so it breaks in the other theme.
 | `border-border` | `0.922` | white 10% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
 | `ring` (via `outline-ring/50`) | `0.708` | `0.556` | the focus outline on every element (set on `*` in `globals.css`) |
 | `text-link` | `var(--blue-600)` = `#2148f9` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon |
+| `bg-success` / `text-success-foreground` | `0.52 0.14 150` / `0.985` (4.95:1) | `0.8 0.15 150` / `0.145` (11.2:1) | the `CopyEmail` tooltip once copied — nothing else |
 | `text-destructive` / `border-destructive` | red, `0.577 0.245 27` | red, `0.704 0.191 22` | `MdxError` in `components/content/mdx.tsx` only |
 
 Grays are listed by OKLCH lightness (`0.145` = `oklch(0.145 0 0)`). Dark
@@ -73,6 +75,7 @@ white so it reads on any dark surface.
 | `app/globals.css`, `app/layout.tsx` | `background`, `foreground`, `border`, `ring/50` (global defaults) |
 | `app/page.tsx` | `muted-foreground` (intro, metadata, dimmed titles, quiet-link hover), `foreground/50` (row hairline) |
 | `components/text-link.tsx`, `components/theme-toggle.tsx` | `link` |
+| `components/ui/tooltip.tsx`, `components/copy-email.tsx` | `foreground` / `background` (tooltip); `success` / `success-foreground` (copied) |
 | `components/profession-pill.tsx` | `background`, `border`, `shadow-xs`, `link` (icon) |
 | `components/work-strip.tsx` | `muted` (image slot) |
 | `components/content/figure.tsx` | `muted` (placeholder), `muted-foreground` (caption) |

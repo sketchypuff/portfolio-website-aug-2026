@@ -3,7 +3,8 @@
 A quiet, achromatic portfolio where the work and the writing carry the page.
 Hierarchy comes from weight, size, and the one gray (`muted-foreground`), never
 from color. The only hue on the site is `link` blue, and it means "this takes
-you somewhere".
+you somewhere" — apart from `success` green, which only ever confirms an
+action (the "Copied" tooltip).
 
 `AGENTS.md` covers architecture. This file and `docs/design/` cover how the
 site looks and why. Read the root rules below before any visual change, then

@@ -12,6 +12,7 @@ import { PostNav } from "@/components/content/post-nav";
 import { IconCircle } from "@/components/icon-circle";
 import { Mdx } from "@/components/content/mdx";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { CopyEmail } from "@/components/copy-email";
 import { NoidaTime } from "@/components/noida-time";
 import { ProfessionPill } from "@/components/profession-pill";
 import { SectionLabel } from "@/components/section-label";
@@ -183,6 +184,9 @@ export default function DesignPage() {
           </Specimen>
           <Specimen label="NoidaTime">
             <NoidaTime />
+          </Specimen>
+          <Specimen label="CopyEmail · hover, then click">
+            <CopyEmail />
           </Specimen>
           <Specimen label="WorkStrip + WorkCard · scrolls sideways">
             <WorkStrip>

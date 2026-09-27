@@ -8,6 +8,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-link: var(--link);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
@@ -94,6 +96,9 @@
   --ring: oklch(0.708 0 0);
   /* The one accent on the site, reserved for links. #2148f9 from the Figma file. */
   --link: var(--blue-600);
+  /* Confirmation only (the "Copied" tooltip). 4.95:1 under its foreground. */
+  --success: oklch(0.52 0.14 150);
+  --success-foreground: oklch(0.985 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -130,6 +135,9 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --link: var(--blue-300);
+  /* 11.2:1 under its foreground. */
+  --success: oklch(0.8 0.15 150);
+  --success-foreground: oklch(0.145 0 0);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
