@@ -62,12 +62,25 @@ const writing: { date: string; title: string; href?: string }[] = [
     href: "/blog/storytelling-in-ux-case-studies",
   },
   {
+    date: "2024-11-28",
+    title: "22 things about industrial design they didn’t teach me in design school",
+    href: "/blog/22-things-about-industrial-design",
+  },
+  {
+    date: "2024-05-04",
+    title: "Preparing for undergraduate design entrance exams in India",
+    href: "/blog/design-entrance-exams-in-india",
+  },
+  {
+    date: "2024-02-24",
+    title: "An actionable guide on taking the first step towards learning UX design today",
+    href: "/blog/first-step-learning-ux-design",
+  },
+  {
     date: "2024-01-27",
     title: "Thoughts on making UX portfolio websites for fresh graduates seeking a job in the industry",
     href: "/blog/ux-portfolio-websites-for-fresh-graduates",
   },
-  { date: "2025-08-14", title: "Preparing for undergraduate design entrance exams in India" },
-  { date: "2025-08-14", title: "An actionable guide on taking the first step towards learning UX design today" },
 ];
 
 // Built from parts so the month is always three letters ("Sep", not en-GB's "Sept").
