@@ -12,6 +12,7 @@ import {
 } from "@phosphor-icons/react/ssr";
 import { CopyEmail } from "@/components/copy-email";
 import { NoidaTime } from "@/components/noida-time";
+import { Oneko } from "@/components/oneko";
 import { ProfessionPill } from "@/components/profession-pill";
 import { ThemeTextToggle } from "@/components/theme-toggle";
 import { SectionLabel } from "@/components/section-label";
@@ -118,6 +119,7 @@ export default function HomePage() {
 
   return (
     <div className="@container overflow-x-clip">
+      <Oneko />
       <Container size="home" className="flex flex-col gap-20 pt-14 pb-16 text-base leading-snug font-medium">
         <Reveal as="header" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-4">

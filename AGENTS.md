@@ -147,7 +147,7 @@ Every motion component early-returns a static version under
 
 - Server Components by default. `"use client"` only where there is state,
   an event handler, or a hook — currently the theme toggle, motion
-  components, `NoidaTime`, and `ProfessionPill`.
+  components, `NoidaTime`, `ProfessionPill`, and `Oneko`.
 - There is no global header or footer. `app/layout.tsx` renders only the page
   (inside `PageTransition`); home carries its own nav and footer row.
 - Icons come from Phosphor (`@phosphor-icons/react`; `/ssr` in Server

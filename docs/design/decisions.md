@@ -6,6 +6,12 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-27** — The cat uses onekocord's `silversky` skin instead of the
+  default oneko sprite.
+- **2026-09-27** — A oneko.js pixel cat chases the cursor on home. The one
+  loud easter egg, kept to home, desktop pointers, and full motion. Ported to
+  React rather than loaded as the original script, which leaks a
+  body-level element and listeners across route changes.
 - **2026-09-27** — Work strips get a tick stepper above them (after
   rithvika.work): one tick per card, a muted pill sliding to the current one,
   click to jump. Shows position and count, which the cut-off card alone

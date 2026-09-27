@@ -120,6 +120,20 @@ exists. Use this row, not a new one, for any dated list on the home page.
 lowercase `10:25pm`, plus a muted guess at what Yash is doing, from the
 `weekday` / `weekend` schedules in the file. Home footer only.
 
+## Oneko
+
+`components/oneko.tsx`. A 32px pixel cat that chases the cursor, ported from
+[oneko.js](https://github.com/adryd325/oneko.js) (MIT) into a client
+component so it mounts and unmounts with the page. Sprite sheet at
+`public/oneko.png`: the `silversky` skin from
+[onekocord](https://github.com/onekocord/onekocord), which has no licence
+file. Any 256×128 oneko sheet drops in without code changes. Rendered
+`image-rendering: pixelated`. Home only — mounted once at the top of
+`app/page.tsx`. Decorative: `aria-hidden`, no pointer
+events. Renders nothing under reduced motion or without a fine hovering
+pointer (touch has no cursor to chase). No position persistence; it starts in
+the top-left corner on every visit.
+
 ## CopyEmail + Tooltip
 
 `components/copy-email.tsx`. Home Contact "Email": a quiet-link button, not
