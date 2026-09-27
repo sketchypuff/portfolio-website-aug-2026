@@ -101,9 +101,8 @@ allowed to break the text column.
 - No global header or footer on `/`. The intro's links are the nav, and the
   Contact / Last updated / Currently row is the footer. Inner pages keep the
   global chrome.
-- Section labels are Geist Mono semibold, uppercase, with a 24px pixel-art
-  icon beside them. The pixel icons give the page its personality; the Phosphor
-  icons elsewhere stay functional.
+- Section labels are Geist Mono semibold, uppercase, with a 24px Phosphor
+  icon beside them, the same set and weight as every other icon on the site.
 - Work is shown as horizontal strips of 570px cards that bleed off the right
   edge of the viewport. The cut-off card is the affordance that the row scrolls.
 
@@ -156,6 +155,17 @@ _To be written._
 
 Document components as they earn a place: what each is for, when *not* to use
 it, and the states it must handle.
+
+### Icons
+
+- Phosphor (`@phosphor-icons/react`) is the one icon library, and shadcn's
+  `iconLibrary` points at it. It matches the Figma file, and its weights
+  (regular for UI, duotone/fill for moments of character) cover both
+  functional and expressive icons without mixing styles.
+- Import the `*Icon` names (`ArrowLeftIcon`); the bare names are deprecated.
+  Server Components import from `@phosphor-icons/react/ssr`.
+- No custom icon artwork. The pixel-art section icons from the Figma file were
+  replaced with Phosphor equivalents so the whole site uses one set.
 
 ---
 

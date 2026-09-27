@@ -116,8 +116,9 @@ Every motion component early-returns a static version under
 - The global `SiteHeader` and `SiteFooter` are hidden on `/`, which carries
   its own nav and footer row. The header checks the pathname itself; the
   footer is wrapped in `HideOnHome` in `app/layout.tsx`.
-- Icons from Figma live in `public/icons/` as unedited SVG exports and render
-  through `<Icon name="…" />`, which masks them with `currentColor`.
+- Icons come from Phosphor (`@phosphor-icons/react`; `/ssr` in Server
+  Components). There is no custom icon set; don't add SVGs to `public/`
+  for icons Phosphor already has.
 - `Figure`, `Gallery`, and `ProjectCard` are async Server Components because
   they await image resolution. Keep them server-side.
 - Route params are Promises in Next 16. Use the generated helpers:

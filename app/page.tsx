@@ -1,6 +1,17 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { Icon, type IconName } from "@/components/icon";
+import {
+  ArrowUpRightIcon,
+  ClockIcon,
+  CrownIcon,
+  HandHeartIcon,
+  IdentificationCardIcon,
+  PenNibIcon,
+  ShapesIcon,
+  SmileyXEyesIcon,
+  WarningCircleIcon,
+} from "@phosphor-icons/react/ssr";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { NoidaTime } from "@/components/noida-time";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { site } from "@/lib/site";
@@ -70,7 +81,7 @@ export default function HomePage() {
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="font-bold">Hi! I’m Yash, your neighbourhood</h1>
               <span className="bg-background border-border inline-flex items-center gap-1.5 rounded-lg border px-2 py-1 shadow-xs">
-                <Icon name="shapes" className="text-link" />
+                <ShapesIcon aria-hidden className="text-link size-6 shrink-0" />
                 product designer
               </span>
             </div>
@@ -87,10 +98,10 @@ export default function HomePage() {
           </div>
 
           <nav aria-label="Main" className="flex flex-col items-start gap-0.5 sm:items-end">
-            <TextLink href={site.resume} icon="arrow-up-right">
+            <TextLink href={site.resume} icon={ArrowUpRightIcon}>
               Open resumé
             </TextLink>
-            <TextLink href="/about" icon="smiley-x-eyes">
+            <TextLink href="/about" icon={SmileyXEyesIcon}>
               About
             </TextLink>
           </nav>
@@ -98,7 +109,7 @@ export default function HomePage() {
 
         <section className="flex flex-col gap-8">
           <Reveal>
-            <SectionLabel icon="crown-pixel">Selected work</SectionLabel>
+            <SectionLabel icon={CrownIcon}>Selected work</SectionLabel>
           </Reveal>
           <WorkStrip>
             {selectedWork.map((item, i) => (
@@ -112,8 +123,8 @@ export default function HomePage() {
 
         <section className="flex flex-col gap-8">
           <Reveal className="flex items-start justify-between gap-4">
-            <SectionLabel icon="ink-pen-pixel">Writing</SectionLabel>
-            <TextLink href="/blog" icon="arrow-up-right">
+            <SectionLabel icon={PenNibIcon}>Writing</SectionLabel>
+            <TextLink href="/blog" icon={ArrowUpRightIcon}>
               Open blog
             </TextLink>
           </Reveal>
@@ -134,7 +145,7 @@ export default function HomePage() {
 
         <section className="flex flex-col gap-8">
           <Reveal>
-            <SectionLabel icon="hand-heart-pixel">Other work</SectionLabel>
+            <SectionLabel icon={HandHeartIcon}>Other work</SectionLabel>
           </Reveal>
           <WorkStrip>
             {otherWork.map((item, i) => (
@@ -147,7 +158,7 @@ export default function HomePage() {
 
         <Reveal as="footer" className="grid gap-12 sm:grid-cols-[1fr_auto_1fr] sm:gap-6">
           <div className="flex flex-col gap-8">
-            <SectionLabel icon="identification-card">
+            <SectionLabel icon={IdentificationCardIcon}>
               Contact
             </SectionLabel>
             <ul>
@@ -183,13 +194,13 @@ export default function HomePage() {
             </ul>
           </div>
           <div className="flex flex-col gap-8">
-            <SectionLabel icon="warning-circle">
+            <SectionLabel icon={WarningCircleIcon}>
               Last updated
             </SectionLabel>
             <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
           </div>
           <div className="flex flex-col gap-8 sm:items-end sm:text-right">
-            <SectionLabel icon="clock">
+            <SectionLabel icon={ClockIcon}>
               Currently
             </SectionLabel>
             <NoidaTime />
@@ -200,22 +211,25 @@ export default function HomePage() {
   );
 }
 
-function SectionLabel({ icon, children }: { icon: IconName; children: React.ReactNode }) {
+function SectionLabel({ icon: Icon, children }: { icon: PhosphorIcon; children: React.ReactNode }) {
   return (
     <h2 className="flex items-center gap-2 font-mono text-sm font-semibold uppercase">
       {children}
-      <Icon name={icon} />
+      <Icon aria-hidden className="size-6 shrink-0" />
     </h2>
   );
 }
 
 /** Blue nav link. Absolute URLs open in a new tab; site paths use client routing. */
-function TextLink({ href, icon, children }: { href: string; icon: IconName; children: React.ReactNode }) {
+function TextLink({ href, icon: Icon, children }: { href: string; icon: PhosphorIcon; children: React.ReactNode }) {
   const className = "text-link group inline-flex items-center gap-0.5 transition-opacity hover:opacity-70";
   const content = (
     <>
       {children}
-      <Icon name={icon} className="transition-transform duration-300 ease-out group-hover:translate-x-0.5" />
+      <Icon
+        aria-hidden
+        className="size-6 shrink-0 transition-transform duration-300 ease-out group-hover:translate-x-0.5"
+      />
     </>
   );
 

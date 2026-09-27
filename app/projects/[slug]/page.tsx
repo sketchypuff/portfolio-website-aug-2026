@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeftIcon } from "@phosphor-icons/react/ssr";
 import { Container } from "@/components/container";
 import { Mdx } from "@/components/content/mdx";
 import { Figure } from "@/components/content/figure";
@@ -58,7 +58,7 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
           href="/projects"
           className="text-muted-foreground hover:text-foreground group inline-flex items-center gap-1.5 text-sm transition-colors"
         >
-          <ArrowLeft className="size-3.5 transition-transform duration-300 ease-out group-hover:-translate-x-0.5" />
+          <ArrowLeftIcon className="size-3.5 transition-transform duration-300 ease-out group-hover:-translate-x-0.5" />
           Projects
         </Link>
 

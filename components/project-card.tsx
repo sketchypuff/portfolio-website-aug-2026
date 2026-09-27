@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
 import { loadContentImage } from "@/lib/images";
 import type { Entry } from "@/lib/content";
 
@@ -40,7 +40,7 @@ export async function ProjectCard({ entry }: { entry: Entry<"projects"> }) {
           <h3 className="group-hover:text-muted-foreground inline-flex items-center gap-1 text-sm font-medium tracking-tight transition-colors">
             {meta.title}
             {isExternal ? (
-              <ArrowUpRight className="size-3.5 transition-transform duration-300 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRightIcon className="size-3.5 transition-transform duration-300 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             ) : null}
           </h3>
           {meta.year ? (
