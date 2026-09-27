@@ -79,6 +79,9 @@ from the real code — the visual counterpart to these files.
 - **New pages.** About, blog index, post, projects index, case study, and
   404 need designs. Until they exist, the home page's `/about` and `/blog`
   links go to Next's default 404.
+- **Grays.** Every gray is the stock shadcn `neutral` preset, never compared
+  with Figma. Swap in the Figma values (one file: `app/globals.css`) or
+  confirm the defaults. See [color.md](docs/design/color.md).
 - **Shared chrome.** Does every page carry its own nav and footer like home,
   or do inner pages get a shared header?
 - **Date format.** Home shows `14 Aug 2025` (`formatDay`, `app/page.tsx`);

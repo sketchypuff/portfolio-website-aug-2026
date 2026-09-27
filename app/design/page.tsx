@@ -25,15 +25,16 @@ export const metadata: Metadata = {
 };
 
 // Tailwind needs literal class names, so each swatch spells its class out.
+// `origin` mirrors the table in docs/design/color.md.
 const colors = [
-  { token: "background", swatch: "bg-background", use: "Page, pill surface" },
-  { token: "foreground", swatch: "bg-foreground", use: "Default text" },
-  { token: "muted-foreground", swatch: "bg-muted-foreground", use: "Secondary text, metadata" },
-  { token: "muted", swatch: "bg-muted", use: "Image slots, card fills, code" },
-  { token: "border", swatch: "bg-border", use: "Default borders" },
-  { token: "ring", swatch: "bg-ring", use: "Focus rings" },
-  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle" },
-  { token: "destructive", swatch: "bg-destructive", use: "MdxError only" },
+  { token: "background", swatch: "bg-background", use: "Page, pill surface", origin: "shadcn neutral" },
+  { token: "foreground", swatch: "bg-foreground", use: "Default text", origin: "shadcn neutral" },
+  { token: "muted-foreground", swatch: "bg-muted-foreground", use: "Secondary text, metadata", origin: "shadcn neutral" },
+  { token: "muted", swatch: "bg-muted", use: "Image slots, placeholders, code", origin: "shadcn neutral" },
+  { token: "border", swatch: "bg-border", use: "Default borders", origin: "shadcn neutral" },
+  { token: "ring", swatch: "bg-ring", use: "Focus outline, at 50%", origin: "shadcn neutral" },
+  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle, pill icon", origin: "Figma · #2148f9" },
+  { token: "destructive", swatch: "bg-destructive", use: "MdxError only", origin: "shadcn neutral" },
 ];
 
 const containers = [
@@ -84,6 +85,7 @@ export default function DesignPage() {
               <div className={`${c.swatch} border-border aspect-[4/3] rounded-lg border`} />
               <p className="mt-3 font-mono text-xs">{c.token}</p>
               <p className="text-muted-foreground mt-1 text-xs">{c.use}</p>
+              <p className="text-muted-foreground mt-1 font-mono text-xs">{c.origin}</p>
             </li>
           ))}
         </ul>

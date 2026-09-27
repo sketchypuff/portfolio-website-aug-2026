@@ -6,6 +6,9 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-27** — Color doc records where every color comes from (shadcn
+  `neutral` preset vs. Figma `link` vs. Tailwind's `shadow-xs` default) and a
+  per-file usage map. The grays are marked Default, not Decided.
 - **2026-09-27** — Inner pages removed to be rebuilt from scratch: /about,
   /blog, /blog/[slug], /projects, /projects/[slug], the custom 404, the
   global header and footer (and `HideOnHome`, the icon `ThemeToggle`,
