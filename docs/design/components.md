@@ -128,7 +128,10 @@ lowercase `10:25pm`, plus a muted guess at what Yash is doing, from the
 
 ## Oneko
 
-`components/oneko.tsx`. A 32px pixel cat that chases the cursor, ported from
+`components/oneko.tsx`. A 32px pixel cat that wanders the viewport on its
+own: it walks to a random spot on screen at least 300px away, rests 1–3 seconds (sometimes
+scratching, or a ~6s nap, which it never cuts short), then sets off again.
+Mostly moving, rarely sitting. Ported from
 [oneko.js](https://github.com/adryd325/oneko.js) (MIT) into a client
 component so it mounts and unmounts with the page. Sprite sheet at
 `public/oneko.png`: the `silversky` skin from
@@ -136,8 +139,8 @@ component so it mounts and unmounts with the page. Sprite sheet at
 file. Any 256×128 oneko sheet drops in without code changes. Rendered
 `image-rendering: pixelated`. Home only — mounted once at the top of
 `app/page.tsx`. Decorative: `aria-hidden`, no pointer
-events. Renders nothing under reduced motion or without a fine hovering
-pointer (touch has no cursor to chase). No position persistence; it starts in
+events. Renders nothing under reduced motion. Shows on touch devices too,
+since it no longer needs a cursor. No position persistence; it starts in
 the top-left corner on every visit.
 
 ## CopyEmail + Tooltip

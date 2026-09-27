@@ -9,7 +9,16 @@ import { useEffect, useRef } from "react";
 // from onekocord (https://github.com/onekocord/onekocord), 8×4 grid of 32px cells.
 
 const SIZE = 32;
-const SPEED = 10;
+// Slower than the original's 10px chase: this is a stroll.
+const SPEED = 6;
+// Each walk heads for a random spot at least this far away, so walks
+// aren't cut short by a nearby edge.
+const TRIP_MIN = 300;
+// Rest 1–3 seconds between walks (in frames).
+const REST_MIN = 10;
+const REST_MAX = 30;
+// Naps last about 6 seconds; the original's 19 kept it sitting too long.
+const NAP_FRAMES = 60;
 // The original steps every 100ms regardless of refresh rate.
 const FRAME_MS = 100;
 
@@ -35,10 +44,13 @@ const sprites: Record<string, Sprite[]> = {
   NW: [[-1, 0], [-1, -1]],
 };
 
+const between = (min: number, max: number) => min + Math.random() * (max - min);
+
 /**
- * A pixel cat that chases the cursor. Home only. Decorative: aria-hidden,
- * ignores pointer events, and renders nothing under reduced motion or on
- * devices without a hovering pointer (there is no cursor to chase).
+ * A pixel cat that wanders the viewport on its own: walks somewhere nearby,
+ * sits a while (sometimes scratching or napping), then sets off again. Home
+ * only. Decorative: aria-hidden, ignores pointer events, and renders nothing
+ * under reduced motion.
  */
 export function Oneko() {
   const ref = useRef<HTMLDivElement>(null);
@@ -46,17 +58,13 @@ export function Oneko() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      !window.matchMedia("(hover: hover) and (pointer: fine)").matches
-    ) {
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let x = SIZE;
     let y = SIZE;
-    let mouseX = 0;
-    let mouseY = 0;
+    let targetX: number | null = null;
+    let targetY = 0;
+    let restFrames = REST_MIN;
     let frameCount = 0;
     let idleTime = 0;
     let idleAnimation: string | null = null;
@@ -82,8 +90,8 @@ export function Oneko() {
     const idle = () => {
       idleTime += 1;
 
-      // Roughly every 20 seconds of idling, pick something to do.
-      if (idleTime > 10 && Math.floor(Math.random() * 200) === 0 && idleAnimation === null) {
+      // Roughly every 5 seconds of resting, pick something to do.
+      if (idleTime > 10 && Math.floor(Math.random() * 50) === 0 && idleAnimation === null) {
         const options = ["sleeping", "scratchSelf"];
         if (x < SIZE) options.push("scratchWallW");
         if (y < SIZE) options.push("scratchWallN");
@@ -99,7 +107,7 @@ export function Oneko() {
             break;
           }
           setSprite("sleeping", Math.floor(idleFrame / 4));
-          if (idleFrame > 192) resetIdle();
+          if (idleFrame > NAP_FRAMES) resetIdle();
           break;
         case "scratchWallN":
         case "scratchWallS":
@@ -116,23 +124,53 @@ export function Oneko() {
       idleFrame += 1;
     };
 
+    // Keeps the farthest of a few random spots on screen, stopping early
+    // once one is TRIP_MIN away (a small viewport may have none that far).
+    const pickTarget = () => {
+      let best = -1;
+      for (let i = 0; i < 10 && best < TRIP_MIN; i++) {
+        const tx = between(SIZE / 2, window.innerWidth - SIZE / 2);
+        const ty = between(SIZE / 2, window.innerHeight - SIZE / 2);
+        const d = Math.hypot(tx - x, ty - y);
+        if (d > best) {
+          best = d;
+          targetX = tx;
+          targetY = ty;
+        }
+      }
+    };
+
     const frame = () => {
       frameCount += 1;
-      const dx = x - mouseX;
-      const dy = y - mouseY;
-      const distance = Math.hypot(dx, dy);
 
-      if (distance < 48) {
-        idle();
+      if (targetX === null) {
+        // Resting. Never cut a nap or scratch short.
+        if (restFrames > 0 || idleAnimation !== null) {
+          restFrames -= 1;
+          idle();
+          return;
+        }
+        pickTarget();
+      }
+
+      // Perks up for a few frames before setting off.
+      if (idleTime > 1) {
+        setSprite("alert", 0);
+        idleTime = Math.min(idleTime, 4) - 1;
         return;
       }
 
-      resetIdle();
+      const dx = x - targetX!;
+      const dy = y - targetY;
+      const distance = Math.hypot(dx, dy);
 
-      // Startled: hold the alert pose for a few frames before running.
-      if (idleTime > 1) {
-        setSprite("alert", 0);
-        idleTime = Math.min(idleTime, 7) - 1;
+      if (distance <= SPEED) {
+        x = targetX!;
+        y = targetY;
+        place();
+        targetX = null;
+        restFrames = Math.round(between(REST_MIN, REST_MAX));
+        setSprite("idle", 0);
         return;
       }
 
@@ -144,8 +182,6 @@ export function Oneko() {
 
       x -= (dx / distance) * SPEED;
       y -= (dy / distance) * SPEED;
-      x = Math.min(Math.max(SIZE / 2, x), window.innerWidth - SIZE / 2);
-      y = Math.min(Math.max(SIZE / 2, y), window.innerHeight - SIZE / 2);
       place();
     };
 
@@ -157,22 +193,14 @@ export function Oneko() {
       raf = requestAnimationFrame(tick);
     };
 
-    const onMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-
-    // Starts sitting in the top-left corner, as the original does.
+    // Starts sitting in the top-left corner, as the original does, and
+    // strolls off after a few seconds.
     setSprite("idle", 0);
     place();
     el.hidden = false;
-    document.addEventListener("mousemove", onMove);
     raf = requestAnimationFrame(tick);
 
-    return () => {
-      document.removeEventListener("mousemove", onMove);
-      cancelAnimationFrame(raf);
-    };
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   return (

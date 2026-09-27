@@ -6,6 +6,12 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-28** — The cat walks more and sits less: walks to a random spot
+  at least 300px away (a random direction got cut short by edges), 1–3s
+  rests, naps cut from ~19s to ~6s, a shorter alert pause before each walk. From Yash: it sat too long.
+- **2026-09-28** — The cat strolls around on its own instead of chasing the
+  cursor. From Yash. With no cursor to follow it now shows on touch devices
+  too; reduced motion still hides it.
 - **2026-09-28** — Stepper ticks get `cursor-pointer`: Tailwind v4 leaves
   buttons on the default arrow, and the ticks are small enough that the
   hand is the clearest sign they're clickable.
