@@ -23,9 +23,9 @@ export default async function BlogPage() {
       </Reveal>
 
       {posts.length > 0 ? (
-        <RevealGroup className="divide-border mt-12 divide-y">
+        <RevealGroup as="ul" className="divide-border mt-12 divide-y">
           {posts.map((entry) => (
-            <RevealItem key={entry.slug}>
+            <RevealItem as="li" key={entry.slug}>
               <PostLink entry={entry} />
             </RevealItem>
           ))}

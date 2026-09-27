@@ -131,9 +131,10 @@ export default function HomePage() {
               Open blog
             </TextLink>
           </Reveal>
-          <RevealGroup>
+          <RevealGroup as="ul">
             {writing.map((post) => (
               <RevealItem
+                as="li"
                 key={post.title}
                 className="border-foreground/50 flex flex-col gap-1 border-b-[0.5px] py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-12"
               >
@@ -164,7 +165,7 @@ export default function HomePage() {
             <SectionLabel icon={IdentificationCardIcon}>
               Contact
             </SectionLabel>
-            <ul>
+            <ul role="list">
               <li>
                 <a href={`mailto:${site.social.email}`} className="hover:text-muted-foreground transition-colors">
                   Email
@@ -225,7 +226,7 @@ export default function HomePage() {
  */
 function WorkStrip({ children }: { children: React.ReactNode }) {
   return (
-    <RevealGroup className="mx-[calc(50%-50cqw)] flex snap-x snap-mandatory scroll-px-(--gutter) gap-6 overflow-x-auto px-(--gutter) [--gutter:max(1.5rem,calc((100cqw-875px)/2))] [scrollbar-width:none] sm:[--gutter:max(2rem,calc((100cqw-875px)/2))] [&::-webkit-scrollbar]:hidden">
+    <RevealGroup as="ul" className="mx-[calc(50%-50cqw)] flex snap-x snap-mandatory scroll-px-(--gutter) gap-6 overflow-x-auto px-(--gutter) [--gutter:max(1.5rem,calc((100cqw-875px)/2))] [scrollbar-width:none] sm:[--gutter:max(2rem,calc((100cqw-875px)/2))] [&::-webkit-scrollbar]:hidden">
       {children}
     </RevealGroup>
   );
@@ -233,7 +234,7 @@ function WorkStrip({ children }: { children: React.ReactNode }) {
 
 function WorkCard({ children }: { children: React.ReactNode }) {
   return (
-    <RevealItem className="w-[570px] max-w-[85vw] shrink-0 snap-start">
+    <RevealItem as="li" className="w-[570px] max-w-[85vw] shrink-0 snap-start">
       <div className="bg-muted aspect-[4/3] rounded-xl" />
       <div className="mt-5">{children}</div>
     </RevealItem>

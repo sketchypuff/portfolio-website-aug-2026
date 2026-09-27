@@ -24,9 +24,9 @@ export default async function ProjectsPage() {
       </Reveal>
 
       {projects.length > 0 ? (
-        <RevealGroup className="mt-16 grid gap-x-8 gap-y-14 sm:grid-cols-2">
+        <RevealGroup as="ul" className="mt-16 grid gap-x-8 gap-y-14 sm:grid-cols-2">
           {projects.map((entry) => (
-            <RevealItem key={entry.slug}>
+            <RevealItem as="li" key={entry.slug}>
               <ProjectCard entry={entry} />
             </RevealItem>
           ))}

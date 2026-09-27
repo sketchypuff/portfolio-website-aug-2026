@@ -25,7 +25,7 @@ export function SiteHeader() {
           </Link>
 
           <div className="flex items-center gap-1 sm:gap-2">
-            <ul className="flex items-center gap-1 sm:gap-2">
+            <ul role="list" className="flex items-center gap-1 sm:gap-2">
               {site.nav.map((item) => {
                 const itemClass = "rounded-md px-2 py-1 text-sm transition-colors sm:px-3";
 

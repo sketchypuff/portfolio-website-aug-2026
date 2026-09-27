@@ -16,7 +16,7 @@ export function SiteFooter() {
           <p>
             © {new Date().getFullYear()} {site.name}
           </p>
-          <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <ul role="list" className="flex flex-wrap items-center gap-x-5 gap-y-2">
             {links.map((link) => (
               <li key={link.label}>
                 <a
