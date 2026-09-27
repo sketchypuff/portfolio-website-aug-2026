@@ -7,12 +7,12 @@ import {
   HandHeartIcon,
   IdentificationCardIcon,
   PenNibIcon,
-  ShapesIcon,
   SmileyXEyesIcon,
   WarningCircleIcon,
 } from "@phosphor-icons/react/ssr";
 import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { NoidaTime } from "@/components/noida-time";
+import { ProfessionPill } from "@/components/profession-pill";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -77,15 +77,16 @@ export default function HomePage() {
     <div className="@container overflow-x-clip">
       <Container size="home" className="flex flex-col gap-20 pt-14 pb-16 text-base leading-snug font-medium">
         <Reveal as="header" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex max-w-[436px] flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <h1 className="font-bold">Hi! I’m Yash, your neighbourhood</h1>
-              <span className="bg-background border-border inline-flex items-center gap-1.5 rounded-lg border px-2 py-1 shadow-xs">
-                <ShapesIcon aria-hidden className="text-link size-6 shrink-0" />
-                product designer
-              </span>
+          <div className="flex flex-col gap-4">
+            {/* The paragraph keeps the Figma 436px measure; this row may run wider so
+                every pill label fits beside the headline. Below md there isn't room
+                for the longest one, so the pill always takes its own line there
+                rather than jumping between lines as it cycles. */}
+            <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
+              <h1 className="font-bold md:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
+              <ProfessionPill />
             </div>
-            <div className="text-muted-foreground space-y-[1lh]">
+            <div className="text-muted-foreground max-w-[436px] space-y-[1lh]">
               <p>
                 Currently, I make agentic AI experiences feel oh yeah! at Microsoft. Previously,
                 I’ve worked at Adobe, Postman and Samsung.

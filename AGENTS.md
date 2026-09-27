@@ -112,7 +112,7 @@ Every motion component early-returns a static version under
 
 - Server Components by default. `"use client"` only where there is state,
   an event handler, or a hook — currently the header, theme toggle, motion
-  components, `HideOnHome`, and `NoidaTime`.
+  components, `HideOnHome`, `NoidaTime`, and `ProfessionPill`.
 - The global `SiteHeader` and `SiteFooter` are hidden on `/`, which carries
   its own nav and footer row. The header checks the pathname itself; the
   footer is wrapped in `HideOnHome` in `app/layout.tsx`.

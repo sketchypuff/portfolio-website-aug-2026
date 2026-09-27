@@ -124,6 +124,15 @@ content stays the star.
 - Vocabulary lives in `components/motion/`: `Reveal`, `RevealGroup` /
   `RevealItem`, `PageTransition`.
 
+- **Profession pill** (`components/profession-pill.tsx`, Figma component set
+  `1137:2706`): the intro's "product designer" pill cycles through five
+  professions on click. It is interactive UI rather than a reveal, so it runs
+  faster than the house defaults: the label swaps with 10px of vertical travel
+  and a 4px blur (enter 300ms on the house curve, exit 180ms ease-in, so the
+  exit gets out of the way). The width follows on a zero-bounce spring because
+  people click it repeatedly and a spring retargets mid-resize without a
+  jolt. Press feedback is `scale(0.96)`. Nothing plays on page load.
+
 **Still open:** hover behavior as a system rather than per-component
 improvisation; whether images get a distinct entrance from text; whether
 anything on the site earns a signature moment.
