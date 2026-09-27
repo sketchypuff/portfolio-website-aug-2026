@@ -24,36 +24,38 @@ Hierarchy on home comes from weight and case, not size. Everything is 16px or
 14px. Do not add a larger heading size to the home page — the headline is bold
 16px on purpose, so the work cards are the loudest thing on the page.
 
-## Prose (Provisional)
+## Post page (Decided — Figma "Blog", node `1132:2209`)
 
-Defined once in the `prose` map in `components/content/mdx.tsx`. Tune the type
-scale there; never restyle prose elements at a call site. These styles predate
-the redesign — expect them to change when the article page is designed.
+The page wrapper in `app/blog/[slug]/page.tsx` sets `font-medium`; every size
+below is medium unless it says bold. The header lives in that page; the body
+comes from the `prose` map in `components/content/mdx.tsx`. Tune the body there;
+never restyle prose elements at a call site.
 
-| Element | Size | Other |
+| Element | Classes | Notes |
 | --- | --- | --- |
-| `p`, `ul`, `ol` | 16px | `leading-[1.75]`, `my-5`, `text-pretty` |
-| `h2` | `text-xl` | `mt-14 mb-4`, medium, `tracking-tight` |
-| `h3` | `text-base` | `mt-10 mb-3`, medium, `tracking-tight` |
-| `strong` | — | `font-medium` (not bold) |
-| `code` | `0.85em` | mono, `bg-muted` |
-| `pre`, `table` | `text-sm` | |
-| `figcaption` | `text-sm` | muted, `leading-relaxed` |
+| Title `h1` | `text-3xl sm:text-4xl font-bold` | 36/40 in Figma; 30px below `sm` |
+| Subtitle (`summary`) | `text-3xl sm:text-4xl text-muted-foreground` | Figma black 40% → muted |
+| Meta | `text-xl leading-8` | `6 min. read • 15 Aug, 2026` |
+| `p`, `ul`, `ol` | `text-xl leading-8` (20/32) | `my-6`; consecutive `p` get `mt-8` (one blank line) |
+| `ol` numbers | `font-mono text-muted-foreground` | hang 2px left of the text, text at `pl-[50px]` |
+| `h2` | `text-2xl font-bold` | `mt-20 mb-6` — 80px before a section, 24px inside |
+| `strong` | `font-bold` | not in Figma; bold because body is already medium |
+| `h3`, `blockquote`, `code`, `pre`, `table` | — | **Provisional**: not in the frame, only re-scaled to sit with 20px body |
+| `figcaption` | `text-sm` | muted, `leading-relaxed`, centered (`text-center text-balance`, from Yash) |
 
-1.75 leading is for long-form reading at the `prose` width (`max-w-2xl`,
-~70 characters). Short UI text uses `leading-snug` or `leading-relaxed`.
+Figma sets body and meta at black 80%; they use `foreground` instead, so the
+site keeps two text levels (decided 2026-09-27).
 
 ## Rules
 
 - **Floor is 12px** (`text-xs`). Never use `text-[11px]` or smaller.
-- **Sizes in use:** `text-xs`, `text-sm`, `text-base`, and `text-xl` (prose
-  `h2` only). Nothing else exists. A page-title size for new pages is not
-  decided yet — take it from Figma, don't pick one.
+- **Sizes in use:** `text-xs`, `text-sm`, `text-base` (home), and on the
+  post page only `text-xl` (body), `text-2xl` (`h2`), `text-3xl`/`text-4xl`
+  (title, subtitle). Nothing else exists.
 - **Weights in use:** medium (500) default, semibold (600) only in
-  `SectionLabel`, bold (700) only for the home headline. Never `font-light`
-  or `font-black`.
-- `tracking-tight` goes on prose headings only. Home text uses default
-  tracking.
+  `SectionLabel`, bold (700) for the home headline and post headings and
+  `strong`. Never `font-light` or `font-black`.
+- Site pages use default tracking. No `tracking-tight` on page content.
 - Numbers that update in place (the clock) use `tabular-nums`.
 - Use real typographic characters in copy: `’` `“ ”` `—` `é` (as in "resumé").
 

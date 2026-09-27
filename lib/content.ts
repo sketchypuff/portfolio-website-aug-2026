@@ -209,11 +209,36 @@ export const getRenderableSlugs = cache(async (collection: Collection) => {
     .map((e) => ({ slug: e.slug }));
 });
 
+/**
+ * The posts either side of `slug` by date. `older` is on the left of the post
+ * page, `newer` on the right; either is null at the ends of the list.
+ */
+export const getAdjacentPosts = cache(async (slug: string) => {
+  const posts = await getPosts();
+  const i = posts.findIndex((p) => p.slug === slug);
+  return {
+    newer: i > 0 ? posts[i - 1] : null,
+    older: i >= 0 && i < posts.length - 1 ? posts[i + 1] : null,
+  };
+});
+
+/** Minutes to read at ~200 words a minute, rounded up. Counts MDX tags too, which is close enough. */
+export function readingTime(body: string): number {
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+// Built from parts so the month is always three letters ("Sep", not "Sept").
+const dateParts = new Intl.DateTimeFormat("en-US", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+});
+
+/** "15 Aug, 2026" — the post page format, from the Figma "Blog" frame. */
 export function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+  const parts = dateParts.formatToParts(new Date(date));
+  const part = (type: string) => parts.find((p) => p.type === type)?.value;
+  return `${part("day")} ${part("month")}, ${part("year")}`;
 }

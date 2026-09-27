@@ -6,6 +6,27 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-27** — Figure and Gallery captions are centered, balanced so
+  multi-line captions don't leave a lone word.
+- **2026-09-27** — First real post imported from Medium
+  (`storytelling-in-ux-case-studies`); its home Writing row is now a linked
+  row and shows the real publish date. Lists follow the Figma frame (all
+  numbered) rather than Medium's bullets; the Medium outro (clap, self-plug,
+  "See you later" and newsletter links) is dropped.
+- **2026-09-27** — Post page `/blog/[slug]` built from the Figma "Blog" frame
+  (`1132:2209`): 700px `article` column, 1323px `articleWide` row and `wide`
+  images, 20/32 body, 24px bold `h2`, 80px between blocks, `rounded-xl`
+  figures. New `IconCircle` and `PostNav`. Arrows are Phosphor.
+- **2026-09-27** — Post body and metadata use `foreground`, the subtitle
+  `muted-foreground` (Figma: black 80% / 40%). Keeps two text levels.
+- **2026-09-27** — Ordered-list numbers are mono and muted, not the Figma
+  link blue. Blue stays link-only.
+- **2026-09-27** — The post back link scrolls with the page and goes to `/`
+  until `/blog` exists. Both Figma circle fills (`#e6e6e6`, `#f2f2f2`) map
+  to `bg-muted` pending the gray decision.
+- **2026-09-27** — Post date format `15 Aug, 2026` (`formatDate`, from Figma).
+  Reading time is computed at ~200 wpm, not written in frontmatter. Older
+  post on the left of `PostNav`, newer on the right.
 - **2026-09-27** — Dark `--link` snapped to `--blue-300` (was
   `oklch(0.72 0.15 262)`, off the scale). Both link colors now come from one
   scale; contrast on the dark background rises from 7.9:1 to 8.5:1.

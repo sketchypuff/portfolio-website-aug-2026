@@ -9,6 +9,10 @@ const WIDTHS = {
   wide: "max-w-5xl",
   /** Home page column: 875px of content plus the sm:px-8 gutters. */
   home: "max-w-[calc(875px+4rem)]",
+  /** Post reading column: 700px of content plus the sm:px-8 gutters (Figma "Blog"). */
+  article: "max-w-[calc(700px+4rem)]",
+  /** Post page chrome — back link, prev/next — and wide images: 1323px (Figma "Blog"). */
+  articleWide: "max-w-[calc(1323px+4rem)]",
 } as const;
 
 export function Container({

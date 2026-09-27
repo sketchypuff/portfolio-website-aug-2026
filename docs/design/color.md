@@ -54,8 +54,8 @@ only one, so it breaks in the other theme.
 | --- | --- | --- | --- |
 | `bg-background` | `oklch(1 0 0)` white | `0.145` | page (`body`, set in `globals.css` and `app/layout.tsx`); `ProfessionPill` surface |
 | `text-foreground` | `0.145` | `0.985` | all default text (inherited from `body`); prose `strong` |
-| `text-muted-foreground` | `0.556` | `0.708` | secondary text: intro paragraph, metadata, company names, dimmed titles, figure captions, blockquotes; quiet-link hover |
-| `bg-muted` | `0.97` | `0.269` | empty image slots (`WorkCard`), image placeholders (`Figure`, `Gallery`), inline `code`, `pre` |
+| `text-muted-foreground` | `0.556` | `0.708` | secondary text: intro paragraph, metadata, company names, dimmed titles, post subtitle, prose list numbers and bullets, figure captions, blockquotes; quiet-link hover |
+| `bg-muted` | `0.97` | `0.269` | empty image slots (`WorkCard`), image placeholders (`Figure`, `Gallery`), `IconCircle`, inline `code`, `pre` |
 | `border-border` | `0.922` | white 10% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
 | `ring` (via `outline-ring/50`) | `0.708` | `0.556` | the focus outline on every element (set on `*` in `globals.css`) |
 | `text-link` | `var(--blue-600)` = `#2148f9` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon |
@@ -76,6 +76,9 @@ white so it reads on any dark surface.
 | `components/profession-pill.tsx` | `background`, `border`, `shadow-xs`, `link` (icon) |
 | `components/work-strip.tsx` | `muted` (image slot) |
 | `components/content/figure.tsx` | `muted` (placeholder), `muted-foreground` (caption) |
+| `components/icon-circle.tsx` | `muted` (circle) |
+| `components/content/post-nav.tsx` | `muted-foreground` (title hover) |
+| `app/blog/[slug]/page.tsx` | `muted-foreground` (subtitle), `border` (header rule) |
 | `components/content/mdx.tsx` | `muted`, `muted-foreground`, `foreground`, `border`, `destructive`, `muted-foreground/40` |
 
 `app/design/page.tsx` renders every token as a swatch; it is a specimen, not a
@@ -108,7 +111,7 @@ else is a new token decision — add it to `globals.css` and this table instead.
 Is it the page itself?
  ├── Yes → bg-background (already on body — don't repeat it)
  └── No
-      ├── An image slot, image placeholder, or code? → bg-muted
+      ├── An image slot, image placeholder, icon circle, or code? → bg-muted
       ├── A raised control on the page (the ProfessionPill)?
       │    → bg-background + border-border + shadow-xs
       └── Anything else → no background. This site separates with space, not boxes.

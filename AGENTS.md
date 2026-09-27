@@ -11,8 +11,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # yashshenai.com
 
 Personal portfolio for Yash Shenai, a product designer. Right now the site is
-the home page plus an unlisted `/design` style guide; the about, projects, and
-blog pages are being rebuilt from scratch. The resume is a PDF on Google Drive
+the home page, blog post pages (`/blog/[slug]`), and an unlisted `/design`
+style guide; the about, projects, and blog index pages are being rebuilt from
+scratch. The resume is a PDF on Google Drive
 (`site.resume` in `lib/site.ts`), not a page — every resume link opens it in a
 new tab. Deployed on Vercel.
 
@@ -94,9 +95,11 @@ A project with an `external` URL is a link-out with **no** detail page.
 is rebuilt, use it for `generateStaticParams`, call `notFound()` for external
 entries, and skip them in `sitemap.ts`. Keep those three in sync.
 
-No route renders entries right now. The pipeline, the example entries, and the
-bundler image context are kept so the rebuilt blog and case studies can use
-them.
+`app/blog/[slug]/page.tsx` renders posts: `generateStaticParams` from
+`getRenderableSlugs`, `dynamicParams = false`, and `sitemap.ts` lists every
+post. Reading time (`readingTime`) and the older/newer links
+(`getAdjacentPosts`) come from `lib/content.ts`. No route renders projects
+yet.
 
 In MDX, `<Figure>` and `<Gallery>` are pre-bound to the current entry in
 `components/content/mdx.tsx`, so authors write `<Figure src="hero.jpg" />` with
@@ -155,7 +158,7 @@ Every motion component early-returns a static version under
 - Route params are Promises in Next 16. Use the generated helpers:
   `PageProps<'/blog/[slug]'>`, then `await props.params`. Run
   `npx next typegen` after adding a route so the helper knows it.
-- Layout widths come from `<Container size="home" | "prose" | "default" | "wide">`.
+- Layout widths come from `<Container size="home" | "article" | "articleWide" | "prose" | "default" | "wide">`.
   Do not hand-roll `max-w-*` on page wrappers.
 - Site-wide constants (name, URL, resume, social) live in `lib/site.ts`.
 - Colors are shadcn CSS variables in `app/globals.css` — a deliberately
@@ -181,12 +184,13 @@ directory.
 ## Design status
 
 The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its
-project cards and writing rows are hardcoded arrays for now and are not linked;
-move them to `content/` once real entries exist. Its `/about` and `/blog`
+project cards and writing rows are hardcoded arrays for now. A writing row
+links to its post once the post exists in `content/posts/` (set `href`); the
+rest, and the project cards, are not linked yet. Its `/about` and `/blog`
 links point at pages that don't exist yet, so they hit Next's default 404
 until those pages are rebuilt. The infrastructure below the pages is real
 and tested.
 
-`content/*/example/` are throwaway reference entries documenting the
-frontmatter and components. Delete once real content exists — but keep at
+`content/*/example/` and `content/posts/placeholder-post/` are throwaway
+reference entries documenting the frontmatter and components. Delete once real content exists — but keep at
 least one entry per collection, or the image context module breaks.

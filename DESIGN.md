@@ -11,18 +11,17 @@ open only the topic file the task needs.
 
 ## Status
 
-The site is one page. The home page (`app/page.tsx`, from the Figma "Home"
-frame, node `1167:49`) is the whole **Decided** system. The old inner pages,
-global header, and footer were deleted on 2026-09-27 to be rebuilt from
-scratch; there is no inner-page styling left to copy.
+Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
+`1167:49`) and the blog post (`app/blog/[slug]/page.tsx`, Figma "Blog", node
+`1132:2209`). The old inner pages, global header, and footer were deleted on
+2026-09-27 to be rebuilt from scratch; don't look for them.
 
 - **Building a new page** → build it from the Decided tokens and components in
   these docs. Where a page needs something the home page doesn't have (a page
   title, a back link, an article layout), that is a new design decision: take
   it from Figma or ask Yash, then record it here. Don't improvise one.
-- **Provisional** — only the prose styles (`components/content/mdx.tsx`) and
-  `Figure`/`Gallery`. They predate the redesign and are expected to change
-  when the article pages are designed.
+- **Provisional** — the prose elements the Figma frame doesn't show (`h3`,
+  blockquote, code, tables, prose links, captions) and `full` image bleed.
 - `/design` (`app/design/page.tsx`) is an unlisted style guide, not a page of
   the site.
 
@@ -76,17 +75,17 @@ from the real code — the visual counterpart to these files.
 
 ## Pending decisions
 
-- **New pages.** About, blog index, post, projects index, case study, and
-  404 need designs. Until they exist, the home page's `/about` and `/blog`
-  links go to Next's default 404.
+- **New pages.** About, blog index, projects index, case study, and 404 need
+  designs. Until they exist, the home page's `/about` and `/blog` links go to
+  Next's default 404, and the post back link goes to `/`.
 - **Grays.** Every gray is the stock shadcn `neutral` preset, never compared
   with Figma. Swap in the Figma values (one file: `app/globals.css`) or
   confirm the defaults. See [color.md](docs/design/color.md).
 - **Shared chrome.** Does every page carry its own nav and footer like home,
   or do inner pages get a shared header?
 - **Date format.** Home shows `14 Aug 2025` (`formatDay`, `app/page.tsx`);
-  `formatDate` in `lib/content.ts` produces `August 14, 2025`. Pick one when
-  the blog is designed.
+  the post page shows `15 Aug, 2026` (`formatDate`, `lib/content.ts`), both
+  from Figma. Unify them, or confirm they differ on purpose.
 - **External-link marker.** Home rows show no `↗`. Decide whether link-out
   cards or rows on new pages do.
 - **Case study vs. blog post.** Same prose styles today; should they differ?

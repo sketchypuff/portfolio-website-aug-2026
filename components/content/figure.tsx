@@ -3,42 +3,49 @@ import { loadContentImage } from "@/lib/images";
 import type { Collection } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
-/** How far an image is allowed to break out of the prose column. */
+/** How far an image is allowed to break out of the reading column. */
 export type Bleed = "prose" | "wide" | "full";
 
 /**
- * The class sets the negative margin; `lg` and `xl` repeat it in rem per side
- * so `sizes` can be derived from it. Change both together — Tailwind needs the
- * class as a literal string, so it can't be generated from the numbers.
+ * Bleed is a negative margin that centers the image on the column at a target
+ * width, measured in `cqw` against the page's `@container` so the scrollbar is
+ * excluded. `wide` is the Figma "Blog" image width (1323px); `full` is the page
+ * less its gutters. Below `lg` every image is column width.
  */
-const BLEED: Record<Bleed, { className: string; lg: number; xl: number }> = {
-  prose: { className: "", lg: 0, xl: 0 },
-  wide: { className: "lg:-mx-24 xl:-mx-32", lg: 6, xl: 8 },
-  full: { className: "lg:-mx-24 xl:-mx-40", lg: 6, xl: 10 },
+const BLEED: Record<Bleed, string> = {
+  prose: "",
+  wide: "lg:mx-[calc((100%_-_min(1323px,_100cqw_-_4rem))_/_2)]",
+  full: "lg:mx-[calc((100%_-_(100cqw_-_4rem))_/_2)]",
 };
 
-/** `Container size="prose"`: max-w-2xl (42rem) less sm:px-8 on both sides. */
-const COLUMN = 38;
-/** The column caps out once the viewport reaches max-w-2xl. */
-const COLUMN_CAP = "672px";
+/** `Container size="article"`: 700px column, capped once the viewport fits it and the sm:px-8 gutters. */
+const COLUMN = "700px";
+const COLUMN_CAP = "764px";
+/** `wide` stops growing at 1323px plus gutters. */
+const WIDE = "1323px";
+const WIDE_CAP = "1387px";
 /** Gallery `sm:gap-4`. Below `sm` the gallery is a single column. */
-const GAP = 1;
+const GAP = "1rem";
 
 /**
  * `sizes` has to match the rendered width or the browser downloads a larger
- * candidate than it needs. Derived from the layout above rather than written
- * by hand so the two can't drift. Rounded up to the next quarter rem.
+ * candidate than it needs. Keep it in step with `BLEED` and `Container`.
  */
 function imageSizes(bleed: Bleed, columns = 1): string {
-  const { lg, xl } = BLEED[bleed];
-  const gaps = GAP * (columns - 1);
-  const col = (width: number) => `${Math.ceil(((width - gaps) / columns) * 4) / 4}rem`;
+  const col = (width: string) =>
+    columns === 1 ? width : `calc((${width} - ${columns - 1} * ${GAP}) / ${columns})`;
+
+  const large =
+    bleed === "wide"
+      ? [`(min-width: ${WIDE_CAP}) ${col(WIDE)}`, `(min-width: 1024px) ${col("calc(100vw - 4rem)")}`]
+      : bleed === "full"
+        ? [`(min-width: 1024px) ${col("calc(100vw - 4rem)")}`]
+        : [];
 
   return [
-    `(min-width: 1280px) ${col(COLUMN + 2 * xl)}`,
-    `(min-width: 1024px) ${col(COLUMN + 2 * lg)}`,
+    ...large,
     `(min-width: ${COLUMN_CAP}) ${col(COLUMN)}`,
-    `(min-width: 640px) calc((100vw - 4rem - ${gaps}rem) / ${columns})`,
+    `(min-width: 640px) ${col("calc(100vw - 4rem)")}`,
     "calc(100vw - 3rem)",
   ].join(", ");
 }
@@ -49,7 +56,8 @@ export type FigureProps = {
   /** Filename inside the entry's images/ directory, e.g. "hero.jpg". */
   src: string;
   alt?: string;
-  caption?: string;
+  /** Text, or JSX when the caption needs a link. */
+  caption?: React.ReactNode;
   bleed?: Bleed;
   /** Set on the first above-the-fold image only. */
   priority?: boolean;
@@ -74,17 +82,17 @@ export async function Figure({
   const image = await loadContentImage(collection, slug, src);
 
   return (
-    <figure className={cn("my-10", BLEED[bleed].className, className)}>
+    <figure className={cn("my-20", BLEED[bleed], className)}>
       <Image
         src={image}
-        alt={alt ?? caption ?? ""}
+        alt={alt ?? (typeof caption === "string" ? caption : "")}
         placeholder="blur"
         priority={priority}
         sizes={imageSizes(bleed)}
-        className="bg-muted h-auto w-full rounded-lg"
+        className="bg-muted h-auto w-full rounded-xl"
       />
       {caption ? (
-        <figcaption className="text-muted-foreground mt-3 text-sm leading-relaxed">
+        <figcaption className="text-muted-foreground mt-3 text-center text-sm leading-relaxed text-balance">
           {caption}
         </figcaption>
       ) : null}
@@ -117,7 +125,7 @@ export async function Gallery({
   );
 
   return (
-    <figure className={cn("my-10", BLEED[bleed].className)}>
+    <figure className={cn("my-20", BLEED[bleed])}>
       <div
         className={cn(
           "grid gap-3 sm:gap-4",
@@ -131,12 +139,12 @@ export async function Gallery({
             alt={alt ? `${alt} (${i + 1} of ${resolved.length})` : ""}
             placeholder="blur"
             sizes={imageSizes(bleed, columns)}
-            className="bg-muted h-auto w-full rounded-lg"
+            className="bg-muted h-auto w-full rounded-xl"
           />
         ))}
       </div>
       {caption ? (
-        <figcaption className="text-muted-foreground mt-3 text-sm leading-relaxed">
+        <figcaption className="text-muted-foreground mt-3 text-center text-sm leading-relaxed text-balance">
           {caption}
         </figcaption>
       ) : null}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Container } from "@/components/container";
 import {
   ArrowUpRightIcon,
@@ -20,7 +21,8 @@ import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 // Hardcoded from the Figma "Home" frame until these have real entries in
-// content/. Cards and rows are not linked yet for the same reason.
+// content/. Cards are not linked yet for the same reason; a writing row links
+// once its post exists.
 const selectedWork = [
   {
     company: "Microsoft",
@@ -51,8 +53,13 @@ const otherWork = [
   },
 ];
 
-const writing = [
-  { date: "2025-08-14", title: "How to use storytelling in UX case studies to land more interviews" },
+// `href` is set once a post exists in content/posts; unlinked rows stay plain text.
+const writing: { date: string; title: string; href?: string }[] = [
+  {
+    date: "2025-07-20",
+    title: "How to use storytelling in UX case studies to land more interviews",
+    href: "/blog/storytelling-in-ux-case-studies",
+  },
   { date: "2025-08-14", title: "22 things about industrial design they didn’t teach me in design school" },
   { date: "2025-08-14", title: "Preparing for undergraduate design entrance exams in India" },
   { date: "2025-08-14", title: "An actionable guide on taking the first step towards learning UX design today" },
@@ -69,6 +76,21 @@ const dateParts = new Intl.DateTimeFormat("en-US", {
 function formatDay(date: Date) {
   const part = (type: string) => dateParts.formatToParts(date).find((p) => p.type === type)?.value;
   return `${part("day")} ${part("month")} ${part("year")}`;
+}
+
+const writingRow = "flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-12";
+
+function WritingRowContent({ date, title, linked }: { date: string; title: string; linked?: boolean }) {
+  return (
+    <>
+      <time dateTime={date} className="text-muted-foreground shrink-0 font-mono text-sm uppercase">
+        {formatDay(new Date(date))}
+      </time>
+      <p className={cn("sm:text-right", linked && "group-hover:text-muted-foreground transition-colors")}>
+        {title}
+      </p>
+    </>
+  );
 }
 
 export default function HomePage() {
@@ -134,15 +156,22 @@ export default function HomePage() {
           </Reveal>
           <RevealGroup as="ul">
             {writing.map((post) => (
-              <RevealItem
-                as="li"
-                key={post.title}
-                className="border-foreground/50 flex flex-col gap-1 border-b-[0.5px] py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-12"
-              >
-                <time dateTime={post.date} className="text-muted-foreground shrink-0 font-mono text-sm uppercase">
-                  {formatDay(new Date(post.date))}
-                </time>
-                <p className="sm:text-right">{post.title}</p>
+              <RevealItem as="li" key={post.title} className="border-foreground/50 border-b-[0.5px]">
+                {post.href ? (
+                  <Link
+                    href={post.href}
+                    className={cn(
+                      writingRow,
+                      "group focus-visible:ring-ring -mx-3 rounded-lg px-3 focus-visible:ring-2 focus-visible:outline-none",
+                    )}
+                  >
+                    <WritingRowContent date={post.date} title={post.title} linked />
+                  </Link>
+                ) : (
+                  <div className={writingRow}>
+                    <WritingRowContent date={post.date} title={post.title} />
+                  </div>
+                )}
               </RevealItem>
             ))}
           </RevealGroup>

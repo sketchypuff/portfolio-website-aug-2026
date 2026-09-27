@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import {
+  ArrowLeftIcon,
   ArrowUpRightIcon,
   CrownIcon,
   PenNibIcon,
@@ -7,6 +8,8 @@ import {
 } from "@phosphor-icons/react/ssr";
 import { Container } from "@/components/container";
 import { Figure } from "@/components/content/figure";
+import { PostNav } from "@/components/content/post-nav";
+import { IconCircle } from "@/components/icon-circle";
 import { Mdx } from "@/components/content/mdx";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { NoidaTime } from "@/components/noida-time";
@@ -46,21 +49,25 @@ const containers = [
   { size: "default", note: "max-w-3xl" },
   { size: "home", note: "875px column · the home page" },
   { size: "wide", note: "max-w-5xl" },
+  { size: "article", note: "700px column · post body (Figma Blog)" },
+  { size: "articleWide", note: "1323px · post back link, prev/next, wide images" },
 ] as const;
 
 const radii = [
-  { name: "rounded-xl", className: "rounded-xl", use: "Home work cards" },
-  { name: "rounded-lg", className: "rounded-lg", use: "Images, pill, pre" },
-    { name: "rounded", className: "rounded", use: "Inline code" },
+  { name: "rounded-xl", className: "rounded-xl", use: "Work cards, figures, pre" },
+  { name: "rounded-lg", className: "rounded-lg", use: "Pill, row focus ring" },
+  { name: "rounded", className: "rounded", use: "Inline code" },
 ];
 
-const proseSample = `Body copy at 16px with 1.75 leading, held to the prose measure. Links look
-like [this one](#prose), **strong** is medium weight, and \`code\` sits on muted.
+const proseSample = `Body copy at 20/32, held to the 700px article column. Links look
+like [this one](#prose), **strong** is bold, and \`code\` sits on muted.
 
 ## Prose h2
 
-- List items share the paragraph rhythm
-- Two or three lines, no more
+1. Numbered lists hang a mono, muted number
+2. Two or three lines, no more
+
+- Bulleted lists share the same indent
 
 ### Prose h3
 
@@ -135,8 +142,8 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      <Section title="Prose" source="components/content/mdx.tsx · Provisional — styles predate the redesign">
-        <div className="max-w-2xl">
+      <Section title="Prose" source="components/content/mdx.tsx · Decided from Figma Blog, except h3, quote, code, table">
+        <div className="max-w-[700px] font-medium">
           <Mdx source={proseSample} collection="posts" slug="example" />
         </div>
       </Section>
@@ -191,12 +198,23 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      <Section title="Content components" source="components/content/figure.tsx · rendered from content/posts/example">
-        <Specimen label="Figure · bleed prose, with caption">
-          <div className="max-w-2xl">
-            <Figure collection="posts" slug="example" src="example.jpg" caption="A caption sits below, muted." className="my-0" />
-          </div>
-        </Specimen>
+      <Section title="Content components" source="components/content/ · rendered from content/posts/example">
+        <div className="space-y-10 text-base leading-snug font-medium">
+          <Specimen label="Figure · bleed prose, with caption">
+            <div className="max-w-[700px]">
+              <Figure collection="posts" slug="example" src="example.jpg" caption="A caption sits below, muted." className="my-0" />
+            </div>
+          </Specimen>
+          <Specimen label="IconCircle · post back link (components/icon-circle.tsx)">
+            <IconCircle icon={ArrowLeftIcon} />
+          </Specimen>
+          <Specimen label="PostNav · older left, newer right">
+            <PostNav
+              older={{ href: "#content-components", meta: { title: "An older post with a title that wraps onto two lines", summary: "", date: "2026-01-01" } }}
+              newer={{ href: "#content-components", meta: { title: "A newer post", summary: "", date: "2026-02-01" } }}
+            />
+          </Specimen>
+        </div>
       </Section>
 
       <Section title="Motion" source="components/motion/ · docs/design/motion.md">

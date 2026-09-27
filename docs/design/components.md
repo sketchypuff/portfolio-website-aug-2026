@@ -46,23 +46,25 @@ titles are `muted` or not per the Figma — that flag is data, not a variant.
 Not a general pill or badge — don't reuse it or copy its styling for tags.
 Motion spec in [motion.md](motion.md).
 
-## Figure + Gallery (Provisional)
+## Figure + Gallery (Decided from Figma "Blog")
 
 `components/content/figure.tsx`. Async Server Components. In MDX they are
 pre-bound to the entry — write `<Figure src="hero.jpg" />` with a bare
 filename. In TSX pass `collection` and `slug`.
 
-- `Figure` — one image. Props: `src`, `alt`, `caption`, `bleed` (default
+- `Figure` — one image. Props: `src`, `alt`, `caption` (text, or a JSX
+  fragment when it needs a link — `<a>` inside still gets the prose link
+  style), `bleed` (default
   `prose`), `priority` (first above-the-fold image only).
 - `Gallery` — 2 or 3 images side by side. `columns`: `2` (default) | `3`.
   `bleed` defaults to `wide`.
 
-Rendered inside MDX entries in `content/`. No page renders entries right now —
-the pipeline is kept for the rebuilt blog and case studies.
+Rendered inside MDX entries in `content/`, on `/blog/[slug]`. Bleed widths
+are in [layout.md](layout.md#image-bleed-decided-for-prose-and-wide).
 
 Alt text: always pass `alt` for images that carry information. `caption`
 doubles as alt when `alt` is absent. Decorative images pass `alt=""`
-deliberately. Images are always `rounded-lg` on `bg-muted` with a blur
+deliberately. Images are always `rounded-xl` on `bg-muted` with a blur
 placeholder — never override with `className`.
 
 ```mdx
@@ -73,11 +75,37 @@ placeholder — never override with `className`.
 ![Old vs new checkout flow](./images/flow.png)
 ```
 
+## IconCircle (Decided)
+
+`components/icon-circle.tsx`. A 48px `bg-muted rounded-full` circle around a
+24px Phosphor icon, from the Figma "Blog" back and prev/next controls. Visual
+only — wrap it in the `Link`, and give an icon-only link an `aria-label`.
+
+```tsx
+// Correct — app/blog/[slug]/page.tsx
+<Link href="/" aria-label="Back to home" className="inline-flex rounded-full …">
+  <IconCircle icon={ArrowLeftIcon} />
+</Link>
+
+// Incorrect — a hand-rolled circle, and no accessible name
+<Link href="/" className="bg-muted rounded-full p-3"><ArrowLeftIcon /></Link>
+```
+
+## PostNav (Decided)
+
+`components/content/post-nav.tsx`. The older/newer row at the foot of a post:
+older on the left with `ArrowLeftIcon`, newer on the right with
+`ArrowRightIcon`, each one quiet link around an `IconCircle` and the title.
+Feed it `getAdjacentPosts(slug)` from `lib/content.ts`; a missing side is left
+empty, and it renders nothing when both are missing.
+
 ## Home writing rows
 
 Inline in `app/page.tsx`: date left (home metadata style), title right,
-`border-b-[0.5px] border-foreground/50` hairline, `py-3`. Not linked yet. Use
-this row, not a new one, for any dated list on the home page.
+`border-b-[0.5px] border-foreground/50` hairline on the `li`, `py-3` on the
+row. A row with an `href` is one `Link` (the linked-row pattern in
+[links.md](links.md)); rows without one stay plain text until their post
+exists. Use this row, not a new one, for any dated list on the home page.
 
 ## NoidaTime
 

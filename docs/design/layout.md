@@ -6,7 +6,8 @@ Source: `components/container.tsx`. Every page wrapper is a `Container`. It
 supplies the gutter (`px-6`, `sm:px-8`) and centering. Never hand-roll
 `max-w-*` or horizontal padding on a page wrapper.
 
-Sizes: `home`, `prose`, `default`, `wide`. Nothing else exists.
+Sizes: `home`, `article`, `articleWide`, `prose`, `default`, `wide`. Nothing
+else exists.
 
 ```
 Is it the home page, or a page built in the home language?
@@ -36,6 +37,10 @@ Inside a page, `max-w-*` on a text block to hold a measure is fine
 - Page padding: `pt-14 pb-16`.
 - Row lists: `py-3` per row, 0.5px hairline between rows.
 - Card text below its image: `mt-5`.
+- Post page (Figma "Blog"): back link `pt-10`, header `mt-4` below it, 80px
+  (`mt-20` / `my-20`) between the header, body sections and figures, 24px
+  (`my-6` / `mb-6`) between elements inside a section, prev/next row `mt-24`,
+  page `pb-16`.
 
 Use the Tailwind spacing scale. Arbitrary spacing (`mt-[37px]`) needs a Figma
 value behind it and a comment saying so. Rows that are each a link get their
@@ -53,7 +58,7 @@ right edge is the scroll affordance — do not add arrows or a scrollbar.
 If the home column width (875px) changes, update `Container`'s `home` size
 **and** the two `--gutter` expressions in `WorkStrip` together.
 
-## Image bleed (Provisional)
+## Image bleed (Decided for `prose` and `wide`)
 
 `<Figure bleed>` / `<Gallery bleed>` in `components/content/figure.tsx`:
 `prose` | `wide` | `full`. Nothing else exists.
@@ -66,10 +71,17 @@ Is the image a screenshot of UI whose detail must be legible?
       └── Default → bleed="prose" (Figure defaults to this)
 ```
 
-Bleed only applies at `lg`+; below that everything is column width. The
-`BLEED` table and `imageSizes()` are paired — changing a margin without its
-`lg`/`xl` rem numbers makes the browser download the wrong image size.
-Both assume a `prose` container; revisit them if articles move to `home`.
+- `prose`: column width (700px on the post page).
+- `wide`: 1323px, centered on the column (Figma "Blog"), shrinking to the
+  page minus its gutters on narrower screens.
+- `full` (Provisional, not in Figma): the page minus its gutters.
+
+Bleed is a negative margin measured in `cqw`, so the page needs an
+`@container overflow-x-clip` wrapper (the post page has one). It only applies
+at `lg`+; below that everything is column width. Figures sit `my-20` — the
+80px block rhythm. The `BLEED` classes and `imageSizes()` are paired, and
+both assume `Container size="article"`: changing a width without the other
+makes the browser download the wrong image size.
 
 ## Radius
 
@@ -77,8 +89,9 @@ Both assume a `prose` container; revisit them if articles move to `home`.
 
 | Class | Where |
 | --- | --- |
-| `rounded-xl` | home work cards (Figma) |
-| `rounded-lg` | figures, gallery images, the pill, `pre`, focus ring on linked rows |
+| `rounded-xl` | home work cards, figures, gallery images, `pre` (Figma) |
+| `rounded-lg` | the pill, focus ring on linked rows |
+| `rounded-full` | `IconCircle` — circles only |
 | `rounded` | inline `code` |
 
 Never `rounded-full` on rectangles or `rounded-none` on images. Images are
@@ -86,5 +99,6 @@ always rounded.
 
 ## Breakpoints
 
-Mobile-first. `sm` (640px) is the main layout switch (stacking → rows); `md`
-only for the home headline + pill row; `lg`/`xl` only for image bleed.
+Mobile-first. `sm` (640px) is the main layout switch (stacking → rows) and
+the post title size step; `md` only for the home headline + pill row; `lg`
+only for image bleed.

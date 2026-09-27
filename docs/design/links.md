@@ -49,7 +49,11 @@ paint is already correct.
 ## Quiet link (Decided)
 
 `hover:text-muted-foreground transition-colors` on foreground text. Used for
-the Contact list in the home footer row.
+the Contact list in the home footer row and the `PostNav` titles (as
+`group-hover:`, the whole side is one link).
+
+**Icon-only circles** (the post page back link): an `IconCircle` inside a
+`Link` with an `aria-label`, dimming to `opacity-70` on hover.
 
 **Linked rows** (derived from the rules above, not yet in Figma): when a row
 links somewhere, the whole row is one `<a>` with `group`, the foreground text
@@ -57,7 +61,7 @@ gets `group-hover:text-muted-foreground transition-colors`, and muted text
 stays muted. The row's border stays on the `RevealItem`, not the link. Focus
 treatment is in [components.md](components.md#focus).
 
-## Prose link (Provisional)
+## Prose link (Provisional — not in the Figma frame)
 
 The `a` entry in the `prose` map in `components/content/mdx.tsx`:
 
