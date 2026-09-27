@@ -54,13 +54,18 @@ const otherWork = [
 ];
 
 // `href` is set once a post exists in content/posts; unlinked rows stay plain text.
+// Rendered newest first, whatever order they're listed in.
 const writing: { date: string; title: string; href?: string }[] = [
   {
     date: "2025-07-20",
     title: "How to use storytelling in UX case studies to land more interviews",
     href: "/blog/storytelling-in-ux-case-studies",
   },
-  { date: "2025-08-14", title: "22 things about industrial design they didn’t teach me in design school" },
+  {
+    date: "2024-01-27",
+    title: "Thoughts on making UX portfolio websites for fresh graduates seeking a job in the industry",
+    href: "/blog/ux-portfolio-websites-for-fresh-graduates",
+  },
   { date: "2025-08-14", title: "Preparing for undergraduate design entrance exams in India" },
   { date: "2025-08-14", title: "An actionable guide on taking the first step towards learning UX design today" },
 ];
@@ -155,7 +160,7 @@ export default function HomePage() {
             </TextLink>
           </Reveal>
           <RevealGroup as="ul">
-            {writing.map((post) => (
+            {writing.toSorted((a, b) => b.date.localeCompare(a.date)).map((post) => (
               <RevealItem as="li" key={post.title} className="border-foreground/50 border-b-[0.5px]">
                 {post.href ? (
                   <Link
