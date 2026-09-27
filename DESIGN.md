@@ -65,6 +65,11 @@ carries hierarchy in the absence of color.
 - A pure-neutral OKLCH ramp from the shadcn `neutral` base, defined in
   `app/globals.css`. Zero chroma throughout — no accent color anywhere.
 - Light and dark are both defined; dark is not a simple inversion of light.
+- **Decided: one accent, for links only.** `--link` (`text-link`) is the
+  Figma blue `#2148f9`, with a lighter value in dark mode so it holds contrast.
+  It is reserved for navigational links ("Open resumé", "About", "Open blog")
+  so that blue reliably means "this takes you somewhere". Everything else
+  stays achromatic.
 - Always use the semantic tokens (`bg-background`, `text-muted-foreground`,
   `border-border`), never a raw hex or OKLCH value. This is what keeps the two
   themes in sync.
@@ -88,6 +93,19 @@ allowed to break the text column.
   `bleed="full"`. The bleed values in `components/content/figure.tsx` are
   paired with `sizes` attributes — changing one without the other makes the
   browser download the wrong image.
+
+**Home page (from the Figma "Home" frame, node `1167:49`):**
+
+- One 875px column (`Container size="home"`), sections 80px apart, section
+  label 32px above its content.
+- No global header or footer on `/`. The intro's links are the nav, and the
+  Contact / Last updated / Currently row is the footer. Inner pages keep the
+  global chrome.
+- Section labels are Geist Mono semibold, uppercase, with a 24px pixel-art
+  icon beside them. The pixel icons give the page its personality; the Phosphor
+  icons elsewhere stay functional.
+- Work is shown as horizontal strips of 570px cards that bleed off the right
+  edge of the viewport. The cut-off card is the affordance that the row scrolls.
 
 ---
 
@@ -163,7 +181,6 @@ argument.
 Things to resolve as the design lands:
 
 - Does the site take an accent color, or stay fully achromatic?
-- What does the home page lead with — a statement, the work, or both?
 - How much does a project case study differ from a blog post visually? Right
   now they share almost all styling.
 - Is there a signature moment anywhere, or is restraint the whole point?

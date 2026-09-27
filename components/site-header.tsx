@@ -10,6 +10,9 @@ import { ThemeToggle } from "./theme-toggle";
 export function SiteHeader() {
   const pathname = usePathname();
 
+  // Home carries its own nav in the intro.
+  if (pathname === "/") return null;
+
   return (
     <header className="bg-background/80 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 backdrop-blur-md">
       <Container size="wide">

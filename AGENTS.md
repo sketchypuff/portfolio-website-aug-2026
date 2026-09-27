@@ -110,8 +110,13 @@ Every motion component early-returns a static version under
 ## Conventions
 
 - Server Components by default. `"use client"` only where there is state,
-  an event handler, or a hook — currently the header, theme toggle, and motion
-  components.
+  an event handler, or a hook — currently the header, theme toggle, motion
+  components, `HideOnHome`, and `NoidaTime`.
+- The global `SiteHeader` and `SiteFooter` are hidden on `/`, which carries
+  its own nav and footer row. The header checks the pathname itself; the
+  footer is wrapped in `HideOnHome` in `app/layout.tsx`.
+- Icons from Figma live in `public/icons/` as unedited SVG exports and render
+  through `<Icon name="…" />`, which masks them with `currentColor`.
 - `Figure`, `Gallery`, and `ProjectCard` are async Server Components because
   they await image resolution. Keep them server-side.
 - Route params are Promises in Next 16. Use the generated helpers:
@@ -140,9 +145,11 @@ directory.
 
 ## Design status
 
-The visual design is a placeholder pending real designs from Yash. Page bodies
-(`app/page.tsx`, `app/about/page.tsx`, `app/resume/page.tsx`) contain filler
-copy marked with comments. The infrastructure below them is real and tested.
+The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its
+project cards and writing rows are hardcoded arrays for now and are not linked;
+move them to `content/` once real entries exist. The other page bodies
+(`app/about/page.tsx`, `app/resume/page.tsx`) are still placeholders with
+filler copy marked with comments. The infrastructure below them is real and tested.
 
 `content/*/example/` are throwaway reference entries documenting the
 frontmatter and components. Delete once real content exists — but keep at

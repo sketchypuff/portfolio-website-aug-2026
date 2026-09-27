@@ -7,6 +7,8 @@ const WIDTHS = {
   default: "max-w-3xl",
   /** Grids and image-led layouts. */
   wide: "max-w-5xl",
+  /** Home page column: 875px of content plus the sm:px-8 gutters. */
+  home: "max-w-[calc(875px+4rem)]",
 } as const;
 
 export function Container({
