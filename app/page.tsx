@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Container } from "@/components/container";
 import {
   ArrowUpRightIcon,
@@ -10,9 +9,11 @@ import {
   SmileyXEyesIcon,
   WarningCircleIcon,
 } from "@phosphor-icons/react/ssr";
-import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import { NoidaTime } from "@/components/noida-time";
 import { ProfessionPill } from "@/components/profession-pill";
+import { ThemeTextToggle } from "@/components/theme-toggle";
+import { SectionLabel } from "@/components/section-label";
+import { TextLink } from "@/components/text-link";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -105,6 +106,7 @@ export default function HomePage() {
             <TextLink href="/about" icon={SmileyXEyesIcon}>
               About
             </TextLink>
+            <ThemeTextToggle />
           </nav>
         </Reveal>
 
@@ -209,39 +211,6 @@ export default function HomePage() {
         </Reveal>
       </Container>
     </div>
-  );
-}
-
-function SectionLabel({ icon: Icon, children }: { icon: PhosphorIcon; children: React.ReactNode }) {
-  return (
-    <h2 className="flex items-center gap-2 font-mono text-sm font-semibold uppercase">
-      {children}
-      <Icon aria-hidden className="size-6 shrink-0" />
-    </h2>
-  );
-}
-
-/** Blue nav link. Absolute URLs open in a new tab; site paths use client routing. */
-function TextLink({ href, icon: Icon, children }: { href: string; icon: PhosphorIcon; children: React.ReactNode }) {
-  const className = "text-link group inline-flex items-center gap-0.5 transition-opacity hover:opacity-70";
-  const content = (
-    <>
-      {children}
-      <Icon
-        aria-hidden
-        className="size-6 shrink-0 transition-transform duration-300 ease-out group-hover:translate-x-0.5"
-      />
-    </>
-  );
-
-  return href.startsWith("http") ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
-      {content}
-    </a>
-  ) : (
-    <Link href={href} className={className}>
-      {content}
-    </Link>
   );
 }
 

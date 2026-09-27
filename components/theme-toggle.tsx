@@ -12,18 +12,44 @@ import { MoonIcon, SunIcon } from "@phosphor-icons/react";
  * `resolvedTheme` is only read inside the click handler, where it is always
  * defined — never during render, which is what would desync on the server.
  */
-export function ThemeToggle() {
+function useToggleTheme() {
   const { resolvedTheme, setTheme } = useTheme();
+  return () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
+}
+
+export function ThemeToggle() {
+  const toggle = useToggleTheme();
 
   return (
     <button
       type="button"
       aria-label="Toggle theme"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      onClick={toggle}
       className="text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none"
     >
       <MoonIcon className="size-4 dark:hidden" />
       <SunIcon className="hidden size-4 dark:block" />
+    </button>
+  );
+}
+
+/**
+ * Text version for the home nav, styled like its links (link blue, label,
+ * then a 24px icon). It names the theme it switches *to*.
+ */
+export function ThemeTextToggle() {
+  const toggle = useToggleTheme();
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      className="text-link inline-flex cursor-pointer items-center gap-0.5 transition-opacity hover:opacity-70"
+    >
+      <span className="dark:hidden">Dark mode</span>
+      <span className="hidden dark:inline">Light mode</span>
+      <MoonIcon aria-hidden className="size-6 shrink-0 dark:hidden" />
+      <SunIcon aria-hidden className="hidden size-6 shrink-0 dark:block" />
     </button>
   );
 }

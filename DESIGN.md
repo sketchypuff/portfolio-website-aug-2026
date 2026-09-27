@@ -70,6 +70,9 @@ carries hierarchy in the absence of color.
   It is reserved for navigational links ("Open resumé", "About", "Open blog")
   so that blue reliably means "this takes you somewhere". Everything else
   stays achromatic.
+  The one exception is the home nav's theme switch ("Dark mode" / "Light
+  mode"): it is a button, not a link, but it shares the link blue so the nav
+  reads as one set of controls.
 - Always use the semantic tokens (`bg-background`, `text-muted-foreground`,
   `border-border`), never a raw hex or OKLCH value. This is what keeps the two
   themes in sync.
