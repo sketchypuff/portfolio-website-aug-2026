@@ -1,0 +1,271 @@
+import type { Metadata } from "next";
+import {
+  ArrowUpRightIcon,
+  CrownIcon,
+  PenNibIcon,
+  SmileyXEyesIcon,
+} from "@phosphor-icons/react/ssr";
+import { Container } from "@/components/container";
+import { Figure } from "@/components/content/figure";
+import { Mdx } from "@/components/content/mdx";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { NoidaTime } from "@/components/noida-time";
+import { ProfessionPill } from "@/components/profession-pill";
+import { SectionLabel } from "@/components/section-label";
+import { TextLink } from "@/components/text-link";
+import { ThemeTextToggle } from "@/components/theme-toggle";
+import { WorkCard, WorkStrip } from "@/components/work-strip";
+
+// A living style guide: every specimen below is the real component or the real
+// class string, so this page can't drift from the site. Unlisted — not in the
+// nav or sitemap, and noindex. The rules behind it are in DESIGN.md.
+export const metadata: Metadata = {
+  title: "Design system",
+  robots: { index: false, follow: false },
+};
+
+// Tailwind needs literal class names, so each swatch spells its class out.
+const colors = [
+  { token: "background", swatch: "bg-background", use: "Page, pill surface" },
+  { token: "foreground", swatch: "bg-foreground", use: "Default text" },
+  { token: "muted-foreground", swatch: "bg-muted-foreground", use: "Secondary text, metadata" },
+  { token: "muted", swatch: "bg-muted", use: "Image slots, card fills, code" },
+  { token: "border", swatch: "bg-border", use: "Default borders" },
+  { token: "ring", swatch: "bg-ring", use: "Focus rings" },
+  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle" },
+  { token: "destructive", swatch: "bg-destructive", use: "MdxError only" },
+];
+
+const containers = [
+  { size: "prose", note: "max-w-2xl · reading column" },
+  { size: "default", note: "max-w-3xl" },
+  { size: "home", note: "875px column · the home page" },
+  { size: "wide", note: "max-w-5xl" },
+] as const;
+
+const radii = [
+  { name: "rounded-xl", className: "rounded-xl", use: "Home work cards" },
+  { name: "rounded-lg", className: "rounded-lg", use: "Images, pill, pre" },
+    { name: "rounded", className: "rounded", use: "Inline code" },
+];
+
+const proseSample = `Body copy at 16px with 1.75 leading, held to the prose measure. Links look
+like [this one](#prose), **strong** is medium weight, and \`code\` sits on muted.
+
+## Prose h2
+
+- List items share the paragraph rhythm
+- Two or three lines, no more
+
+### Prose h3
+
+> Blockquotes are muted and italic, with a border on the left.`;
+
+export default function DesignPage() {
+  return (
+    <div className="@container overflow-x-clip pb-8">
+      <Container size="home" className="pt-16 sm:pt-24">
+        <Reveal as="header" className="max-w-2xl">
+          <h1 className="text-2xl font-medium tracking-tight sm:text-3xl">Design system</h1>
+          <p className="text-muted-foreground mt-4 leading-relaxed text-pretty">
+            Every token and shared component on the site, rendered from the real code. The
+            rules for when to use what are in <Code>DESIGN.md</Code> and <Code>docs/design/</Code>.
+          </p>
+        </Reveal>
+      </Container>
+
+      <Section title="Color" source="app/globals.css · docs/design/color.md">
+        <p className="text-muted-foreground mb-6 flex flex-wrap items-center gap-x-3 text-sm">
+          Showing the current theme. <ThemeTextToggle />
+        </p>
+        <ul role="list" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
+          {colors.map((c) => (
+            <li key={c.token}>
+              <div className={`${c.swatch} border-border aspect-[4/3] rounded-lg border`} />
+              <p className="mt-3 font-mono text-xs">{c.token}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{c.use}</p>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section title="Typography" source="app/page.tsx · Decided">
+        <div className="space-y-6 text-base leading-snug font-medium">
+          <Specimen label="Headline · font-bold, 16px">
+            <p className="font-bold">Hi! I’m Yash, your neighbourhood</p>
+          </Specimen>
+          <Specimen label="Body · inherited 16px medium, leading-snug">
+            <p>Design domain-based skill driven experiences for Excel and PowerPoint.</p>
+          </Specimen>
+          <Specimen label="Secondary · text-muted-foreground">
+            <p className="text-muted-foreground">
+              Currently, I make agentic AI experiences feel oh yeah! at Microsoft.
+            </p>
+          </Specimen>
+          <Specimen label="Metadata · font-mono text-sm uppercase, muted">
+            <p className="text-muted-foreground font-mono text-sm uppercase">Microsoft · 14 Aug 2025</p>
+          </Specimen>
+          <Specimen label="SectionLabel">
+            <SectionLabel icon={CrownIcon}>Selected work</SectionLabel>
+          </Specimen>
+        </div>
+      </Section>
+
+      <Section title="Prose" source="components/content/mdx.tsx · Provisional — styles predate the redesign">
+        <div className="max-w-2xl">
+          <Mdx source={proseSample} collection="posts" slug="example" />
+        </div>
+      </Section>
+
+      <Section title="Links" source="docs/design/links.md">
+        <div className="space-y-6">
+          <Specimen label="TextLink · home navigation">
+            <div className="flex flex-wrap gap-x-6 gap-y-1 text-base font-medium">
+              <TextLink href="#links" icon={ArrowUpRightIcon}>
+                Open blog
+              </TextLink>
+              <TextLink href="#links" icon={SmileyXEyesIcon}>
+                About
+              </TextLink>
+            </div>
+          </Specimen>
+          <Specimen label="ThemeTextToggle · home nav theme switch">
+            <div className="text-base font-medium">
+              <ThemeTextToggle />
+            </div>
+          </Specimen>
+          <Specimen label="Quiet link · home lists (class string from app/page.tsx)">
+            <a href="#links" className="hover:text-muted-foreground text-base font-medium transition-colors">
+              Email
+            </a>
+          </Specimen>
+          <Specimen label="Prose link · running text">
+            <Mdx source="Read more [about the work](#links)." collection="posts" slug="example" />
+          </Specimen>
+        </div>
+      </Section>
+
+      <Section title="Home components" source="Decided">
+        <div className="space-y-10 text-base leading-snug font-medium">
+          <Specimen label="ProfessionPill · click to cycle">
+            <ProfessionPill />
+          </Specimen>
+          <Specimen label="NoidaTime">
+            <NoidaTime />
+          </Specimen>
+          <Specimen label="WorkStrip + WorkCard · scrolls sideways">
+            <WorkStrip>
+              <WorkCard>
+                <p className="text-muted-foreground font-mono text-sm uppercase">Company</p>
+                <p className="mt-1">A work card with a company line and a title</p>
+              </WorkCard>
+              <WorkCard>
+                <p className="text-muted-foreground">An “Other work” card, title only and muted</p>
+              </WorkCard>
+            </WorkStrip>
+          </Specimen>
+        </div>
+      </Section>
+
+      <Section title="Content components" source="components/content/figure.tsx · rendered from content/posts/example">
+        <Specimen label="Figure · bleed prose, with caption">
+          <div className="max-w-2xl">
+            <Figure collection="posts" slug="example" src="example.jpg" caption="A caption sits below, muted." className="my-0" />
+          </div>
+        </Specimen>
+      </Section>
+
+      <Section title="Motion" source="components/motion/ · docs/design/motion.md">
+        <p className="text-muted-foreground mb-6 text-sm">
+          RevealGroup + RevealItem, 0.06s stagger. Reload the page with this in view to replay.
+          Hover effects are on the links above; press feedback is on the pill.
+        </p>
+        <RevealGroup as="ul" className="grid grid-cols-3 gap-4 sm:grid-cols-6">
+          {Array.from({ length: 6 }, (_, i) => (
+            <RevealItem as="li" key={i} className="bg-muted aspect-square rounded-lg" />
+          ))}
+        </RevealGroup>
+      </Section>
+
+      <Section title="Radius" source="--radius: 0.625rem">
+        <ul role="list" className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+          {radii.map((r) => (
+            <li key={r.name}>
+              <div className={`bg-muted aspect-[4/3] ${r.className}`} />
+              <p className="mt-3 font-mono text-xs">{r.name}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{r.use}</p>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section title="Icons" source="Phosphor · @phosphor-icons/react">
+        <ul role="list" className="flex flex-wrap items-end gap-8">
+          {[
+            { size: "size-6", use: "Home, 24px" },
+            
+          ].map((icon) => (
+            <li key={icon.size} className="flex flex-col items-start gap-3">
+              <PenNibIcon aria-hidden className={icon.size} />
+              <div>
+                <p className="font-mono text-xs">{icon.size}</p>
+                <p className="text-muted-foreground mt-1 text-xs">{icon.use}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Container size="home" className="mt-20">
+        <h2 className="text-xl font-medium tracking-tight">Page widths</h2>
+        <p className="text-muted-foreground mt-1 font-mono text-xs">components/container.tsx</p>
+      </Container>
+      <div className="mt-6 space-y-3">
+        {containers.map((c) => (
+          <Container key={c.size} size={c.size}>
+            <div className="bg-muted rounded-lg px-4 py-3">
+              <p className="font-mono text-xs">{c.size}</p>
+              <p className="text-muted-foreground mt-1 text-xs">{c.note}</p>
+            </div>
+          </Container>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Section({
+  title,
+  source,
+  children,
+}: {
+  title: string;
+  source: string;
+  children: React.ReactNode;
+}) {
+  const id = title.toLowerCase().replace(/[^a-z]+/g, "-").replace(/-$/, "");
+  return (
+    <Container size="home" className="mt-20">
+      <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-24">
+        <h2 id={`${id}-title`} className="text-xl font-medium tracking-tight">
+          {title}
+        </h2>
+        <p className="text-muted-foreground mt-1 font-mono text-xs">{source}</p>
+        <div className="border-border mt-6 border-t pt-8">{children}</div>
+      </section>
+    </Container>
+  );
+}
+
+function Specimen({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <p className="text-muted-foreground mb-2 font-mono text-xs">{label}</p>
+      {children}
+    </div>
+  );
+}
+
+function Code({ children }: { children: React.ReactNode }) {
+  return <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-[0.85em]">{children}</code>;
+}
