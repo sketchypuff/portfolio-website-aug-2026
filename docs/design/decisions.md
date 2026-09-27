@@ -10,7 +10,10 @@ Dates before 2026-09-27 are backfilled from git history and earlier notes.
   rithvika.work): one tick per card, a muted pill sliding to the current one,
   click to jump. Shows position and count, which the cut-off card alone
   didn't. Pressing a tick plays Cuelume's `tick`, the site's first sound,
-  matching the reference.
+  matching the reference. The stepper sits at the right end of the section
+  heading's row rather than on its own line.
+- **2026-09-27** — Scrolling a work strip ticks once per card it lands on,
+  like a detent; the stepper press and the scroll share the one sound.
 - **2026-09-27** — Home "Email" copies the address instead of opening a
   mail app: hover shows "Click to copy", then the same tooltip morphs into a
   green "✓ Copied". Adds `success` green, the second hue, for confirmation

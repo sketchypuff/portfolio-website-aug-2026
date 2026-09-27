@@ -73,10 +73,12 @@ retargets mid-resize without a jolt.
 ## Sound
 
 `cuelume` synthesizes UI sounds with Web Audio (no audio files). The only one
-on the site is `play("tick")` on pointer down on a `WorkStrip` stepper tick,
-taken from rithvika.work. Call `play()` on the element that makes the sound;
-don't call the global `bind()`. Sound is feedback for a deliberate press,
-never for hover, scroll, or page load.
+on the site is `play("tick")` in `WorkStrip`, taken from rithvika.work: on
+pointer down on a stepper tick, and whenever a user scroll moves the strip to
+a new card (one tick per card, like a detent). The scroll after a tick press
+stays silent so it doesn't tick twice. Call `play()` where the sound belongs;
+don't call the global `bind()`. Sound is feedback for something the user
+did — never for hover, page scroll, or page load.
 
 ## Reduced motion (non-negotiable)
 

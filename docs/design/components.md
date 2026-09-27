@@ -32,9 +32,11 @@ character — these are chosen for personality, not literal meaning.
 ## WorkStrip + WorkCard (Decided, home only)
 
 `components/work-strip.tsx`. Horizontal snap-scrolling row of 570px cards with a
-4:3 `bg-muted rounded-xl` image slot and text `mt-5` below, with a tick
-stepper above it (spec in [layout.md](layout.md#horizontal-strips-decided)).
-Client component. Pass `name` (the stepper's group label, usually the section
+4:3 `bg-muted rounded-xl` image slot and text `mt-5` below, under a row
+with the section heading left and a tick stepper right (spec in
+[layout.md](layout.md#horizontal-strips-decided)). Client component. Pass
+`heading` (the section's `SectionLabel` — the strip renders it, so don't add
+one above), `name` (the stepper's group label, usually the section
 name) and `labels` (one screen-reader label per card, in card order). Use for rows of
 work on the home page. Layout details in [layout.md](layout.md). `WorkStrip` needs an
 `@container overflow-x-clip` ancestor spanning the viewport, and its gutter

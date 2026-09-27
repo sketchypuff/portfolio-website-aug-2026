@@ -55,14 +55,17 @@ against the `@container` page wrapper (so it excludes the scrollbar). Cards
 are `570px`, `max-w-[85vw]`, snap-start, `gap-6`. The cut-off card at the
 right edge is the scroll affordance — do not add arrows or a scrollbar.
 
-A tick stepper sits `gap-4` above the strip, inside the column: one 2px tick
+The section heading and a tick stepper share one row above the strip
+(`justify-between`, `items-center`, `gap-8` to the cards): heading left,
+stepper right. The stepper has one 2px tick
 per card in a 40px-wide, 32px-tall button, the current tick `h-3.5
 bg-foreground`, the rest `h-3 bg-muted-foreground` (hover `bg-foreground`).
-A 26×28 `bg-muted rounded-md` pill slides behind the current tick; its left
-edge sits on the column edge (`-ml-[7px]` on the group). Clicking a tick
+A 26×28 `bg-muted rounded-md` pill slides behind the current tick; on the
+last tick its right edge sits on the column edge (`-mr-[7px]` on the group). Clicking a tick
 selects it at once and scrolls its card to the snap edge; scrolling updates the tick (nearest snap
-point, and the last card once the strip hits its end). Pressing a tick plays
-Cuelume's `tick` sound — see [motion.md](motion.md#sound).
+point, and the last card once the strip hits its end). Pressing a tick, or
+scrolling onto a new card, plays Cuelume's `tick` sound — see
+[motion.md](motion.md#sound).
 
 If the home column width (875px) changes, update `Container`'s `home` size
 **and** the two `--gutter` expressions in `WorkStrip` together.

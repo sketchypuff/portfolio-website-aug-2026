@@ -153,10 +153,11 @@ export default function HomePage() {
         </Reveal>
 
         <section className="flex flex-col gap-8">
-          <Reveal>
-            <SectionLabel icon={CrownIcon}>Selected work</SectionLabel>
-          </Reveal>
-          <WorkStrip name="Selected work" labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}>
+          <WorkStrip
+            heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
+            name="Selected work"
+            labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
+          >
             {selectedWork.map((item, i) => (
               <WorkCard key={i}>
                 <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
@@ -197,10 +198,11 @@ export default function HomePage() {
         </section>
 
         <section className="flex flex-col gap-8">
-          <Reveal>
-            <SectionLabel icon={HandHeartIcon}>Other work</SectionLabel>
-          </Reveal>
-          <WorkStrip name="Other work" labels={otherWork.map((item) => item.title)}>
+          <WorkStrip
+            heading={<SectionLabel icon={HandHeartIcon}>Other work</SectionLabel>}
+            name="Other work"
+            labels={otherWork.map((item) => item.title)}
+          >
             {otherWork.map((item, i) => (
               <WorkCard key={i}>
                 <p className={cn(item.muted && "text-muted-foreground")}>{item.title}</p>
