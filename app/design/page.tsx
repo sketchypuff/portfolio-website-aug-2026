@@ -144,7 +144,7 @@ export default function DesignPage() {
 
       <Section title="Prose" source="components/content/mdx.tsx · Decided from Figma Blog, except h3, quote, code, table">
         <div className="max-w-[700px] font-medium">
-          <Mdx source={proseSample} collection="posts" slug="example" />
+          <Mdx source={proseSample} collection="posts" slug="storytelling-in-ux-case-studies" />
         </div>
       </Section>
 
@@ -171,7 +171,7 @@ export default function DesignPage() {
             </a>
           </Specimen>
           <Specimen label="Prose link · running text">
-            <Mdx source="Read more [about the work](#links)." collection="posts" slug="example" />
+            <Mdx source="Read more [about the work](#links)." collection="posts" slug="storytelling-in-ux-case-studies" />
           </Specimen>
         </div>
       </Section>
@@ -198,11 +198,11 @@ export default function DesignPage() {
         </div>
       </Section>
 
-      <Section title="Content components" source="components/content/ · rendered from content/posts/example">
+      <Section title="Content components" source="components/content/ · rendered from content/posts/storytelling-in-ux-case-studies">
         <div className="space-y-10 text-base leading-snug font-medium">
           <Specimen label="Figure · bleed prose, with caption">
             <div className="max-w-[700px]">
-              <Figure collection="posts" slug="example" src="example.jpg" caption="A caption sits below, muted." className="my-0" />
+              <Figure collection="posts" slug="storytelling-in-ux-case-studies" src="hero.jpg" caption="A caption sits below, muted and centered." className="my-0" />
             </div>
           </Specimen>
           <Specimen label="IconCircle · post back link (components/icon-circle.tsx)">

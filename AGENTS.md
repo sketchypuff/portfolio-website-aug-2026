@@ -191,6 +191,7 @@ links point at pages that don't exist yet, so they hit Next's default 404
 until those pages are rebuilt. The infrastructure below the pages is real
 and tested.
 
-`content/*/example/` and `content/posts/placeholder-post/` are throwaway
-reference entries documenting the frontmatter and components. Delete once real content exists — but keep at
-least one entry per collection, or the image context module breaks.
+`content/projects/example/` is a throwaway reference entry documenting the
+project frontmatter. Delete it once a real project exists. Each collection
+must keep at least one entry with an `images/` folder, or the image context
+module breaks — for posts, `storytelling-in-ux-case-studies` covers that.
