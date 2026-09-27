@@ -17,9 +17,13 @@ not a page — every resume link opens it in a new tab. Deployed on Vercel.
 `CLAUDE.md` is a one-line pointer to this file, so Claude Code, Codex, and
 Cursor all read the same instructions. Edit this file, never that one.
 
-`DESIGN.md` holds design principles and the visual system. Read it before
-making any visual change, and record decisions there as they are made — this
-file covers architecture, that one covers how the site should look and why.
+`DESIGN.md` is the root of the design system: its hard rules, which parts are
+Decided vs Provisional, and an index into `docs/design/` (color, typography,
+layout, links, components, motion, decision log). Read it before any visual
+change and open the topic file the task needs. Update those docs in the same
+change as the code — a new component, token, or visual decision is not done
+until it is documented there. This file covers architecture; those cover how
+the site looks and why.
 
 ## Commands
 
@@ -94,6 +98,21 @@ a bare filename. `bleed` accepts `prose` | `wide` | `full`.
 Prose styles are hand-rolled in the `prose` map in `components/content/mdx.tsx`
 rather than using `@tailwindcss/typography` — the type scale is the thing most
 worth tuning on this site, so it stays in one readable place.
+
+### Page-local data
+
+A list that only one page shows (home's work strips, a /uses list) is a typed
+array at the top of that page. Only things with their own detail page go in
+`content/`. Don't put page copy in `lib/site.ts` — that file is for values
+used in more than one place.
+
+### Adding a page
+
+A new route needs three edits besides the page itself: add it to
+`staticRoutes` in `app/sitemap.ts` (listed by hand), add it to `site.nav` in
+`lib/site.ts` only if it belongs in the header, and run `npx next typegen`.
+The home page nav is hand-written in `app/page.tsx` and is not driven by
+`site.nav`.
 
 ## Motion
 
