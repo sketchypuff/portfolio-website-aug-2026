@@ -9,23 +9,22 @@ you somewhere".
 site looks and why. Read the root rules below before any visual change, then
 open only the topic file the task needs.
 
-## Status: two languages, one of them decided
+## Status
 
-- **Decided** — the home page (`app/page.tsx`), built from the Figma "Home"
-  frame (node `1167:49`), plus anything marked Decided in a topic file.
-- **Provisional** — the inner pages (`/about`, `/blog`, `/projects`, their
-  `[slug]` pages, `not-found`), the global header and footer, and prose
-  styles. These are the shadcn scaffold, not a design anyone chose.
+The site is one page. The home page (`app/page.tsx`, from the Figma "Home"
+frame, node `1167:49`) is the whole **Decided** system. The old inner pages,
+global header, and footer were deleted on 2026-09-27 to be rebuilt from
+scratch; there is no inner-page styling left to copy.
 
-Inner pages get redesigned to the home language as Figma frames for them land.
-Until then:
-
-- Editing an inner page → reuse that page's existing patterns verbatim.
-- Building a new inner page → copy the patterns of the closest existing inner
-  page. Do not import home-page styling into it and do not invent a third.
-- Never copy Provisional styling into the home page.
-
-Mixing the two on one page produces a screen that belongs to neither system.
+- **Building a new page** → build it from the Decided tokens and components in
+  these docs. Where a page needs something the home page doesn't have (a page
+  title, a back link, an article layout), that is a new design decision: take
+  it from Figma or ask Yash, then record it here. Don't improvise one.
+- **Provisional** — only the prose styles (`components/content/mdx.tsx`) and
+  `Figure`/`Gallery`. They predate the redesign and are expected to change
+  when the article pages are designed.
+- `/design` (`app/design/page.tsx`) is an unlisted style guide, not a page of
+  the site.
 
 ## Hard rules
 
@@ -61,12 +60,14 @@ Mixing the two on one page produces a screen that belongs to neither system.
 ## Keeping this current
 
 These docs are updated in the same change as the code, never after.
+`/design` (`app/design/page.tsx`) renders every token and shared component
+from the real code — the visual counterpart to these files.
 
 - A new shared component → add it to `components.md` with the four-part
   template (when to use / variants / correct + incorrect / flowchart if 3+
-  options).
-- A visual decision (from Figma or from Yash) → edit the topic file, flip the
-  item from Provisional to Decided, and add a dated line to `decisions.md`.
+  options), and a specimen to `/design`. A new token → a swatch there too.
+- A visual decision (from Figma or from Yash) → edit the topic file, mark it
+  Decided, and add a dated line to `decisions.md`.
 - A pending question below gets answered → move it to `decisions.md`.
 - Every name in these docs must trace to a file. If the code changes a class,
   variant, or token, the doc changes with it.
@@ -75,17 +76,14 @@ These docs are updated in the same change as the code, never after.
 
 ## Pending decisions
 
-- **Inner-page language.** Do inner pages adopt the home type (16px medium,
-  mono uppercase labels, `SectionLabel`, `TextLink`)? Assumed yes, not yet
-  designed.
-- **Date format.** Home uses `14 Aug 2025` (`formatDay`, `app/page.tsx`);
-  inner pages use `August 14, 2025` (`formatDate`, `lib/content.ts`). Pick one.
-- **Dividers.** Home rows use a 0.5px `border-foreground/50` hairline; the blog
-  index uses `divide-border`. Pick one.
-- **Header and footer.** Provisional; do they get a Figma pass or does every
-  page carry its own nav like home?
-- **External-link marker.** `ProjectCard` shows `↗` on external links; home
-  rows show nothing. Pick one rule for cards and rows site-wide.
-- **Project with no cover image.** No treatment exists; the card renders
-  text only.
-- **Case study vs. blog post.** They currently share all styling.
+- **New pages.** About, blog index, post, projects index, case study, and
+  404 need designs. Until they exist, the home page's `/about` and `/blog`
+  links go to Next's default 404.
+- **Shared chrome.** Does every page carry its own nav and footer like home,
+  or do inner pages get a shared header?
+- **Date format.** Home shows `14 Aug 2025` (`formatDay`, `app/page.tsx`);
+  `formatDate` in `lib/content.ts` produces `August 14, 2025`. Pick one when
+  the blog is designed.
+- **External-link marker.** Home rows show no `↗`. Decide whether link-out
+  cards or rows on new pages do.
+- **Case study vs. blog post.** Same prose styles today; should they differ?

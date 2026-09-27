@@ -27,13 +27,13 @@ Is it stateful UI (content swapping, size changing)?
 ```
 
 ```tsx
-// Correct — app/blog/page.tsx
-<RevealGroup as="ul" className="divide-border mt-12 divide-y">
-  {posts.map((entry) => <RevealItem as="li" key={entry.slug}>…</RevealItem>)}
+// Correct — app/page.tsx
+<RevealGroup as="ul">
+  {writing.map((post) => <RevealItem as="li" key={post.title}>…</RevealItem>)}
 </RevealGroup>
 
 // Incorrect — each row triggers on its own, stagger is uneven
-{posts.map((entry) => <Reveal key={entry.slug}>…</Reveal>)}
+{writing.map((post) => <Reveal key={post.title}>…</Reveal>)}
 ```
 
 All three take `as`. A list of siblings is `RevealGroup as="ul"` (or `"ol"`)
@@ -54,8 +54,8 @@ outgoing page holds stale content on screen and reads as lag.
 | --- | --- | --- |
 | Color shift | `transition-colors` (150ms default) | all text links, cards |
 | Opacity dim | `transition-opacity hover:opacity-70` | `TextLink` |
-| Icon nudge | `transition-transform duration-300 ease-out group-hover:translate-x-0.5` | trailing icons; back arrows use `-translate-x-0.5`; external arrows also `-translate-y-0.5` |
-| Image zoom | `transition-transform duration-500 ease-out group-hover:scale-[1.02]` | `ProjectCard` cover |
+| Icon nudge | `transition-transform duration-300 ease-out group-hover:translate-x-0.5` | `TextLink` trailing icon |
+| Image zoom | `transition-transform duration-500 ease-out group-hover:scale-[1.02]` | reserved for linked image cards; none exist yet |
 | Press | `transition-[scale] duration-150 ease-out active:scale-[0.96]` | `ProfessionPill` |
 
 Never `transition-all` — name the property. Never scale above 1.02 on hover.

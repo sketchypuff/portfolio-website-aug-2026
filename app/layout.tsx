@@ -3,9 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/lib/site";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { HideOnHome } from "@/components/hide-on-home";
 import { PageTransition } from "@/components/motion/page-transition";
 import "./globals.css";
 
@@ -57,13 +54,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          <SiteHeader />
           <main id="content" className="flex-1">
             <PageTransition>{children}</PageTransition>
           </main>
-          <HideOnHome>
-            <SiteFooter />
-          </HideOnHome>
         </ThemeProvider>
         <Analytics />
       </body>

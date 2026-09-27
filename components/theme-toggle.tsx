@@ -4,9 +4,9 @@ import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 
 /**
- * Both icons are rendered and swapped with CSS rather than with a mounted
- * flag. `next-themes` sets the `dark` class on <html> before first paint, so
- * this avoids a hydration mismatch, a layout shift, and the render-effect
+ * Both labels and icons are rendered and swapped with CSS rather than with a
+ * mounted flag. `next-themes` sets the `dark` class on <html> before first
+ * paint, so this avoids a hydration mismatch, a layout shift, and the render-effect
  * round trip a `useState`/`useEffect` version would need.
  *
  * `resolvedTheme` is only read inside the click handler, where it is always
@@ -17,24 +17,8 @@ function useToggleTheme() {
   return () => setTheme(resolvedTheme === "dark" ? "light" : "dark");
 }
 
-export function ThemeToggle() {
-  const toggle = useToggleTheme();
-
-  return (
-    <button
-      type="button"
-      aria-label="Toggle theme"
-      onClick={toggle}
-      className="text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:ring-2 focus-visible:outline-none"
-    >
-      <MoonIcon className="size-4 dark:hidden" />
-      <SunIcon className="hidden size-4 dark:block" />
-    </button>
-  );
-}
-
 /**
- * Text version for the home nav, styled like its links (link blue, label,
+ * Theme switch for the home nav, styled like its links (link blue, label,
  * then a 24px icon). It names the theme it switches *to*.
  */
 export function ThemeTextToggle() {

@@ -24,21 +24,11 @@ Hierarchy on home comes from weight and case, not size. Everything is 16px or
 14px. Do not add a larger heading size to the home page — the headline is bold
 16px on purpose, so the work cards are the loudest thing on the page.
 
-## Inner-page scale (Provisional)
-
-| Role | Classes |
-| --- | --- |
-| Page title | `text-2xl font-medium tracking-tight sm:text-3xl` (+ `text-balance` on long titles) |
-| Page intro | `text-muted-foreground mt-4 leading-relaxed text-pretty` |
-| List item title | `text-sm font-medium tracking-tight` |
-| List item summary | `text-muted-foreground text-sm leading-relaxed text-pretty` |
-| Metadata | `text-muted-foreground font-mono text-xs` |
-| Fact label (`dt`) | `text-muted-foreground text-xs` |
-
 ## Prose (Provisional)
 
 Defined once in the `prose` map in `components/content/mdx.tsx`. Tune the type
-scale there; never restyle prose elements at a call site.
+scale there; never restyle prose elements at a call site. These styles predate
+the redesign — expect them to change when the article page is designed.
 
 | Element | Size | Other |
 | --- | --- | --- |
@@ -56,14 +46,14 @@ scale there; never restyle prose elements at a call site.
 ## Rules
 
 - **Floor is 12px** (`text-xs`). Never use `text-[11px]` or smaller.
-- **Sizes in use:** `text-xs`, `text-sm`, `text-base`, `text-xl`, `text-2xl`,
-  `text-3xl`. Nothing else exists. `text-lg` and `text-4xl`+ are not in the
-  system.
+- **Sizes in use:** `text-xs`, `text-sm`, `text-base`, and `text-xl` (prose
+  `h2` only). Nothing else exists. A page-title size for new pages is not
+  decided yet — take it from Figma, don't pick one.
 - **Weights in use:** medium (500) default, semibold (600) only in
   `SectionLabel`, bold (700) only for the home headline. Never `font-light`
   or `font-black`.
-- `tracking-tight` goes on medium-weight titles on inner pages and prose
-  headings only. Home text uses default tracking.
+- `tracking-tight` goes on prose headings only. Home text uses default
+  tracking.
 - Numbers that update in place (the clock) use `tabular-nums`.
 - Use real typographic characters in copy: `’` `“ ”` `—` `é` (as in "resumé").
 
@@ -71,6 +61,6 @@ scale there; never restyle prose elements at a call site.
 // Correct — home metadata, from app/page.tsx
 <time className="text-muted-foreground shrink-0 font-mono text-sm uppercase">…</time>
 
-// Incorrect — inner-page metadata style imported into home
+// Incorrect — smaller size and no uppercase: not the home metadata style
 <time className="text-muted-foreground font-mono text-xs">…</time>
 ```

@@ -6,6 +6,15 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-27** — Inner pages removed to be rebuilt from scratch: /about,
+  /blog, /blog/[slug], /projects, /projects/[slug], the custom 404, the
+  global header and footer (and `HideOnHome`, the icon `ThemeToggle`,
+  `site.nav`), `PostLink`, and `ProjectCard`. The content pipeline (MDX,
+  `Figure`/`Gallery`, `lib/content.ts`, `content/`) stays. New pages are built
+  from the home system; the old scaffold is no longer a pattern to copy.
+- **2026-09-27** — `/design` style guide: every token and shared component
+  rendered from real code, unlisted and noindex. `WorkStrip`/`WorkCard`
+  moved to `components/work-strip.tsx` so it can render them.
 - **2026-09-27** — Home nav gets a text theme switch (`ThemeTextToggle`) in
   link blue: a button, but it shares the blue so the nav reads as one set of
   controls. (`0f6674a`)

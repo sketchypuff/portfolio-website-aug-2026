@@ -10,9 +10,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # yashshenai.com
 
-Personal portfolio for Yash Shenai, a product designer. Home, about, projects,
-blog. The resume is a PDF on Google Drive (`site.resume` in `lib/site.ts`),
-not a page — every resume link opens it in a new tab. Deployed on Vercel.
+Personal portfolio for Yash Shenai, a product designer. Right now the site is
+the home page plus an unlisted `/design` style guide; the about, projects, and
+blog pages are being rebuilt from scratch. The resume is a PDF on Google Drive
+(`site.resume` in `lib/site.ts`), not a page — every resume link opens it in a
+new tab. Deployed on Vercel.
 
 `CLAUDE.md` is a one-line pointer to this file, so Claude Code, Codex, and
 Cursor all read the same instructions. Edit this file, never that one.
@@ -87,9 +89,14 @@ Frontmatter is validated in `parseMeta` in `lib/content.ts` — that function is
 the schema. Posts need `title`, `summary`, `date`. Projects add optional
 `year`, `role`, `external`, `featured`, `order`.
 
-A project with an `external` URL renders as a link-out card and gets **no**
-detail page: `getRenderableSlugs` filters it out of `generateStaticParams`, the
-route calls `notFound()`, and `sitemap.ts` skips it. Keep those three in sync.
+A project with an `external` URL is a link-out with **no** detail page.
+`getRenderableSlugs` already filters those out; when the project detail route
+is rebuilt, use it for `generateStaticParams`, call `notFound()` for external
+entries, and skip them in `sitemap.ts`. Keep those three in sync.
+
+No route renders entries right now. The pipeline, the example entries, and the
+bundler image context are kept so the rebuilt blog and case studies can use
+them.
 
 In MDX, `<Figure>` and `<Gallery>` are pre-bound to the current entry in
 `components/content/mdx.tsx`, so authors write `<Figure src="hero.jpg" />` with
@@ -106,13 +113,19 @@ array at the top of that page. Only things with their own detail page go in
 `content/`. Don't put page copy in `lib/site.ts` — that file is for values
 used in more than one place.
 
+### The /design route
+
+`app/design/page.tsx` is an unlisted, `noindex` style guide. Keep it out of
+the home nav and `app/sitemap.ts`. It must import real components, never copies,
+so it cannot drift.
+
 ### Adding a page
 
-A new route needs three edits besides the page itself: add it to
-`staticRoutes` in `app/sitemap.ts` (listed by hand), add it to `site.nav` in
-`lib/site.ts` only if it belongs in the header, and run `npx next typegen`.
-The home page nav is hand-written in `app/page.tsx` and is not driven by
-`site.nav`.
+A new route needs, besides the page itself: an entry in `app/sitemap.ts`
+(listed by hand), a link from somewhere (the home nav in `app/page.tsx` is
+hand-written), and `npx next typegen`. There is no global header or footer —
+each page carries its own navigation, like home, until a shared one is
+designed.
 
 ## Motion
 
@@ -130,21 +143,21 @@ Every motion component early-returns a static version under
 ## Conventions
 
 - Server Components by default. `"use client"` only where there is state,
-  an event handler, or a hook — currently the header, theme toggle, motion
-  components, `HideOnHome`, `NoidaTime`, and `ProfessionPill`.
-- The global `SiteHeader` and `SiteFooter` are hidden on `/`, which carries
-  its own nav and footer row. The header checks the pathname itself; the
-  footer is wrapped in `HideOnHome` in `app/layout.tsx`.
+  an event handler, or a hook — currently the theme toggle, motion
+  components, `NoidaTime`, and `ProfessionPill`.
+- There is no global header or footer. `app/layout.tsx` renders only the page
+  (inside `PageTransition`); home carries its own nav and footer row.
 - Icons come from Phosphor (`@phosphor-icons/react`; `/ssr` in Server
   Components). There is no custom icon set; don't add SVGs to `public/`
   for icons Phosphor already has.
-- `Figure`, `Gallery`, and `ProjectCard` are async Server Components because
+- `Figure` and `Gallery` are async Server Components because
   they await image resolution. Keep them server-side.
 - Route params are Promises in Next 16. Use the generated helpers:
-  `PageProps<'/blog/[slug]'>`, then `await props.params`.
-- Layout widths come from `<Container size="prose" | "default" | "wide">`.
+  `PageProps<'/blog/[slug]'>`, then `await props.params`. Run
+  `npx next typegen` after adding a route so the helper knows it.
+- Layout widths come from `<Container size="home" | "prose" | "default" | "wide">`.
   Do not hand-roll `max-w-*` on page wrappers.
-- Site-wide constants (name, URL, nav, social) live in `lib/site.ts`.
+- Site-wide constants (name, URL, resume, social) live in `lib/site.ts`.
 - Colors are shadcn CSS variables in `app/globals.css` — a deliberately
   pure-neutral OKLCH ramp. Use `bg-background`, `text-muted-foreground`, etc.
   Never hardcode a hex value.
@@ -169,9 +182,10 @@ directory.
 
 The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its
 project cards and writing rows are hardcoded arrays for now and are not linked;
-move them to `content/` once real entries exist. The about page
-(`app/about/page.tsx`) is still a placeholder with filler copy marked with
-comments. The infrastructure below the pages is real and tested.
+move them to `content/` once real entries exist. Its `/about` and `/blog`
+links point at pages that don't exist yet, so they hit Next's default 404
+until those pages are rebuilt. The infrastructure below the pages is real
+and tested.
 
 `content/*/example/` are throwaway reference entries documenting the
 frontmatter and components. Delete once real content exists — but keep at

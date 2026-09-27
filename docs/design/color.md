@@ -44,8 +44,6 @@ else is a new token decision — add it to `globals.css` and this table instead.
 | --- | --- | --- |
 | `border-foreground/50` + `border-b-[0.5px]` | home writing rows | Figma hairline |
 | `decoration-muted-foreground/40` | prose links | underline quieter than text |
-| `bg-background/80`, `/60` with `backdrop-blur-md` | `SiteHeader` | frosted sticky header |
-| `text-muted-foreground/70` | `ProjectCard` role line | third text level (Provisional) |
 | `border-destructive/40` | `MdxError` | error box |
 
 ## What background do I use?
@@ -72,8 +70,9 @@ Is it a link that navigates on the home page, or the home nav's theme switch?
       └── An error → text-destructive
 ```
 
-Two text levels carry the site. A third gray (`/70`) exists once, on a
-Provisional component — do not spread it.
+Two text levels carry the site. Never add a third gray (`text-muted-foreground/70`
+and the like) — hierarchy below muted comes from size or case, not a lighter
+gray.
 
 ```tsx
 // Correct — app/page.tsx

@@ -1,6 +1,7 @@
 # yashshenai.com
 
-Personal portfolio — home, about, projects, blog, resume.
+Personal portfolio. Currently the home page; about, projects, and blog are
+being rebuilt. The content pipeline below is in place for them.
 
 Next.js 16 · React 19 · TypeScript · Tailwind v4 · shadcn/ui · MDX · Vercel.
 
@@ -42,7 +43,7 @@ Dimensions and blur placeholders are derived automatically at build time.
 Same shape under `content/projects/`, with optional `year`, `role`, `featured`,
 and `order` frontmatter.
 
-Add an `external: https://…` URL to make it a link-out card with no case study
+Add an `external: https://…` URL to make it a link-out with no case study
 page.
 
 ## Before pushing
