@@ -189,7 +189,7 @@ export default function DesignPage() {
             <CopyEmail />
           </Specimen>
           <Specimen label="WorkStrip + WorkCard · scrolls sideways">
-            <WorkStrip>
+            <WorkStrip name="Specimen" labels={["Work card with company", "Other work card"]}>
               <WorkCard>
                 <p className="text-muted-foreground font-mono text-sm uppercase">Company</p>
                 <p className="mt-1">A work card with a company line and a title</p>

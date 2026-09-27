@@ -77,7 +77,7 @@ white so it reads on any dark surface.
 | `components/text-link.tsx`, `components/theme-toggle.tsx` | `link` |
 | `components/ui/tooltip.tsx`, `components/copy-email.tsx` | `foreground` / `background` (tooltip); `success` / `success-foreground` (copied) |
 | `components/profession-pill.tsx` | `background`, `border`, `shadow-xs`, `link` (icon) |
-| `components/work-strip.tsx` | `muted` (image slot) |
+| `components/work-strip.tsx` | `muted` (image slot, stepper pill), `muted-foreground` / `foreground` (stepper ticks) |
 | `components/content/figure.tsx` | `muted` (placeholder), `muted-foreground` (caption) |
 | `components/icon-circle.tsx` | `muted` (circle) |
 | `components/content/post-nav.tsx` | `muted-foreground` (title hover) |

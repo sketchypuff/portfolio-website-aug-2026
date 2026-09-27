@@ -56,6 +56,7 @@ outgoing page holds stale content on screen and reads as lag.
 | Opacity dim | `transition-opacity hover:opacity-70` | `TextLink` |
 | Icon nudge | `transition-transform duration-300 ease-out group-hover:translate-x-0.5` | `TextLink` trailing icon |
 | Image zoom | `transition-transform duration-500 ease-out group-hover:scale-[1.02]` | reserved for linked image cards; none exist yet |
+| Stepper | pill `transition-transform duration-500` house curve; tick `transition-[height,background-color] duration-300` | `WorkStrip` |
 | Press | `transition-[scale] duration-150 ease-out active:scale-[0.96]` | `ProfessionPill` |
 
 Never `transition-all` — name the property. Never scale above 1.02 on hover.
@@ -68,6 +69,14 @@ Interactive UI, so faster than reveals. Label swap: 10px vertical travel +
 4px blur; enter 300ms house curve, exit 180ms ease-in. Width follows on a
 zero-bounce spring (0.4s) because people click repeatedly and a spring
 retargets mid-resize without a jolt.
+
+## Sound
+
+`cuelume` synthesizes UI sounds with Web Audio (no audio files). The only one
+on the site is `play("tick")` on pointer down on a `WorkStrip` stepper tick,
+taken from rithvika.work. Call `play()` on the element that makes the sound;
+don't call the global `bind()`. Sound is feedback for a deliberate press,
+never for hover, scroll, or page load.
 
 ## Reduced motion (non-negotiable)
 

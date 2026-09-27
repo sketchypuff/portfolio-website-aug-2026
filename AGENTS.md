@@ -47,7 +47,7 @@ the build rather than reaching the site.
 
 Next.js 16 (App Router, Turbopack) · React 19.2 · TypeScript · Tailwind v4 ·
 shadcn/ui (`radix-nova`, neutral) · MDX via `next-mdx-remote-client` ·
-`motion` · `next-themes` · Vercel Analytics.
+`motion` · `cuelume` (UI sounds) · `next-themes` · Vercel Analytics.
 
 ## Content architecture
 

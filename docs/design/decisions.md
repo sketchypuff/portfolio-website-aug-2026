@@ -6,6 +6,11 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-27** — Work strips get a tick stepper above them (after
+  rithvika.work): one tick per card, a muted pill sliding to the current one,
+  click to jump. Shows position and count, which the cut-off card alone
+  didn't. Pressing a tick plays Cuelume's `tick`, the site's first sound,
+  matching the reference.
 - **2026-09-27** — Home "Email" copies the address instead of opening a
   mail app: hover shows "Click to copy", then the same tooltip morphs into a
   green "✓ Copied". Adds `success` green, the second hue, for confirmation

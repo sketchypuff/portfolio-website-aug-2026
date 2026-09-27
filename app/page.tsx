@@ -156,7 +156,7 @@ export default function HomePage() {
           <Reveal>
             <SectionLabel icon={CrownIcon}>Selected work</SectionLabel>
           </Reveal>
-          <WorkStrip>
+          <WorkStrip name="Selected work" labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}>
             {selectedWork.map((item, i) => (
               <WorkCard key={i}>
                 <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
@@ -200,7 +200,7 @@ export default function HomePage() {
           <Reveal>
             <SectionLabel icon={HandHeartIcon}>Other work</SectionLabel>
           </Reveal>
-          <WorkStrip>
+          <WorkStrip name="Other work" labels={otherWork.map((item) => item.title)}>
             {otherWork.map((item, i) => (
               <WorkCard key={i}>
                 <p className={cn(item.muted && "text-muted-foreground")}>{item.title}</p>
