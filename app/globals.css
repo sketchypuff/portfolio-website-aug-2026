@@ -164,3 +164,14 @@
     @apply font-sans;
   }
 }
+
+/*
+  WebKit fills text-selection "gaps" out to the edges of the nearest *selection root* —
+  an ancestor with clipping, a transform, or flex/grid item status. Without one nearby,
+  a prose column's selection paints across the whole viewport. An identity transform
+  makes an element a selection root without clipping (which would crop full-bleed
+  figures) or altering layout. Chromium ignores this; it is a WebKit-only artifact.
+*/
+@utility selection-root {
+  transform: translate(0);
+}

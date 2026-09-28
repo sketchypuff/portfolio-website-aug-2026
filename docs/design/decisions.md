@@ -6,6 +6,11 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-09-28** — Reading columns carry `selection-root`. WebKit fills
+  selection gaps to the nearest clipped/transformed ancestor, which was the
+  full-width `@container overflow-x-clip` wrapper, so highlighting a post
+  painted edge to edge in Safari. An identity transform on `<article>` bounds
+  it to the column; clipping would have cropped bleed figures.
 - **2026-09-28** — The cat walks more and sits less: walks to a random spot
   at least 300px away (a random direction got cut short by edges), 1–3s
   rests, naps cut from ~19s to ~6s, a shorter alert pause before each walk. From Yash: it sat too long.

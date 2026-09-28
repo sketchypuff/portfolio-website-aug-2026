@@ -59,7 +59,8 @@ export default async function PostPage(props: PageProps<"/blog/[slug]">) {
       </Container>
 
       <Container size="article" className="mt-4">
-        <article>
+        {/* selection-root keeps WebKit's selection fill inside the prose column. */}
+        <article className="selection-root">
           <header className="border-border flex flex-col gap-3 border-b pb-3">
             <h1 className="text-2xl font-bold">{post.meta.title}</h1>
             <p className="text-muted-foreground text-2xl">{post.meta.summary}</p>

@@ -96,6 +96,28 @@ at `lg`+; below that everything is column width. Figures sit `my-20` — the
 both assume `Container size="article"`: changing a width without the other
 makes the browser download the wrong image size.
 
+## Selection roots (Decided)
+
+Any element holding a reading column needs `selection-root` (defined in
+`app/globals.css`). The post page has it on `<article>`.
+
+WebKit — which includes Safari and every macOS in-app browser — fills
+text-selection *gaps* out to the edges of the nearest **selection root**: an
+ancestor that clips, has a transform, or is a flex/grid item. Without one
+close by, dragging across prose paints the highlight the full width of the
+window rather than the column. Chromium dropped this behaviour, so it looks
+correct there and wrong in Safari.
+
+The `@container overflow-x-clip` wrapper that image bleed depends on is
+full-width, which makes it exactly the wrong selection root — hence the
+explicit one on the column inside it.
+
+`selection-root` is an identity `transform`, not `overflow: clip`. Clipping
+would also work, but it would crop `wide` and `full` figures, which exist to
+escape the column. The transform is layout-neutral: it changes no geometry
+and does not disturb margin collapsing the way making the column a flex
+container would.
+
 ## Radius
 
 `--radius` is `0.625rem`. In use:
