@@ -59,6 +59,7 @@ outgoing page holds stale content on screen and reads as lag.
 | Stepper | pill `transition-transform duration-500` house curve; tick `transition-[height,background-color] duration-300` | `WorkStrip` |
 | Sibling dim | inner wrapper `transition-opacity duration-200 ease-out`; others `opacity-50` at once, back to full after `delay-100` | `WorkStrip dimOnHover` |
 | Press | `transition-[scale] duration-150 ease-out active:scale-[0.96]` | `ProfessionPill` |
+| Page background (Provisional) | full-viewport WebGL shader (mesh gradient by default; shader and preset picked in DialKit) at 50% over `bg-background`. Fades in (800ms house curve) while the shader settles — "Shader warm-up" (default; from turbulent and 3× zoomed) or "Grain dissolve" (from full grain), picked in DialKit. Exit 350ms ease-in, held 100ms on leave; newest layer on top, so cards crossfade. Reduced motion: plain fade, still shader | `WorkCard background` |
 
 Never `transition-all` — name the property. Never scale above 1.02 on hover.
 Hover-as-a-system is still open (see Pending in `DESIGN.md`): don't invent a

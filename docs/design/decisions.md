@@ -6,6 +6,15 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-10-07** — (Provisional, branch `paper-shader-background`) Selected
+  work cards animate the whole page background on mouse hover — a mesh
+  gradient in a different hue per card; the card image slot is left for a
+  bespoke image. Of ten takeover animations tried, shader warm-up
+  and grain dissolve were kept; blooms, wipe, tide, desaturate and handoff
+  were cut. The shader itself (mesh, grain, warp, simplex, swirl, smoke ring)
+  and its preset are now also picked in DialKit. Paper Shaders for the gradient (small,
+  zero-dep), DialKit for live tuning in dev. First hue on the site beyond
+  `link` and `success`; hex palettes are a documented exception in color.md.
 - **2026-09-28** — Reading columns carry `selection-root`. WebKit fills
   selection gaps to the nearest clipped/transformed ancestor, which was the
   full-width `@container overflow-x-clip` wrapper, so highlighting a post

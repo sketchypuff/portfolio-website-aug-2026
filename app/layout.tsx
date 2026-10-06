@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { DialRoot } from "dialkit";
+import "dialkit/styles.css";
 import { site } from "@/lib/site";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "@/components/motion/page-transition";
@@ -58,6 +60,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <PageTransition>{children}</PageTransition>
           </main>
         </ThemeProvider>
+        {/* Live tuning panel for the card gradients. Renders nothing in production. */}
+        <DialRoot position="bottom-right" defaultOpen={false} />
         <Analytics />
       </body>
     </html>

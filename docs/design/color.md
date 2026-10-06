@@ -47,7 +47,8 @@ here. Tailwind's own `blue-*` palette stays banned.
 Components use the semantic classes below. Never write `oklch()`, a hex value,
 `var(--…)` in a class, or a Tailwind palette color (`text-neutral-500`,
 `text-blue-600`). Every token has a light and a dark value; a raw value has
-only one, so it breaks in the other theme.
+only one, so it breaks in the other theme. **One exception:** the hover page-background
+palettes (`selectedWork` in `app/page.tsx`) are hex — the shader needs literals.
 
 ## Tokens in use
 

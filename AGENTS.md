@@ -47,7 +47,9 @@ the build rather than reaching the site.
 
 Next.js 16 (App Router, Turbopack) · React 19.2 · TypeScript · Tailwind v4 ·
 shadcn/ui (`radix-nova`, neutral) · MDX via `next-mdx-remote-client` ·
-`motion` · `cuelume` (UI sounds) · `next-themes` · Vercel Analytics.
+`motion` · `cuelume` (UI sounds) · `next-themes` · Vercel Analytics ·
+`@paper-design/shaders-react` (hover page background) · `dialkit` (dev-only
+tuning panel, `DialRoot` in `app/layout.tsx`).
 
 ## Content architecture
 
@@ -147,7 +149,8 @@ Every motion component early-returns a static version under
 
 - Server Components by default. `"use client"` only where there is state,
   an event handler, or a hook — currently the theme toggle, motion
-  components, `NoidaTime`, `ProfessionPill`, and `Oneko`.
+  components, `NoidaTime`, `ProfessionPill`, `Oneko`, `WorkStrip`, and
+  `HoverBackgroundProvider`.
 - There is no global header or footer. `app/layout.tsx` renders only the page
   (inside `PageTransition`); home carries its own nav and footer row.
 - Icons come from Phosphor (`@phosphor-icons/react`; `/ssr` in Server

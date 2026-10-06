@@ -18,6 +18,7 @@ import { ThemeTextToggle } from "@/components/theme-toggle";
 import { SectionLabel } from "@/components/section-label";
 import { TextLink } from "@/components/text-link";
 import { WorkCard, WorkStrip } from "@/components/work-strip";
+import { HoverBackgroundProvider, type BackgroundPalette } from "@/components/hover-background";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -25,19 +26,35 @@ import { cn } from "@/lib/utils";
 // Hardcoded from the Figma "Home" frame until these have real entries in
 // content/. Cards are not linked yet for the same reason; a writing row links
 // once its post exists.
-const selectedWork = [
+// `background` is the page background's mesh gradient while this card is
+// hovered — one hue family per card, so no two share a colour. Hex is the
+// documented exception (color.md).
+const selectedWork: { company: string; title: string; background: BackgroundPalette }[] = [
   {
     company: "Microsoft",
     title:
       "Design domain-based (accounting, marketing etc.) skill driven experiences for Excel and Powerpoint agent mode",
+    background: { name: "microsoft", colors: ["#dbeafe", "#2563eb", "#0ea5e9", "#1e3a8a"] },
   },
-  { company: "Adobe", title: "Optimised image masking with a refined selection experience" },
-  { company: "Adobe", title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature" },
+  {
+    company: "Adobe",
+    title: "Optimised image masking with a refined selection experience",
+    background: { name: "adobeMasking", colors: ["#fce7f3", "#db2777", "#f472b6", "#831843"] },
+  },
+  {
+    company: "Adobe",
+    title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
+    background: { name: "adobeHeal", colors: ["#ede9fe", "#7c3aed", "#a78bfa", "#3b0764"] },
+  },
   {
     company: "Postman",
     title: "Reduced time taken by developers in discovering new content and finding team resources",
+    background: { name: "postman", colors: ["#ffedd5", "#ea580c", "#fb923c", "#7c2d12"] },
   },
 ];
+
+// Module-level so the DialKit config built from it stays stable.
+const selectedWorkPalettes = selectedWork.map((item) => item.background);
 
 // `muted` mirrors the design: the first three titles are dimmed, the last two are not.
 const otherWork = [
@@ -155,19 +172,21 @@ export default function HomePage() {
         </Reveal>
 
         <section className="flex flex-col gap-8">
-          <WorkStrip
-            heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
-            name="Selected work"
-            dimOnHover
-            labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
-          >
-            {selectedWork.map((item, i) => (
-              <WorkCard key={i}>
-                <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
-                <p className="mt-1">{item.title}</p>
-              </WorkCard>
-            ))}
-          </WorkStrip>
+          <HoverBackgroundProvider palettes={selectedWorkPalettes}>
+            <WorkStrip
+              heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
+              name="Selected work"
+              dimOnHover
+              labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
+            >
+              {selectedWork.map((item, i) => (
+                <WorkCard key={i} background={i}>
+                  <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
+                  <p className="mt-1">{item.title}</p>
+                </WorkCard>
+              ))}
+            </WorkStrip>
+          </HoverBackgroundProvider>
         </section>
 
         <section className="flex flex-col gap-8">

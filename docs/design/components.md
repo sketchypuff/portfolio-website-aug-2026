@@ -48,6 +48,18 @@ the gaps don't dim anything; un-dimming waits 100ms so crossing a gap
 doesn't flash. Hovering devices only. "Selected work" sets it; "Other work"
 doesn't.
 
+`background` on `WorkCard` (optional, Provisional): the card's index into
+the palettes of a surrounding `HoverBackgroundProvider`
+(`components/hover-background.tsx`). While a mouse hovers the card, a fixed
+full-viewport Paper shader (default `MeshGradient`) in that card's palette takes over
+the page background; the newest layer always sits on top. The image slot is
+untouched (it will hold a bespoke image). Only "Selected work" uses it, one
+hue family per card. The provider owns the "Page background" DialKit panel
+(dev only): the takeover mode and timing, intensity, which of Paper's six
+animated shaders and which of its presets (seeding a folder of that preset's
+params), whether to use the preset's colors instead of the card's, and each
+palette's colors.
+
 Card text: company in home metadata style, then the title. In "Other work",
 titles are `muted` or not per the Figma — that flag is data, not a variant.
 

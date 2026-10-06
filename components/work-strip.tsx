@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { play } from "cuelume";
 import { useReducedMotion } from "motion/react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { useHoverBackground } from "@/components/hover-background";
 import { cn } from "@/lib/utils";
 
 /** Width of one stepper button (the hit area); the tick sits in its centre. */
@@ -175,10 +176,22 @@ export function WorkStrip({
  * One 570px card: a 4:3 image slot with its text below. The inner wrapper is
  * what `WorkStrip dimOnHover` fades — the <li> can't be, because its reveal
  * animation sets opacity inline.
+ *
+ * `background` is this card's index into the palettes of the surrounding
+ * `HoverBackgroundProvider`; set it and mouse-hovering the card animates the
+ * page background in that card's colors (never on touch).
  */
-export function WorkCard({ children }: { children: React.ReactNode }) {
+export function WorkCard({ background, children }: { background?: number; children: React.ReactNode }) {
+  const hover = useHoverBackground();
+  const track = hover && background !== undefined;
+
   return (
-    <RevealItem as="li" className="group/card w-[570px] max-w-[85vw] shrink-0 snap-start">
+    <RevealItem
+      as="li"
+      className="group/card w-[570px] max-w-[85vw] shrink-0 snap-start"
+      onPointerEnter={track ? (e) => e.pointerType === "mouse" && hover.enter(background) : undefined}
+      onPointerLeave={track ? () => hover.leave(background) : undefined}
+    >
       <div className="transition-opacity delay-100 duration-200 ease-out group-hover/card:delay-0 motion-reduce:transition-none">
         <div className="bg-muted aspect-[4/3] rounded-xl" />
         <div className="mt-5">{children}</div>

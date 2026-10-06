@@ -31,7 +31,8 @@ Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
 1. **Semantic tokens only.** Colors come from the tokens in
    [color.md](docs/design/color.md) (`text-muted-foreground`, `bg-muted`,
    `text-link`). Never a hex, `oklch()`, or Tailwind palette color
-   (`text-neutral-500`, `bg-blue-600`). Raw values break dark mode.
+   (`text-neutral-500`, `bg-blue-600`). Raw values break dark mode. The
+   one exception is the hover page-background palettes (see color.md).
 2. **Blue is for links.** `text-link` goes on `TextLink` and the home nav's
    `ThemeTextToggle`, nothing else new. See [links.md](docs/design/links.md).
 3. **Widths come from `<Container size>`.** `prose` | `default` | `wide` |
