@@ -184,3 +184,36 @@ export function Dab({ pigment, className }: { pigment: Pigment; className?: stri
     />
   );
 }
+
+/**
+ * A test strip on a swatch card: one pigment laid from full strength down to
+ * a thin wash, the way a painter checks a new tube. The ragged right end is
+ * where the brush ran dry. Placeholder for scanned strips from Yash's own
+ * palette.
+ */
+export function SwatchStrip({ pigment, seed, className }: { pigment: Pigment; seed: number; className?: string }) {
+  const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const rand = random(seed);
+  const color = pigments[pigment].color;
+  const end = 150 + rand() * 30;
+  return (
+    <svg viewBox="0 0 200 28" aria-hidden preserveAspectRatio="none" className={cn("block h-7 w-full", className)}>
+      <defs>
+        <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor={color} stopOpacity="0.95" />
+          <stop offset="0.55" stopColor={color} stopOpacity="0.45" />
+          <stop offset="1" stopColor={color} stopOpacity="0.12" />
+        </linearGradient>
+        <filter id={`${id}-e`} x="-5%" y="-20%" width="110%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.04 0.2" numOctaves="2" seed={seed} />
+          <feDisplacementMap in="SourceGraphic" scale="7" />
+        </filter>
+      </defs>
+      <g filter={`url(#${id}-e)`} style={{ mixBlendMode: "multiply" }}>
+        <rect x="4" y="5" width={end} height="18" rx="2" fill={`url(#${id}-g)`} />
+        {/* The dried edge at the start, where the brush was fullest. */}
+        <rect x="4" y="5" width="3" height="18" fill={color} opacity="0.5" />
+      </g>
+    </svg>
+  );
+}

@@ -1,12 +1,11 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 
 /**
- * Both labels and icons are rendered and swapped with CSS rather than with a
- * mounted flag. `next-themes` sets the `dark` class on <html> before first
- * paint, so this avoids a hydration mismatch, a layout shift, and the render-effect
+ * Both labels are rendered and swapped with CSS rather than with a mounted
+ * flag. `next-themes` sets the `dark` class on <html> before first paint, so
+ * this avoids a hydration mismatch, a layout shift, and the render-effect
  * round trip a `useState`/`useEffect` version would need.
  *
  * `resolvedTheme` is only read inside the click handler, where it is always
@@ -18,8 +17,8 @@ function useToggleTheme() {
 }
 
 /**
- * Theme switch for the home nav, styled like its links (link blue, label,
- * then a 24px icon). It names the theme it switches *to*.
+ * Theme switch, pencilled like the other links. It names what it switches
+ * to: the studio lights go off, and the sheets stay lit on the desk.
  */
 export function ThemeTextToggle() {
   const toggle = useToggleTheme();
@@ -28,12 +27,10 @@ export function ThemeTextToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="text-link inline-flex cursor-pointer items-center gap-0.5 transition-opacity hover:opacity-70"
+      className="text-link inline-flex cursor-pointer items-baseline underline decoration-dashed decoration-1 underline-offset-[0.3em] transition-[text-decoration-color] hover:decoration-solid"
     >
-      <span className="dark:hidden">Dark mode</span>
-      <span className="hidden dark:inline">Light mode</span>
-      <MoonIcon aria-hidden className="size-6 shrink-0 dark:hidden" />
-      <SunIcon aria-hidden className="hidden size-6 shrink-0 dark:block" />
+      <span className="dark:hidden">Lights off</span>
+      <span className="hidden dark:inline">Lights on</span>
     </button>
   );
 }

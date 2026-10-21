@@ -28,7 +28,7 @@ const outro = { label: "that’s all of me", icon: SmileyWinkIcon };
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 /**
- * The "product designer" pill in the home intro. Clicking cycles through the
+ * The "product designer" blank in the home intro, in brackets. Clicking cycles through the
  * other things Yash is. Finishing the first lap earns one extra label
  * (`outro`) before it wraps back to the start.
  *
@@ -72,8 +72,11 @@ export function ProfessionPill() {
     <button
       type="button"
       onClick={next}
-      className="bg-background border-border inline-flex shrink-0 cursor-pointer items-center rounded-lg border px-2 py-1 shadow-xs transition-[scale] duration-150 ease-out select-none active:scale-[0.96] motion-reduce:transition-none"
+      // A bracketed blank, the way a field reads in a mono note: [ product
+      // designer ]. Clicking rewrites what is inside the brackets.
+      className="text-link inline-flex shrink-0 cursor-pointer items-baseline gap-1.5 transition-[scale] duration-150 ease-out select-none active:scale-[0.97] motion-reduce:transition-none"
     >
+      <span aria-hidden className="text-muted-foreground">[</span>
       <motion.span
         className="relative inline-flex overflow-hidden"
         // `auto` until measured, so the server render and first paint match.
@@ -86,7 +89,7 @@ export function ProfessionPill() {
             <motion.span
               key={label}
               aria-live="polite"
-              className="inline-flex items-center gap-1.5 whitespace-nowrap"
+              className="inline-flex items-baseline gap-1.5 whitespace-nowrap"
               initial={reduced ? false : { opacity: 0, y: 10, filter: "blur(4px)" }}
               animate={{
                 opacity: 1,
@@ -105,12 +108,13 @@ export function ProfessionPill() {
                     }
               }
             >
-              <Icon aria-hidden className="text-link size-6 shrink-0" />
+              <Icon aria-hidden className="size-[1em] shrink-0 self-center" />
               {label}
             </motion.span>
           </AnimatePresence>
         </span>
       </motion.span>
+      <span aria-hidden className="text-muted-foreground">]</span>
     </button>
   );
 }

@@ -1,34 +1,24 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import {
-  ArrowUpRightIcon,
-  ClockIcon,
-  CrownIcon,
-  HandHeartIcon,
-  IdentificationCardIcon,
-  PaletteIcon,
-  PenNibIcon,
-  SmileyXEyesIcon,
-  WarningCircleIcon,
-} from "@phosphor-icons/react/ssr";
+import { ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
 import { CopyEmail } from "@/components/copy-email";
 import { NoidaTime } from "@/components/noida-time";
 import { Oneko } from "@/components/oneko";
 import { ProfessionPill } from "@/components/profession-pill";
+import { Sheet, SheetGrid } from "@/components/sheet";
 import { ThemeTextToggle } from "@/components/theme-toggle";
-import { SectionLabel } from "@/components/section-label";
 import { TextLink } from "@/components/text-link";
-import { WorkCard, WorkStrip } from "@/components/work-strip";
-import { Dab, PlaceholderTag, Wash, pigments, type Pigment } from "@/components/wash";
+import { Dab, PlaceholderTag, SwatchStrip, Wash, pigments, type Pigment } from "@/components/wash";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type Palette = readonly [Pigment, Pigment, Pigment, Pigment];
 
 // Hardcoded from the Figma "Home" frame until these have real entries in
-// content/. Cards are not linked yet for the same reason; a writing row links
-// once its post exists. `palette` and `seed` draw each card's placeholder
-// wash ([sky, far ridge, near ridge, accents]); they go when the scans arrive.
+// content/. Sheets are not linked yet for the same reason; a writing row
+// links once its post exists. `palette` and `seed` draw each sheet's
+// placeholder wash ([sky, far ridge, near ridge, accents]); they go when the
+// scans arrive.
 const selectedWork: { company: string; title: string; palette: Palette; seed: number }[] = [
   {
     company: "Microsoft",
@@ -52,8 +42,8 @@ const selectedWork: { company: string; title: string; palette: Palette; seed: nu
   {
     company: "Postman",
     title: "Reduced time taken by developers in discovering new content and finding team resources",
-    palette: ["cerulean", "indigo", "sienna", "sap"],
-    seed: 52,
+    palette: ["cerulean", "sap", "ultramarine", "rose"],
+    seed: 48,
   },
 ];
 
@@ -92,8 +82,9 @@ const otherWork: { title: string; muted: boolean; palette: Palette; seed: number
   },
 ];
 
-// Hovering a writing row lays a faint wash of one of these behind it, in turn.
-const rowWashes: Pigment[] = ["ochre", "cerulean", "rose", "sap", "sienna"];
+// Each writing row gets one dab in the margin; hovering it lays a faint wash
+// of the same pigment behind the row.
+const rowPigments: Pigment[] = ["ochre", "cerulean", "rose", "sap", "sienna"];
 
 // `href` is set once a post exists in content/posts; unlinked rows stay plain text.
 // Rendered newest first, whatever order they're listed in.
@@ -125,243 +116,226 @@ const writing: { date: string; title: string; href?: string }[] = [
   },
 ];
 
-// Built from parts so the month is always three letters ("Sep", not en-GB's "Sept").
-const dateParts = new Intl.DateTimeFormat("en-US", {
-  day: "numeric",
-  month: "short",
+// Short numeric dates, the way a painter dates a study in the corner.
+const shortDate = new Intl.DateTimeFormat("en-GB", {
+  day: "2-digit",
+  month: "2-digit",
   year: "numeric",
   timeZone: "UTC",
 });
 
-function formatDay(date: Date) {
-  const part = (type: string) => dateParts.formatToParts(date).find((p) => p.type === type)?.value;
-  return `${part("day")} ${part("month")} ${part("year")}`;
-}
+const pad = (n: number) => String(n).padStart(2, "0");
 
-const writingRow = "flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-12";
-
-function WritingRowContent({ date, title, linked }: { date: string; title: string; linked?: boolean }) {
+/** A section heading as a pencil note on a ruled line, with a count or link at the right. */
+function RuledHeading({ children, aside }: { children: React.ReactNode; aside?: React.ReactNode }) {
   return (
-    <>
-      <time dateTime={date} className="text-muted-foreground shrink-0 font-mono text-sm uppercase">
-        {formatDay(new Date(date))}
-      </time>
-      <p className={cn("sm:text-right", linked && "group-hover:text-muted-foreground transition-colors")}>
-        {title}
-      </p>
-    </>
+    <div className="border-rule flex items-baseline justify-between gap-4 border-b pb-2">
+      <h2 className="note font-medium">{children}</h2>
+      {aside && <div className="note text-muted-foreground">{aside}</div>}
+    </div>
   );
 }
 
-const plateNumber = (i: number) => `Pl. ${String(i + 1).padStart(2, "0")}`;
+const quietLink = "hover:text-link transition-colors";
 
 export default function HomePage() {
   // The page is prerendered, so this is the deploy date.
   const lastUpdated = new Date();
+  const posts = writing.toSorted((a, b) => b.date.localeCompare(a.date));
 
   return (
     <div className="paper-grain @container relative isolate overflow-x-clip">
       {/* The page's first wash, bleeding down from the top edge. Light mode
-          only: on the dark page, paint lives on lit paper and nowhere else. */}
-      <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[420px] opacity-70 dark:hidden">
+          only: on the dark desk, paint lives on lit sheets and nowhere else. */}
+      <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[460px] opacity-70 dark:hidden">
         <Wash palette={["cerulean", "ultramarine", "sap", "ochre"]} seed={3} variant="band" />
       </div>
-      <p className="text-plate-foreground absolute top-3 right-4 font-mono text-xs uppercase dark:hidden">
+      <p className="note text-plate-foreground absolute top-3 right-4 hidden sm:block dark:hidden">
         <PlaceholderTag />
       </p>
       <Oneko />
-      <Container size="home" className="flex flex-col gap-20 pt-14 pb-16 text-base leading-snug font-medium">
-        <div className="flex flex-col gap-12">
-          <div className="text-muted-foreground border-foreground/50 flex justify-between gap-4 border-b-[0.5px] pb-3 font-mono text-sm uppercase">
-            <span>Yash Shenai’s sketchbook</span>
+      <Container size="wide" className="flex flex-col gap-24 pt-6 pb-20 text-[15px] leading-relaxed">
+        <div className="flex flex-col gap-14">
+          {/* The masthead, pencilled across the top of the sheet. */}
+          <div className="note border-rule flex justify-between gap-4 border-b pb-2.5">
+            <span>Yash Shenai · Sketchbook</span>
+            <span className="text-muted-foreground hidden sm:inline">Landscapes, wet and loose</span>
             <span className="text-right">Noida, India</span>
           </div>
 
-          <header className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex flex-col gap-4">
-              {/* The paragraph keeps the Figma 436px measure; this row may run wider so
-                  every pill label fits beside the headline. Below md there isn't room
-                  for the longest one, so the pill always takes its own line there
-                  rather than jumping between lines as it cycles. */}
-              <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
-                <h1 className="font-bold md:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
+          <header className="grid gap-10 md:grid-cols-12">
+            <div className="flex flex-col gap-6 md:col-span-8">
+              <div className="flex flex-col items-start gap-2 text-xl leading-snug font-medium lg:flex-row lg:items-baseline lg:gap-3">
+                <h1 className="lg:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
                 <ProfessionPill />
               </div>
-              <div className="text-muted-foreground max-w-[436px] space-y-[1lh]">
+              <div className="max-w-[34rem] space-y-[1lh]">
                 <p>
-                  Currently, I make agentic AI experiences feel oh yeah! at Microsoft. Previously,
-                  I’ve worked at Adobe, Postman and Samsung.
+                  Currently, I make agentic AI experiences feel <strong>oh yeah!</strong> at Microsoft.
+                  Previously, I’ve worked at Adobe, Postman and Samsung.
                 </p>
-                <p>
+                <p className="text-muted-foreground">
                   I believe all software should be opinionated and delightful to use in order to be
-                  called usable.
+                  called usable. A wash goes down loose and wet, keeps its happy accidents, and is then
+                  refined in layers. That is how I paint, and how I design.
                 </p>
               </div>
             </div>
-
-            <nav aria-label="Main" className="flex flex-col items-start gap-0.5 sm:items-end">
+            <nav
+              aria-label="Main"
+              className="flex flex-col items-start gap-1.5 md:col-span-3 md:col-start-10 md:items-end md:pt-1"
+            >
               <TextLink href={site.resume} icon={ArrowUpRightIcon}>
-                Open resumé
+                Résumé
               </TextLink>
-              <TextLink href="/about" icon={SmileyXEyesIcon}>
-                About
-              </TextLink>
+              <TextLink href="/about">About</TextLink>
               <ThemeTextToggle />
             </nav>
           </header>
         </div>
 
-        <section>
-          <WorkStrip
-            heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
-            name="Selected work"
-            dimOnHover
-            labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
-            swatches={selectedWork.map((item) => item.palette[1])}
-          >
+        <section className="flex flex-col gap-10">
+          <RuledHeading aside={`${pad(selectedWork.length)} plates`}>Selected work</RuledHeading>
+          <SheetGrid label="Selected work">
             {selectedWork.map((item, i) => (
-              <WorkCard
+              <Sheet
                 key={i}
+                number={`Pl. ${pad(i + 1)}`}
+                palette={item.palette}
                 art={<Wash palette={item.palette} seed={item.seed} />}
-                note={<PlaceholderTag />}
-                number={plateNumber(i)}
               >
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
-                  <span className="flex gap-1">
-                    {item.palette.slice(0, 3).map((pigment) => (
-                      <Dab key={pigment} pigment={pigment} />
-                    ))}
+                <p className="note text-muted-foreground">{item.company}</p>
+                <p className="text-base leading-snug font-normal text-pretty">{item.title}</p>
+              </Sheet>
+            ))}
+          </SheetGrid>
+        </section>
+
+        <section className="flex flex-col gap-4">
+          <RuledHeading aside={<TextLink href="/blog" className="normal-case tracking-normal">Open blog</TextLink>}>
+            Writing
+          </RuledHeading>
+          <ol role="list">
+            {posts.map((post, i) => {
+              const pigment = rowPigments[i % rowPigments.length];
+              const content = (
+                <>
+                  <Dab pigment={pigment} className="mt-1.5 size-3 self-start" />
+                  <span className={cn("text-base leading-snug text-pretty", post.href && "group-hover:text-link transition-colors")}>
+                    {post.title}
                   </span>
-                </div>
-                <p className="mt-1">{item.title}</p>
-              </WorkCard>
-            ))}
-          </WorkStrip>
-        </section>
-
-        <section className="flex flex-col gap-8">
-          <div className="flex items-start justify-between gap-4">
-            <SectionLabel icon={PenNibIcon}>Writing</SectionLabel>
-            <TextLink href="/blog" icon={ArrowUpRightIcon}>
-              Open blog
-            </TextLink>
-          </div>
-          <ul role="list">
-            {writing.toSorted((a, b) => b.date.localeCompare(a.date)).map((post, i) => (
-              <li key={post.title} className="border-foreground/50 border-b-[0.5px]">
-                {post.href ? (
-                  <Link
-                    href={post.href}
-                    className={cn(
-                      writingRow,
-                      "group focus-visible:ring-ring relative isolate -mx-3 rounded-lg px-3 focus-visible:ring-2 focus-visible:outline-none",
-                    )}
-                  >
-                    {/* A faint wash spreads behind the row on hover. Opacity is the
-                        only thing that transitions; the blur is static. */}
-                    <span
-                      aria-hidden
-                      className="absolute inset-y-1 right-0 -z-10 w-2/3 opacity-0 blur-md transition-opacity duration-300 ease-out group-hover:opacity-100 motion-reduce:transition-none dark:group-hover:opacity-40"
-                      style={{
-                        background: `radial-gradient(closest-side, color-mix(in oklch, ${pigments[rowWashes[i % rowWashes.length]].color} 45%, transparent), transparent)`,
-                      }}
-                    />
-                    <WritingRowContent date={post.date} title={post.title} linked />
-                  </Link>
-                ) : (
-                  <div className={writingRow}>
-                    <WritingRowContent date={post.date} title={post.title} />
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section>
-          <WorkStrip
-            heading={<SectionLabel icon={HandHeartIcon}>Other work</SectionLabel>}
-            name="Other work"
-            labels={otherWork.map((item) => item.title)}
-            swatches={otherWork.map((item) => item.palette[1])}
-          >
-            {otherWork.map((item, i) => (
-              <WorkCard
-                key={i}
-                size="study"
-                art={<Wash palette={item.palette} seed={item.seed} />}
-                note={<PlaceholderTag />}
-                number={`St. ${String(i + 1).padStart(2, "0")}`}
-              >
-                <p className={cn(item.muted && "text-muted-foreground")}>{item.title}</p>
-              </WorkCard>
-            ))}
-          </WorkStrip>
-        </section>
-
-        <footer className="flex flex-col gap-16">
-          <div className="grid gap-12 sm:grid-cols-[1fr_auto_1fr] sm:gap-6">
-            <div className="flex flex-col gap-8">
-              <SectionLabel icon={IdentificationCardIcon}>Contact</SectionLabel>
-              <ul role="list">
-                <li>
-                  <CopyEmail />
-                </li>
-                <li>
-                  {site.social.linkedin ? (
-                    <a
-                      href={site.social.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-muted-foreground transition-colors"
+                  <time dateTime={post.date} className="note text-muted-foreground col-start-2 sm:col-start-3 sm:pt-1">
+                    {shortDate.format(new Date(post.date))}
+                  </time>
+                </>
+              );
+              const row =
+                "grid grid-cols-[0.75rem_1fr] gap-x-4 gap-y-1 py-3.5 sm:grid-cols-[0.75rem_1fr_auto] sm:items-baseline";
+              return (
+                <li key={post.title} className="border-border border-b">
+                  {post.href ? (
+                    <Link
+                      href={post.href}
+                      className={cn(
+                        row,
+                        "group focus-visible:ring-ring relative isolate -mx-3 rounded-sm px-3 focus-visible:ring-2 focus-visible:outline-none",
+                      )}
                     >
-                      LinkedIn
-                    </a>
+                      {/* A faint wash spreads behind the row on hover. Opacity is the
+                          only thing that transitions; the blur is static. */}
+                      <span
+                        aria-hidden
+                        className="absolute inset-y-1 left-0 -z-10 w-2/3 opacity-0 blur-md transition-opacity duration-300 ease-out group-hover:opacity-100 motion-reduce:transition-none dark:group-hover:opacity-35"
+                        style={{
+                          background: `radial-gradient(closest-side, color-mix(in oklch, ${pigments[pigment].color} 40%, transparent), transparent)`,
+                        }}
+                      />
+                      {content}
+                    </Link>
                   ) : (
-                    "LinkedIn"
+                    <div className={row}>{content}</div>
                   )}
                 </li>
-                <li>
-                  <a
-                    href={site.resume}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-muted-foreground transition-colors"
-                  >
-                    Resumé
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex flex-col gap-8">
-              <SectionLabel icon={WarningCircleIcon}>Last updated</SectionLabel>
-              <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
-            </div>
-            <div className="flex flex-col gap-8 sm:items-end sm:text-right">
-              <SectionLabel icon={ClockIcon}>Currently</SectionLabel>
-              <NoidaTime />
-            </div>
-          </div>
+              );
+            })}
+          </ol>
+        </section>
 
-          {/* The colophon: what the paint means, and the palette it's mixed from. */}
-          <div className="border-foreground/50 grid gap-8 border-t-[0.5px] pt-8 sm:grid-cols-[1fr_auto] sm:gap-12">
-            <div className="flex flex-col gap-4">
-              <SectionLabel icon={PaletteIcon}>Colophon</SectionLabel>
-              <p className="text-muted-foreground max-w-[436px]">
-                A wash goes down loose and wet, and the happy accidents are kept. Then come the
-                layers, each one deciding a little more. That’s how I paint, and how I design.
-                Every painting here is a placeholder wash until I scan my own.
+        <section className="flex flex-col gap-10">
+          <RuledHeading aside="Studies">Other work</RuledHeading>
+          <SheetGrid label="Other work" columns={3}>
+            {otherWork.map((item, i) => (
+              <Sheet
+                key={i}
+                size="study"
+                number={`St. ${pad(i + 1)}`}
+                palette={item.palette}
+                art={<Wash palette={item.palette} seed={item.seed} />}
+              >
+                <p className={cn("leading-snug text-pretty", item.muted && "text-muted-foreground")}>{item.title}</p>
+              </Sheet>
+            ))}
+          </SheetGrid>
+        </section>
+
+        <footer className="flex flex-col gap-10">
+          <RuledHeading aside="Colophon">Palette</RuledHeading>
+          <div className="grid gap-10 lg:grid-cols-12">
+            {/* The swatch card: every pigment on the page, tested on its own sheet. */}
+            <div className="bg-plate text-plate-foreground shadow-sheet rounded-sm p-4 sm:p-5 lg:col-span-7">
+              <ul role="list" className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                {(Object.keys(pigments) as Pigment[]).map((pigment, i) => (
+                  <li key={pigment} className="flex flex-col gap-0.5">
+                    <SwatchStrip pigment={pigment} seed={i * 11 + 5} />
+                    <span className="note flex justify-between gap-3">
+                      <span>{pigments[pigment].name}</span>
+                      <span className="opacity-70">{pad(i + 1)}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="note mt-5 flex justify-between gap-4 border-t pt-3" style={{ borderColor: "var(--plate-rule)" }}>
+                <span>Swatch card</span>
+                <PlaceholderTag />
               </p>
             </div>
-            <ul role="list" className="grid grid-cols-2 gap-x-6 gap-y-2 self-end sm:grid-cols-1">
-              {(Object.keys(pigments) as Pigment[]).map((pigment) => (
-                <li key={pigment} className="text-muted-foreground flex items-center gap-2 font-mono text-xs uppercase">
-                  <Dab pigment={pigment} />
-                  {pigments[pigment].name}
-                </li>
-              ))}
-            </ul>
+
+            <div className="flex flex-col gap-8 lg:col-span-4 lg:col-start-9">
+              <p className="text-muted-foreground text-pretty">
+                Set in DM Mono on cold-press paper. Every painting here is a placeholder until my own
+                scans replace it; the paper tooth is a stand-in for a scan of my own sheet.
+              </p>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <span className="note text-muted-foreground">Contact</span>
+                  <ul role="list" className="flex flex-col gap-0.5">
+                    <li>
+                      <CopyEmail />
+                    </li>
+                    <li>
+                      <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                        LinkedIn
+                      </a>
+                    </li>
+                    <li>
+                      <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                        Résumé
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-2">
+                    <span className="note text-muted-foreground">Last wash</span>
+                    <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{shortDate.format(lastUpdated)}</time>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="note text-muted-foreground">Currently</span>
+                    <NoidaTime />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </footer>
       </Container>
