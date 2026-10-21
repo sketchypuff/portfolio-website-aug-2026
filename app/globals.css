@@ -4,154 +4,88 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * The field journal. One object holds everything on the site: a naturalist's
+ * notebook, open on a desk. The page is the desk, the entries are its pages.
+ *
+ * Material rules:
+ *  - The desk is cream paper by day and dark wood by night. Type on it is ink.
+ *  - Every entry, plate and specimen tag is `paper`: a lit sheet in both
+ *    themes, because watercolour takes its light from the paper and goes muddy
+ *    on a dark ground. At night the desk goes dark and the paper stays lit.
+ *  - Blue is fountain-pen ink, and ink means "this takes you somewhere".
+ *  - Grays are never neutral; each carries a little of the paper's warmth.
+ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-rule: var(--rule);
+  --color-ring: var(--ring);
   --color-link: var(--link);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-destructive: var(--destructive);
+
   --color-paper: var(--paper);
   --color-paper-foreground: var(--paper-foreground);
   --color-paper-muted: var(--paper-muted);
   --color-paper-rule: var(--paper-rule);
+  --shadow-paper: var(--paper-shadow);
+  --shadow-paper-lifted: var(--paper-shadow-lifted);
+
   --color-wash-sky: var(--wash-sky);
   --color-wash-sap: var(--wash-sap);
   --color-wash-sienna: var(--wash-sienna);
   --color-wash-ochre: var(--wash-ochre);
   --color-wash-indigo: var(--wash-indigo);
-  --shadow-paper: var(--paper-shadow);
-  --shadow-paper-lifted: var(--paper-shadow-lifted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-newsreader);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Everything written is Literata; everything typed is Plex Mono. */
+  --font-sans: var(--font-literata);
+  --font-serif: var(--font-literata);
+  --font-mono: var(--font-plex-mono);
+  --font-heading: var(--font-literata);
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
 }
 
-/*
- * Blue scale built from the link blue (#2148f9, step 600). One hue (266),
- * lightness evenly spaced from 0.97 to 0.22, chroma a fraction of the sRGB
- * ceiling at each step so every value renders faithfully.
- *
- * Primitives only: deliberately outside @theme so they generate no utility
- * classes. Components use semantic tokens (`text-link`); a new use of a step
- * gets a semantic token that points here. The scale is the same in both
- * themes — dark mode picks different steps, it doesn't redefine them.
- */
 :root {
-  --blue-50: oklch(0.97 0.008 266);
-  --blue-100: oklch(0.894 0.033 266);
-  --blue-200: oklch(0.817 0.065 266);
-  --blue-300: oklch(0.741 0.106 266);
-  --blue-400: oklch(0.665 0.159 266);
-  --blue-500: oklch(0.588 0.215 266);
-  --blue-600: oklch(0.512 0.262 266);
-  --blue-700: oklch(0.439 0.263 266);
-  --blue-800: oklch(0.366 0.179 266);
-  --blue-900: oklch(0.293 0.11 266);
-  --blue-950: oklch(0.22 0.06 266);
-}
-
-/*
- * Field journal (world/field-journal). The page is the desk: cream paper in
- * light, a dark desk at night. Text is ink: a warm iron-gall brown-black, and
- * links in the blue-black of a Pilot Metropolitan, so "ink" means "this takes
- * you somewhere". Every gray carries a little warmth (hue 70–85) so it reads
- * as paper and pencil, not as UI chrome.
- */
-:root {
+  /* The desk: cream, cold-press paper under daylight. */
   --background: oklch(0.962 0.014 84);
-  --foreground: oklch(0.24 0.018 60);
-  --card: oklch(0.985 0.008 88);
-  --card-foreground: oklch(0.24 0.018 60);
-  --popover: oklch(0.985 0.008 88);
-  --popover-foreground: oklch(0.24 0.018 60);
-  --primary: oklch(0.24 0.018 60);
-  --primary-foreground: oklch(0.985 0.008 88);
-  --secondary: oklch(0.93 0.016 82);
-  --secondary-foreground: oklch(0.24 0.018 60);
-  --muted: oklch(0.93 0.016 82);
-  /* 5.3:1 on the page. Faded ink: dates, labels, plate captions. */
-  --muted-foreground: oklch(0.49 0.025 65);
-  --accent: oklch(0.93 0.016 82);
-  --accent-foreground: oklch(0.24 0.018 60);
-  --destructive: oklch(0.577 0.245 27.325);
-  /* Pencil rule. */
-  --border: oklch(0.85 0.022 80);
-  --input: oklch(0.85 0.022 80);
-  --ring: oklch(0.6 0.06 258);
-  /* Blue-black fountain-pen ink. 8.4:1 on the page. */
-  --link: oklch(0.42 0.11 258);
-  /* Confirmation only (the "Copied" tooltip). 4.95:1 under its foreground. */
+  /* Iron-gall ink, a brown-black that has dried. */
+  --foreground: oklch(0.25 0.02 55);
+  --muted: oklch(0.925 0.016 82);
+  /* Faded ink, 5.2:1 on the desk: dates, labels, captions. */
+  --muted-foreground: oklch(0.48 0.025 65);
+  /* A pencil rule. */
+  --border: oklch(0.84 0.022 80);
+  /* A heavier ink rule, for running heads and section lines. */
+  --rule: oklch(0.25 0.02 55 / 45%);
+  --ring: oklch(0.42 0.11 258);
+  /* Blue-black fountain-pen ink. 8.2:1 on the desk. */
+  --link: oklch(0.4 0.11 258);
+  /* Confirmation only (the "Copied" tooltip). */
   --success: oklch(0.52 0.14 150);
   --success-foreground: oklch(0.985 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
 
-  /*
-   * Lit paper: the surface every entry, plate and specimen sits on. Identical
-   * in both themes on purpose — watercolour scans go muddy on a dark ground,
-   * so at night the desk goes dark and the paper stays lit, like a lamp on
-   * the journal. Only the shadow changes.
-   */
-  --paper: oklch(0.982 0.01 88);
-  --paper-foreground: oklch(0.24 0.018 60);
+  /* Lit paper: the sheet an entry is written on. */
+  --paper: oklch(0.984 0.01 88);
+  --paper-foreground: oklch(0.25 0.02 55);
   --paper-muted: oklch(0.47 0.025 65);
   --paper-rule: oklch(0.86 0.02 80);
   --paper-shadow: 0 1px 1px oklch(0.3 0.03 60 / 0.06), 0 6px 14px -6px oklch(0.3 0.03 60 / 0.16);
   --paper-shadow-lifted: 0 2px 2px oklch(0.3 0.03 60 / 0.05), 0 18px 32px -12px oklch(0.3 0.03 60 / 0.26);
 
   /*
-   * Placeholder washes — a landscape painter's limited palette (cerulean, sap
-   * green, burnt sienna, yellow ochre, Payne's grey). They only exist to stand
-   * in for Yash's scanned plates; delete them with the last PlaceholderWash.
+   * Placeholder washes: a landscape painter's limited palette (cerulean, sap
+   * green, burnt sienna, yellow ochre, Payne's grey). They stand in for Yash's
+   * scanned plates and leave with the last PlaceholderWash.
    */
   --wash-sky: oklch(0.7 0.075 238);
   --wash-sap: oklch(0.64 0.085 132);
@@ -160,44 +94,20 @@
   --wash-indigo: oklch(0.42 0.045 258);
 }
 
+/* Night: a dark desk under a lamp. The paper stays lit, dimmed a touch. */
 .dark {
-  --background: oklch(0.2 0.012 62);
-  --foreground: oklch(0.92 0.016 84);
-  --card: oklch(0.25 0.012 62);
-  --card-foreground: oklch(0.92 0.016 84);
-  --popover: oklch(0.25 0.012 62);
-  --popover-foreground: oklch(0.92 0.016 84);
-  --primary: oklch(0.92 0.016 84);
-  --primary-foreground: oklch(0.25 0.012 62);
-  --secondary: oklch(0.29 0.012 62);
-  --secondary-foreground: oklch(0.92 0.016 84);
-  --muted: oklch(0.29 0.012 62);
-  --muted-foreground: oklch(0.72 0.022 78);
-  --accent: oklch(0.29 0.012 62);
-  --accent-foreground: oklch(0.92 0.016 84);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.92 0.016 84 / 14%);
-  --input: oklch(0.92 0.016 84 / 18%);
-  --ring: oklch(0.6 0.06 258);
+  --background: oklch(0.19 0.012 62);
+  --foreground: oklch(0.91 0.016 84);
+  --muted: oklch(0.27 0.012 62);
+  --muted-foreground: oklch(0.71 0.022 78);
+  --border: oklch(0.91 0.016 84 / 16%);
+  --rule: oklch(0.91 0.016 84 / 45%);
+  --ring: oklch(0.72 0.08 255);
   --link: oklch(0.78 0.08 255);
-  /* 11.2:1 under its foreground. */
   --success: oklch(0.8 0.15 150);
   --success-foreground: oklch(0.145 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
 
-  /* Paper stays lit; it is dimmed a touch so it doesn't glare off a dark desk. */
   --paper: oklch(0.93 0.014 86);
   --paper-shadow: 0 1px 1px oklch(0 0 0 / 0.3), 0 8px 18px -6px oklch(0 0 0 / 0.5);
   --paper-shadow-lifted: 0 2px 2px oklch(0 0 0 / 0.3), 0 22px 36px -12px oklch(0 0 0 / 0.65);
@@ -207,11 +117,22 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply font-serif;
+    /* Book figures in running text; dates and numbers switch to lining/tabular in mono. */
+    font-variant-numeric: oldstyle-nums proportional-nums;
+  }
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
+  .font-mono,
+  code,
+  kbd,
+  time {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  ::selection {
+    background: oklch(0.4 0.11 258 / 0.18);
   }
 }
 
@@ -224,4 +145,17 @@
 */
 @utility selection-root {
   transform: translate(0);
+}
+
+/*
+  A mono label as the journal types it: small caps-height, letterspaced,
+  faded ink. One utility so every label on the page agrees.
+*/
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: lining-nums tabular-nums;
 }

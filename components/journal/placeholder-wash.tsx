@@ -44,6 +44,21 @@ const PALETTES = {
 export type WashPalette = keyof typeof PALETTES;
 export type WashColor = (typeof PALETTES)[WashPalette][keyof (typeof PALETTES)[WashPalette]];
 
+/** The tube each wash colour stands for, for the key printed beside a plate. */
+export const WASH_NAMES: Record<WashColor, string> = {
+  "text-wash-sky": "Cerulean",
+  "text-wash-sap": "Sap green",
+  "text-wash-sienna": "Burnt sienna",
+  "text-wash-ochre": "Yellow ochre",
+  "text-wash-indigo": "Payne’s grey",
+};
+
+/** Sky, ridge, land: the three washes a palette lays down, in painting order. */
+export function paletteColors(palette: WashPalette): WashColor[] {
+  const { sky, ridge, land } = PALETTES[palette];
+  return [sky, ridge, land];
+}
+
 // Small seeded generator so the same seed always draws the same hills, on the
 // server and in every build.
 function random(seed: number) {

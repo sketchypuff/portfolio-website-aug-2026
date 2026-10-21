@@ -1,40 +1,47 @@
-import { PlaceholderWash, type WashPalette } from "@/components/journal/placeholder-wash";
+import {
+  PlaceholderSwatch,
+  PlaceholderWash,
+  WASH_NAMES,
+  paletteColors,
+  type WashPalette,
+} from "@/components/journal/placeholder-wash";
 import { cn } from "@/lib/utils";
-
-// Each entry lies on the desk at its own slight angle, the way loose pages do.
-// Literal classes so Tailwind sees them; cycled by position.
-const TILTS = ["-rotate-[0.9deg]", "rotate-[0.6deg]", "rotate-[0.4deg]", "-rotate-[0.7deg]"];
 
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 
 /**
- * The spread of entries on home: a two-column pile of `Entry` pages, the right
- * column dropped half a plate so it reads as pages laid on a desk rather than
- * a grid of cards. Hovering one quiets the rest (hover devices only).
+ * The entries of one section, stacked like the pages of the journal: each
+ * `Entry` is a full-width row on a pencil rule. Hovering one quiets the rest
+ * (hover devices only), so the eye lands on a single page at a time.
  */
-export function EntrySpread({ label, children }: { label: string; children: React.ReactNode }) {
+export function EntryList({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <ul
+    <ol
       role="list"
       aria-label={label}
       className={cn(
-        "grid gap-x-10 gap-y-12 md:grid-cols-2 md:pb-16 md:[&>li:nth-child(even)]:translate-y-16",
-        "[&>li]:transition-opacity [&>li]:duration-300 [@media(hover:hover)]:[&:has(>li:hover)>li:not(:hover)]:opacity-75",
+        "border-border border-b",
+        "[&>li]:transition-opacity [&>li]:duration-300 [&>li]:ease-out motion-reduce:[&>li]:transition-none",
+        "[@media(hover:hover)]:[&:has(>li:hover)>li:not(:hover)]:opacity-60",
       )}
     >
       {children}
-    </ul>
+    </ol>
   );
 }
 
+/** Kept for callers that still use the old name. */
+export const EntrySpread = EntryList;
+
 /**
- * One project as a field-journal entry: a numbered header, a watercolour plate,
- * and ink notes underneath. Hovering lifts the page off the desk (it squares
- * up and its shadow deepens) and the plate blooms. Under reduced motion only
- * the shadow changes, without a transition.
+ * One project as a page of the field journal. Reads left to right the way a
+ * naturalist's page does: the plate first (a watercolour on its own lit
+ * sheet), then the typed header (entry number, where, status), then the ink
+ * notes. The notes are the point of the motif, observed / found / changed,
+ * and until they are written the project line stands alone.
  *
- * `notes` is the observed / found / changed triplet the motif is built for;
- * entries without it show the project line alone.
+ * Hovering lifts the sheet off the desk and blooms the wash; both are
+ * `motion-safe` and settle instantly under reduced motion.
  */
 export function Entry({
   index,
@@ -42,6 +49,7 @@ export function Entry({
   title,
   palette,
   seed,
+  status = "In draft",
   notes,
 }: {
   index: number;
@@ -49,52 +57,75 @@ export function Entry({
   title: string;
   palette: WashPalette;
   seed: number;
+  status?: string;
   notes?: { observed: string; found: string; changed: string };
 }) {
   const number = String(index + 1).padStart(2, "0");
+  const numeral = ROMAN[index] ?? number;
+  const colors = paletteColors(palette);
 
   return (
-    <li>
-      <article
-        className={cn(
-          "group/entry bg-paper text-paper-foreground shadow-paper hover:shadow-paper-lifted rounded-[3px] p-4 sm:p-5",
-          "transition-[translate,rotate,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
-          "motion-safe:hover:-translate-y-1.5 motion-safe:hover:rotate-0",
-          TILTS[index % TILTS.length],
-        )}
-      >
-        <header className="text-paper-muted flex items-baseline justify-between gap-4 font-mono text-xs tracking-wider uppercase">
-          <span>Entry {number}</span>
-          <span>{company}</span>
-        </header>
-
-        <figure className="mt-3">
+    <li className="group/entry border-border grid gap-6 border-t py-8 md:grid-cols-12 md:gap-8 md:py-10">
+      <figure className="md:col-span-5">
+        <div
+          className={cn(
+            "bg-paper text-paper-foreground shadow-paper rounded-sm p-3",
+            "transition-[translate,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+            "motion-safe:group-hover/entry:shadow-paper-lifted motion-safe:group-hover/entry:-translate-y-1",
+            "motion-reduce:transition-none",
+          )}
+        >
           <div className="border-paper-rule relative aspect-[4/3] overflow-hidden border">
             <PlaceholderWash id={`entry-${number}`} seed={seed} palette={palette} />
-            <span className="bg-paper/85 text-paper-muted absolute top-2 left-2 px-1.5 py-0.5 font-mono text-xs tracking-wider uppercase">
+            <span className="label text-paper-muted bg-paper/85 absolute top-2 left-2 px-1.5 py-0.5">
               Placeholder wash
             </span>
           </div>
-          <figcaption className="text-paper-muted mt-2 flex justify-between gap-4 font-mono text-xs">
-            <span>Pl. {ROMAN[index] ?? number}</span>
-            <span>scan to come</span>
-          </figcaption>
-        </figure>
-
-        <div className="border-paper-rule mt-4 border-t pt-3">
-          <p className="font-serif text-lg leading-snug font-medium text-pretty">{title}</p>
-          {notes && (
-            <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 font-serif">
-              {(["observed", "found", "changed"] as const).map((key) => (
-                <div key={key} className="contents">
-                  <dt className="text-paper-muted pt-0.5 font-mono text-xs uppercase">{key}</dt>
-                  <dd>{notes[key]}</dd>
-                </div>
+          <figcaption className="label text-paper-muted mt-2.5 flex items-center justify-between gap-4">
+            <span>Pl. {numeral}</span>
+            <span className="flex items-center gap-2" aria-label="Pigments">
+              {colors.map((color, i) => (
+                <span key={color} className="flex items-center gap-1" title={WASH_NAMES[color]}>
+                  <PlaceholderSwatch id={`entry-${number}-dab-${i}`} seed={seed + i * 3} color={color} className="size-3.5" />
+                </span>
               ))}
-            </dl>
-          )}
+            </span>
+          </figcaption>
         </div>
-      </article>
+      </figure>
+
+      <div className="flex flex-col gap-4 md:col-span-7 md:pt-1">
+        <header className="label text-muted-foreground flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span className="text-foreground">Entry {number}</span>
+          <span aria-hidden>·</span>
+          <span>{company}</span>
+          <span aria-hidden className="bg-border mx-1 hidden h-px flex-1 self-center sm:block" />
+          <span>{status}</span>
+        </header>
+
+        <p className="font-serif text-[1.375rem] leading-snug font-medium text-pretty">{title}</p>
+
+        {notes ? (
+          <dl className="mt-1 grid grid-cols-[5.5rem_1fr] gap-x-4 gap-y-2 text-base leading-relaxed">
+            {(["observed", "found", "changed"] as const).map((key) => (
+              <div key={key} className="contents">
+                <dt className="label text-muted-foreground pt-1.5">{key}</dt>
+                <dd>{notes[key]}</dd>
+              </div>
+            ))}
+          </dl>
+        ) : (
+          <p className="text-muted-foreground mt-1 text-base italic">
+            Notes to follow: what was observed, what was found, what changed.
+          </p>
+        )}
+
+        <p className="label text-muted-foreground mt-auto flex flex-wrap gap-x-2 pt-2">
+          <span>Pigments</span>
+          <span aria-hidden>—</span>
+          <span className="normal-case tracking-normal">{colors.map((c) => WASH_NAMES[c]).join(", ")}</span>
+        </p>
+      </div>
     </li>
   );
 }

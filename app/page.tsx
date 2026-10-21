@@ -1,21 +1,21 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { ArrowRightIcon, ArrowUpRightIcon, SmileyXEyesIcon } from "@phosphor-icons/react/ssr";
 import { CopyEmail } from "@/components/copy-email";
-import { Entry, EntrySpread } from "@/components/journal/entry";
+import { Entry, EntryList } from "@/components/journal/entry";
 import { JournalHeading } from "@/components/journal/journal-heading";
 import { PlaceholderSwatch, type WashColor, type WashPalette } from "@/components/journal/placeholder-wash";
+import { Rail, type RailSection } from "@/components/journal/rail";
 import { NoidaTime } from "@/components/noida-time";
 import { Oneko } from "@/components/oneko";
 import { ProfessionPill } from "@/components/profession-pill";
-import { ThemeTextToggle } from "@/components/theme-toggle";
 import { TextLink } from "@/components/text-link";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 // Hardcoded until these have real entries in content/, so entries are not
 // linked yet. `palette` and `seed` pick each placeholder wash; both go away
-// when Yash's scanned plates replace them.
+// when Yash's scanned plates replace them. `notes` (observed / found /
+// changed) is the ink under each plate; none are written yet.
 const selectedWork: {
   company: string;
   title: string;
@@ -56,18 +56,9 @@ const otherWork: { title: string; swatch: WashColor }[] = [
       "Design domain-based (accounting, marketing etc.) skill driven experiences for Excel and Powerpoint agent mode",
     swatch: "text-wash-sky",
   },
-  {
-    title: "Optimised image masking with a refined selection experience",
-    swatch: "text-wash-sienna",
-  },
-  {
-    title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
-    swatch: "text-wash-sap",
-  },
-  {
-    title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
-    swatch: "text-wash-ochre",
-  },
+  { title: "Optimised image masking with a refined selection experience", swatch: "text-wash-sienna" },
+  { title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature", swatch: "text-wash-sap" },
+  { title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature", swatch: "text-wash-ochre" },
   {
     title: "Reduced time taken by developers in discovering new content and finding team resources",
     swatch: "text-wash-indigo",
@@ -104,17 +95,16 @@ const writing: { date: string; title: string; href?: string }[] = [
   },
 ];
 
-// The flyleaf: who keeps this journal, the way a naturalist's notebook opens.
-const flyleaf = [
-  { term: "Observer", detail: "Yash Shenai" },
-  { term: "Station", detail: "Noida, India" },
-  { term: "Field", detail: "Agentic AI in Excel and PowerPoint" },
-  { term: "Trained", detail: "Industrial design, NID" },
+const sections: RailSection[] = [
+  { id: "selected-work", numeral: "I", label: "Selected work" },
+  { id: "writing", numeral: "II", label: "Writing" },
+  { id: "loose-leaves", numeral: "III", label: "Loose leaves" },
+  { id: "colophon", numeral: "IV", label: "Colophon" },
 ];
 
 // Built from parts so the month is always three letters ("Sep", not en-GB's "Sept").
 const dateParts = new Intl.DateTimeFormat("en-US", {
-  day: "numeric",
+  day: "2-digit",
   month: "short",
   year: "numeric",
   timeZone: "UTC",
@@ -125,9 +115,8 @@ function formatDay(date: Date) {
   return `${part("day")} ${part("month")} ${part("year")}`;
 }
 
-const label = "text-muted-foreground font-mono text-xs tracking-wider uppercase";
 const writingRow =
-  "grid grid-cols-[3.25rem_1fr] gap-x-4 gap-y-1 py-3 sm:grid-cols-[3.25rem_7.5rem_1fr] sm:items-baseline";
+  "grid grid-cols-[3.25rem_1fr] gap-x-4 gap-y-1 py-3.5 sm:grid-cols-[3.25rem_7.5rem_1fr] sm:items-baseline";
 const quietLink = "hover:text-link transition-colors";
 
 export default function HomePage() {
@@ -138,217 +127,186 @@ export default function HomePage() {
   return (
     <div className="@container overflow-x-clip">
       <Oneko />
-      <Container size="wide" className="flex flex-col gap-24 pt-8 pb-16 font-serif text-base leading-snug">
-        <header className="flex flex-col gap-12">
-          {/* Running head, as at the top of every page of the journal. */}
-          <div className={cn(label, "border-foreground/40 flex justify-between gap-4 border-b pb-2")}>
-            <span>Field journal</span>
-            <span className="hidden sm:inline">Notes from product design, kept on paper first</span>
-            <span>28.54° N, 77.39° E</span>
+      <Container size="wide" className="pt-8 pb-20 text-base leading-snug lg:pt-10">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-12">
+          <div className="lg:col-span-3">
+            <Rail sections={sections} />
           </div>
 
-          <div className="grid gap-10 md:grid-cols-12">
-            <div className="flex flex-col gap-5 md:col-span-8">
-              <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
-                <h1 className="text-2xl font-medium lg:whitespace-nowrap">
-                  Hi! I’m Yash, your neighbourhood
-                </h1>
-                <span className="font-sans text-base font-medium">
+          <div className="flex min-w-0 flex-col gap-20 lg:col-span-9 lg:gap-24">
+            {/* The first page: who is writing, in their own hand. */}
+            <header className="flex flex-col gap-6 lg:pt-1">
+              <div className="flex flex-col items-start gap-2 text-[1.75rem] leading-tight font-medium lg:flex-row lg:items-baseline lg:gap-3">
+                <h1 className="lg:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
+                <span className="text-xl font-normal lg:text-[1.75rem]">
                   <ProfessionPill />
                 </span>
               </div>
-              <div className="text-muted-foreground max-w-[34rem] space-y-[1lh] text-lg">
+              <div className="max-w-[36rem] space-y-[1lh] text-lg leading-relaxed">
                 <p>
-                  Currently, I make agentic AI experiences feel <em className="text-foreground">oh yeah!</em>{" "}
-                  at Microsoft. Previously, I’ve worked at Adobe, Postman and Samsung.
+                  Currently, I make agentic AI experiences feel <em>oh yeah!</em> at Microsoft.
+                  Previously, I’ve worked at Adobe, Postman and Samsung.
                 </p>
-                <p>
-                  I believe all software should be opinionated and delightful to use in order to be called
-                  usable.
+                <p className="text-muted-foreground">
+                  I believe all software should be opinionated and delightful to use in order to be
+                  called usable. I design on paper first, and I paint landscapes wet and loose. This
+                  journal keeps both.
                 </p>
               </div>
-            </div>
+            </header>
 
-            <nav
-              aria-label="Main"
-              className="flex flex-col items-start gap-1 md:col-span-3 md:col-start-10 md:items-end"
-            >
-              <span className={cn(label, "mb-1")}>Index</span>
-              <TextLink href={site.resume} icon={ArrowUpRightIcon}>
-                Open resumé
-              </TextLink>
-              <TextLink href="/about" icon={SmileyXEyesIcon}>
-                About
-              </TextLink>
-              <ThemeTextToggle />
-            </nav>
-          </div>
-
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-4">
-            {flyleaf.map((row) => (
-              <div key={row.term} className="border-border flex flex-col gap-1 border-t pt-2">
-                <dt className={label}>{row.term}</dt>
-                <dd>{row.detail}</dd>
-              </div>
-            ))}
-          </dl>
-        </header>
-
-        <section className="flex flex-col gap-10">
-          <JournalHeading numeral="I" aside={`${String(selectedWork.length).padStart(2, "0")} entries`}>
-            Selected work
-          </JournalHeading>
-          <EntrySpread label="Selected work">
-            {selectedWork.map((item, i) => (
-              <Entry
-                key={i}
-                index={i}
-                company={item.company}
-                title={item.title}
-                palette={item.palette}
-                seed={item.seed}
-              />
-            ))}
-          </EntrySpread>
-        </section>
-
-        <section className="flex flex-col gap-4">
-          <JournalHeading
-            numeral="II"
-            aside={
-              <Link
-                href="/blog"
-                className="text-link group inline-flex items-center gap-1 transition-opacity hover:opacity-70"
+            <section className="flex flex-col gap-2">
+              <JournalHeading
+                id="selected-work"
+                numeral="I"
+                aside={`${String(selectedWork.length).padStart(2, "0")} entries`}
               >
-                Open blog
-                <ArrowRightIcon
-                  aria-hidden
-                  className="size-4 transition-transform duration-300 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
-                />
-              </Link>
-            }
-          >
-            Writing
-          </JournalHeading>
-          <ol role="list">
-            {posts.map((post, i) => {
-              const content = (
-                <>
-                  <span className={cn(label, "pt-0.5")}>No. {String(posts.length - i).padStart(2, "0")}</span>
-                  <time
-                    dateTime={post.date}
-                    className={cn(label, "col-start-2 row-start-2 sm:row-start-1 pt-0.5")}
-                  >
-                    {formatDay(new Date(post.date))}
-                  </time>
-                  <span
-                    className={cn(
-                      "col-start-2 row-start-1 text-lg sm:col-start-3",
-                      post.href && "group-hover:text-link transition-colors",
-                    )}
-                  >
-                    {post.title}
-                  </span>
-                </>
-              );
-              return (
-                <li key={post.title} className="border-border border-b">
-                  {post.href ? (
-                    <Link
-                      href={post.href}
-                      className={cn(
-                        writingRow,
-                        "group focus-visible:ring-ring -mx-2 rounded-sm px-2 focus-visible:ring-2 focus-visible:outline-none",
+                Selected work
+              </JournalHeading>
+              <EntryList label="Selected work">
+                {selectedWork.map((item, i) => (
+                  <Entry
+                    key={i}
+                    index={i}
+                    company={item.company}
+                    title={item.title}
+                    palette={item.palette}
+                    seed={item.seed}
+                  />
+                ))}
+              </EntryList>
+            </section>
+
+            <section className="flex flex-col gap-2">
+              <JournalHeading
+                id="writing"
+                numeral="II"
+                aside={
+                  <TextLink href="/blog" className="normal-case tracking-normal">
+                    Open blog
+                  </TextLink>
+                }
+              >
+                Writing
+              </JournalHeading>
+              <ol role="list" className="border-border border-b">
+                {posts.map((post, i) => {
+                  const content = (
+                    <>
+                      <span className="label text-muted-foreground pt-1">
+                        No. {String(posts.length - i).padStart(2, "0")}
+                      </span>
+                      <time
+                        dateTime={post.date}
+                        className="label text-muted-foreground col-start-2 row-start-2 pt-1 sm:row-start-1"
+                      >
+                        {formatDay(new Date(post.date))}
+                      </time>
+                      <span
+                        className={cn(
+                          "col-start-2 row-start-1 text-lg leading-snug text-pretty sm:col-start-3",
+                          post.href && "group-hover:text-link transition-colors",
+                        )}
+                      >
+                        {post.title}
+                      </span>
+                    </>
+                  );
+                  return (
+                    <li key={post.title} className="border-border border-t">
+                      {post.href ? (
+                        <Link
+                          href={post.href}
+                          className={cn(
+                            writingRow,
+                            "group focus-visible:ring-ring -mx-2 rounded-sm px-2 focus-visible:ring-2 focus-visible:outline-none",
+                          )}
+                        >
+                          {content}
+                        </Link>
+                      ) : (
+                        <div className={writingRow}>{content}</div>
                       )}
-                    >
-                      {content}
-                    </Link>
-                  ) : (
-                    <div className={writingRow}>{content}</div>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
-        </section>
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
 
-        <section className="flex flex-col gap-8">
-          <JournalHeading numeral="III" aside="Loose leaves">
-            Other work
-          </JournalHeading>
-          <ul role="list" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {otherWork.map((item, i) => (
-              <li
-                key={i}
-                className="bg-paper text-paper-foreground shadow-paper relative flex gap-4 rounded-[3px] p-4 pl-5"
-              >
-                {/* The punched hole of a specimen tag. */}
-                <span
-                  aria-hidden
-                  className="border-paper-rule bg-background absolute top-3 right-3 size-2.5 rounded-full border"
-                />
-                <PlaceholderSwatch
-                  id={`leaf-${i}`}
-                  seed={i * 5 + 2}
-                  color={item.swatch}
-                  className="size-11 shrink-0"
-                />
-                <div className="flex flex-col gap-1">
-                  <span className="text-paper-muted font-mono text-xs tracking-wider uppercase">
-                    Specimen {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p>{item.title}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <footer className="flex flex-col gap-8">
-          <JournalHeading numeral="IV">Colophon</JournalHeading>
-          <div className="grid gap-10 sm:grid-cols-3">
-            <div className="flex flex-col gap-2">
-              <span className={label}>Contact</span>
-              <ul role="list">
-                <li>
-                  <CopyEmail />
-                </li>
-                <li>
-                  <a
-                    href={site.social.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={quietLink}
+            <section className="flex flex-col gap-8">
+              <JournalHeading id="loose-leaves" numeral="III" aside="Other work">
+                Loose leaves
+              </JournalHeading>
+              <ul role="list" className="grid gap-5 sm:grid-cols-2">
+                {otherWork.map((item, i) => (
+                  <li
+                    key={i}
+                    className="bg-paper text-paper-foreground shadow-paper relative flex gap-4 rounded-sm p-4 pr-10"
                   >
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
-                    Resumé
-                  </a>
-                </li>
+                    {/* The punched hole of a specimen tag. */}
+                    <span
+                      aria-hidden
+                      className="border-paper-rule bg-background absolute top-3 right-3 size-2.5 rounded-full border"
+                    />
+                    <PlaceholderSwatch
+                      id={`leaf-${i}`}
+                      seed={i * 5 + 2}
+                      color={item.swatch}
+                      className="mt-0.5 size-10 shrink-0"
+                    />
+                    <div className="flex flex-col gap-1.5">
+                      <span className="label text-paper-muted">Specimen {String(i + 1).padStart(2, "0")}</span>
+                      <p className="leading-snug text-pretty">{item.title}</p>
+                    </div>
+                  </li>
+                ))}
               </ul>
-            </div>
-            <div className="flex flex-col gap-2">
-              <span className={label}>Last entry</span>
-              <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
-            </div>
-            <div className="flex flex-col gap-2 sm:items-end sm:text-right">
-              <span className={label}>Currently</span>
-              <NoidaTime />
-            </div>
+            </section>
+
+            <footer className="flex flex-col gap-8">
+              <JournalHeading id="colophon" numeral="IV">
+                Colophon
+              </JournalHeading>
+              <div className="grid gap-10 sm:grid-cols-3">
+                <div className="flex flex-col gap-2">
+                  <span className="label text-muted-foreground">Contact</span>
+                  <ul role="list" className="flex flex-col gap-0.5">
+                    <li>
+                      <CopyEmail />
+                    </li>
+                    <li>
+                      <a
+                        href={site.social.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={quietLink}
+                      >
+                        LinkedIn
+                      </a>
+                    </li>
+                    <li>
+                      <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                        Résumé
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="label text-muted-foreground">Last entry</span>
+                  <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
+                </div>
+                <div className="flex flex-col gap-2 sm:items-end sm:text-right">
+                  <span className="label text-muted-foreground">Currently</span>
+                  <NoidaTime />
+                </div>
+              </div>
+              <div className="label text-muted-foreground border-border flex flex-col justify-between gap-2 border-t pt-3 sm:flex-row">
+                <span>Fauna sighted on this page: one cat, wandering</span>
+                <span>Set in Literata and Plex Mono · plates are placeholder washes until the scans are in</span>
+              </div>
+            </footer>
           </div>
-          <div
-            className={cn(
-              label,
-              "border-border flex flex-col justify-between gap-2 border-t pt-3 sm:flex-row",
-            )}
-          >
-            <span>Fauna sighted on this page: one cat, wandering</span>
-            <span>Plates are placeholder washes until the scans are in</span>
-          </div>
-        </footer>
+        </div>
       </Container>
     </div>
   );
