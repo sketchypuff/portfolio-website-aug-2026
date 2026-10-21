@@ -1,5 +1,8 @@
 # Motion
 
+> On `world/sketchbook` the home page has no reveals — motion is hover and
+> press only. The extra hover rows are in [sketchbook.md](sketchbook.md#motion).
+
 Alive, but the content stays the star. Motion confirms; it never performs.
 
 ## House curve and defaults (Decided)

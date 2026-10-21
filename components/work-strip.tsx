@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { play } from "cuelume";
 import { useReducedMotion } from "motion/react";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { Dab, type Pigment } from "@/components/wash";
 import { cn } from "@/lib/utils";
 
 /** Width of one stepper button (the hit area); the tick sits in its centre. */
@@ -21,8 +21,13 @@ const STEP = 40;
  * 1.5rem / 2rem minimums are its px-6 / sm:px-8 padding.
  *
  * `heading` is the section's `SectionLabel`; `name` labels the stepper group; `labels` names each card for its
- * screen-reader text, in order. `dimOnHover` fades every card but the hovered
- * one (hovering devices only).
+ * screen-reader text, in order. `swatches` (one pigment per card) turns the
+ * stepper ticks into dabs of each card's paint, like the test swatches in a
+ * sketchbook margin. `dimOnHover` fades every card but the hovered one
+ * (hovering devices only).
+ *
+ * Nothing here animates on scroll or load: in the sketchbook, motion is
+ * hover and press only.
  *
  * Needs an `@container` ancestor spanning the viewport (with `overflow-x-clip`)
  * — the home page wrapper is one.
@@ -31,18 +36,18 @@ export function WorkStrip({
   heading,
   name,
   labels,
+  swatches,
   dimOnHover = false,
   children,
 }: {
   heading: React.ReactNode;
   name: string;
   labels: string[];
+  swatches?: Pigment[];
   dimOnHover?: boolean;
   children: React.ReactNode;
 }) {
-  // Typed as a div because RevealGroup models its props on the div variant
-  // (see reveal.tsx); it is the <ul>, and only scroll APIs are used on it.
-  const listRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const [active, setActive] = useState(0);
   // Mirrors `active` so the scroll handler can tell when the card changes.
   const activeRef = useRef(0);
@@ -117,7 +122,7 @@ export function WorkStrip({
 
   return (
     <div className="flex flex-col gap-8">
-      <Reveal className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4">
         {heading}
         {/* -mr-[7px] puts the pill's right edge, not the button's, on the column edge. */}
         <div role="group" aria-label={name} className="relative -mr-[7px]">
@@ -139,21 +144,31 @@ export function WorkStrip({
                   className="group focus-visible:ring-ring flex h-8 cursor-pointer items-center justify-center rounded-md focus-visible:ring-2 focus-visible:outline-none"
                 >
                   <span className="sr-only">{label}</span>
-                  <span
-                    aria-hidden
-                    className={cn(
-                      "w-0.5 rounded-full transition-[height,background-color] duration-300 motion-reduce:transition-none",
-                      i === active ? "bg-foreground h-3.5" : "bg-muted-foreground group-hover:bg-foreground h-3",
-                    )}
-                  />
+                  {swatches?.[i] ? (
+                    <Dab
+                      pigment={swatches[i]}
+                      className={cn(
+                        "transition-[scale,opacity] duration-300 motion-reduce:transition-none",
+                        i === active ? "scale-125" : "opacity-55 group-hover:opacity-100 dark:opacity-80",
+                      )}
+                    />
+                  ) : (
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "w-0.5 rounded-full transition-[height,background-color] duration-300 motion-reduce:transition-none",
+                        i === active ? "bg-foreground h-3.5" : "bg-muted-foreground group-hover:bg-foreground h-3",
+                      )}
+                    />
+                  )}
                 </button>
               </li>
             ))}
           </ul>
         </div>
-      </Reveal>
-      <RevealGroup
-        as="ul"
+      </div>
+      <ul
+        role="list"
         ref={listRef}
         className={cn(
           "mx-[calc(50%-50cqw)] flex snap-x snap-mandatory scroll-px-(--gutter) gap-6 overflow-x-auto px-(--gutter) [--gutter:max(1.5rem,calc((100cqw-875px)/2))] [scrollbar-width:none] sm:[--gutter:max(2rem,calc((100cqw-875px)/2))] [&::-webkit-scrollbar]:hidden",
@@ -166,23 +181,57 @@ export function WorkStrip({
         )}
       >
         {children}
-      </RevealGroup>
+      </ul>
     </div>
   );
 }
 
 /**
- * One 570px card: a 4:3 image slot with its text below. The inner wrapper is
- * what `WorkStrip dimOnHover` fades — the <li> can't be, because its reveal
- * animation sets opacity inline.
+ * One card in a strip: a painting on its sheet of paper, with the text below.
+ * `art` is the painting (a `Wash` placeholder until Yash's scans exist); it
+ * sits on a `plate` — paper that stays lit in dark mode, because transparent
+ * paint takes its light from the paper and goes muddy on a dark page.
+ * `plate` cards are 570px (selected work), `study` cards 380px (other work).
+ * The sheet's bottom margin carries pencil-style notes in mono: `note` on the
+ * left (the `PlaceholderTag` for now), `number` on the right.
+ *
+ * The inner wrapper is what `WorkStrip dimOnHover` fades. Hovering the card
+ * lets the wash spread a little inside its sheet (1.02, the house image zoom).
  */
-export function WorkCard({ children }: { children: React.ReactNode }) {
+export function WorkCard({
+  art,
+  size = "plate",
+  note,
+  number,
+  children,
+}: {
+  art: React.ReactNode;
+  size?: "plate" | "study";
+  note?: React.ReactNode;
+  number?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <RevealItem as="li" className="group/card w-[570px] max-w-[85vw] shrink-0 snap-start">
+    <li
+      className={cn(
+        "group/card max-w-[85vw] shrink-0 snap-start",
+        size === "plate" ? "w-[570px]" : "w-[380px]",
+      )}
+    >
       <div className="transition-opacity delay-100 duration-200 ease-out group-hover/card:delay-0 motion-reduce:transition-none">
-        <div className="bg-muted aspect-[4/3] rounded-xl" />
+        <div className="bg-plate ring-foreground/5 relative rounded-[3px] p-2.5 pb-8 shadow-xs ring-1">
+          <div className="aspect-[4/3] overflow-hidden">
+            <div className="size-full transition-transform duration-500 ease-out will-change-transform group-hover/card:scale-[1.02] motion-reduce:transition-none">
+              {art}
+            </div>
+          </div>
+          <div className="text-plate-foreground absolute inset-x-3 bottom-2 flex justify-between gap-4 font-mono text-xs uppercase">
+            <span>{note}</span>
+            <span>{number}</span>
+          </div>
+        </div>
         <div className="mt-5">{children}</div>
       </div>
-    </RevealItem>
+    </li>
   );
 }

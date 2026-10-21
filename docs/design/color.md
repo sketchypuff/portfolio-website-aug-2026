@@ -1,5 +1,8 @@
 # Color
 
+> `world/sketchbook`: grays are paper and ink, plus pigments — see
+> [sketchbook.md](sketchbook.md#color). The table has the branch values.
+
 Source: `app/globals.css`. Light values live on `:root`, dark values on
 `.dark`; the `@theme inline` block turns each `--token` into Tailwind classes
 (`--muted-foreground` → `text-muted-foreground`, `bg-muted-foreground`, …).
@@ -53,13 +56,13 @@ only one, so it breaks in the other theme.
 
 | Class | Light | Dark | Used for |
 | --- | --- | --- | --- |
-| `bg-background` | `oklch(1 0 0)` white | `0.145` | page (`body`, set in `globals.css` and `app/layout.tsx`); `ProfessionPill` surface |
-| `text-foreground` | `0.145` | `0.985` | all default text (inherited from `body`); prose `strong` |
-| `text-muted-foreground` | `0.556` | `0.708` | secondary text: intro paragraph, metadata, company names, dimmed titles, post subtitle, prose list numbers and bullets, figure captions, blockquotes; quiet-link hover |
-| `bg-muted` | `0.97` | `0.269` | empty image slots (`WorkCard`), image placeholders (`Figure`, `Gallery`), `IconCircle`, inline `code`, `pre` |
-| `border-border` | `0.922` | white 10% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
-| `ring` (via `outline-ring/50`) | `0.708` | `0.556` | the focus outline on every element (set on `*` in `globals.css`) |
-| `text-link` | `var(--blue-600)` = `#2148f9` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon |
+| `bg-background` | paper `0.972 0.009 85` | night `0.2 0.018 262` | page (`body`, set in `globals.css` and `app/layout.tsx`); `ProfessionPill` surface |
+| `text-foreground` | ink `0.24 0.03 262` | `0.95 0.01 85` | all default text (inherited from `body`); prose `strong` |
+| `text-muted-foreground` | `0.5 0.018 70` | `0.74 0.015 80` | secondary text: intro paragraph, metadata, company names, dimmed titles, post subtitle, prose list numbers and bullets, figure captions, blockquotes; quiet-link hover |
+| `bg-muted` | `0.94 0.012 80` | `0.27 0.018 262` | stepper pill (`WorkStrip`), image placeholders (`Figure`, `Gallery`), `IconCircle`, inline `code`, `pre` |
+| `border-border` | `0.86 0.016 80` | white 12% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
+| `ring` (via `outline-ring/50`) | `0.6 0.02 70` | `0.6 0.015 80` | the focus outline on every element (set on `*` in `globals.css`) |
+| `text-link` | `var(--pigment-ultramarine)` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon |
 | `bg-success` / `text-success-foreground` | `0.52 0.14 150` / `0.985` (4.95:1) | `0.8 0.15 150` / `0.145` (11.2:1) | the `CopyEmail` tooltip once copied — nothing else |
 | `text-destructive` / `border-destructive` | red, `0.577 0.245 27` | red, `0.704 0.191 22` | `MdxError` in `components/content/mdx.tsx` only |
 
@@ -77,7 +80,8 @@ white so it reads on any dark surface.
 | `components/text-link.tsx`, `components/theme-toggle.tsx` | `link` |
 | `components/ui/tooltip.tsx`, `components/copy-email.tsx` | `foreground` / `background` (tooltip); `success` / `success-foreground` (copied) |
 | `components/profession-pill.tsx` | `background`, `border`, `shadow-xs`, `link` (icon) |
-| `components/work-strip.tsx` | `muted` (image slot, stepper pill), `muted-foreground` / `foreground` (stepper ticks) |
+| `components/work-strip.tsx` | `plate`, `plate-foreground`, `foreground/5` (sheet), `muted` (stepper pill), `muted-foreground` / `foreground` (stepper ticks), pigments via `Dab` |
+| `components/wash.tsx` | pigments (inline `var()`), `plate-foreground` |
 | `components/content/figure.tsx` | `muted` (placeholder), `muted-foreground` (caption) |
 | `components/icon-circle.tsx` | `muted` (circle) |
 | `components/content/post-nav.tsx` | `muted-foreground` (title hover) |
@@ -103,7 +107,8 @@ else is a new token decision — add it to `globals.css` and this table instead.
 
 | Combination | Where | Why |
 | --- | --- | --- |
-| `border-foreground/50` + `border-b-[0.5px]` | home writing rows | Figma hairline |
+| `border-foreground/50` + `border-b-[0.5px]` | home writing rows, masthead, colophon rule | Figma hairline |
+| `ring-foreground/5` | `WorkCard` sheet | the paper's edge, barely there |
 | `decoration-muted-foreground/40` | prose links | underline quieter than text |
 | `outline-ring/50` | every element, `globals.css` | shadcn default focus outline |
 | `border-destructive/40` | `MdxError` | error box |

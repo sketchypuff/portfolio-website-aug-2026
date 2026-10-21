@@ -1,5 +1,10 @@
 # Design
 
+> **Branch `world/sketchbook`:** this branch prototypes the watercolour
+> sketchbook world. Where [sketchbook.md](docs/design/sketchbook.md)
+> disagrees with anything below (achromatic grays, blue for links only,
+> home reveals), sketchbook.md wins on this branch.
+
 A quiet, achromatic portfolio where the work and the writing carry the page.
 Hierarchy comes from weight, size, and the one gray (`muted-foreground`), never
 from color. The only hue on the site is `link` blue, and it means "this takes
@@ -56,6 +61,7 @@ Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
 | [components.md](docs/design/components.md) | building UI — lists every shared component |
 | [motion.md](docs/design/motion.md) | anything that moves, hovers, or presses |
 | [decisions.md](docs/design/decisions.md) | the dated log of what was decided and why |
+| [sketchbook.md](docs/design/sketchbook.md) | anything on this branch: paper, pigments, washes, dark mode |
 
 ## Keeping this current
 

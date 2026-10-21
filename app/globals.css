@@ -8,6 +8,15 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-link: var(--link);
+  --color-plate: var(--plate);
+  --color-plate-foreground: var(--plate-foreground);
+  --color-pigment-ultramarine: var(--pigment-ultramarine);
+  --color-pigment-cerulean: var(--pigment-cerulean);
+  --color-pigment-indigo: var(--pigment-indigo);
+  --color-pigment-sap: var(--pigment-sap);
+  --color-pigment-ochre: var(--pigment-ochre);
+  --color-pigment-sienna: var(--pigment-sienna);
+  --color-pigment-rose: var(--pigment-rose);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --font-sans: var(--font-geist-sans);
@@ -75,27 +84,48 @@
   --blue-950: oklch(0.22 0.06 266);
 }
 
+/*
+ * Sketchbook world. Pigments are the paints the placeholder washes are laid
+ * in, named after real tube colours so a label like "Burnt sienna" means
+ * something. They are the same in both themes: paint doesn't change at night,
+ * and in dark mode it only ever sits on `plate` (lit paper), never on the
+ * dark page. `plate` is the paper a wash is painted on — also fixed across
+ * themes, because transparent watercolour takes its light from the paper.
+ */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --pigment-ultramarine: oklch(0.47 0.16 268);
+  --pigment-cerulean: oklch(0.68 0.1 232);
+  --pigment-indigo: oklch(0.36 0.05 255);
+  --pigment-sap: oklch(0.6 0.12 128);
+  --pigment-ochre: oklch(0.79 0.12 80);
+  --pigment-sienna: oklch(0.56 0.13 45);
+  --pigment-rose: oklch(0.62 0.16 8);
+  --plate: oklch(0.992 0.004 85);
+  --plate-foreground: oklch(0.48 0.015 70);
+}
+
+:root {
+  /* Cold-press paper and blue-black fountain-pen ink. */
+  --background: oklch(0.972 0.009 85);
+  --foreground: oklch(0.24 0.03 262);
+  --card: oklch(0.992 0.004 85);
+  --card-foreground: oklch(0.24 0.03 262);
+  --popover: oklch(0.992 0.004 85);
+  --popover-foreground: oklch(0.24 0.03 262);
+  --primary: oklch(0.24 0.03 262);
+  --primary-foreground: oklch(0.985 0.005 85);
+  --secondary: oklch(0.94 0.012 80);
+  --secondary-foreground: oklch(0.24 0.03 262);
+  --muted: oklch(0.94 0.012 80);
+  --muted-foreground: oklch(0.5 0.018 70);
+  --accent: oklch(0.94 0.012 80);
+  --accent-foreground: oklch(0.24 0.03 262);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  /* The one accent on the site, reserved for links. #2148f9 from the Figma file. */
-  --link: var(--blue-600);
+  --border: oklch(0.86 0.016 80);
+  --input: oklch(0.86 0.016 80);
+  --ring: oklch(0.6 0.02 70);
+  /* Links are ultramarine, the pigment, rather than the old screen blue. */
+  --link: var(--pigment-ultramarine);
   /* Confirmation only (the "Copied" tooltip). 4.95:1 under its foreground. */
   --success: oklch(0.52 0.14 150);
   --success-foreground: oklch(0.985 0 0);
@@ -116,24 +146,25 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* The desk at night: blue-black ink as the page, paper-coloured text. */
+  --background: oklch(0.2 0.018 262);
+  --foreground: oklch(0.95 0.01 85);
+  --card: oklch(0.25 0.018 262);
+  --card-foreground: oklch(0.95 0.01 85);
+  --popover: oklch(0.25 0.018 262);
+  --popover-foreground: oklch(0.95 0.01 85);
+  --primary: oklch(0.95 0.01 85);
+  --primary-foreground: oklch(0.24 0.03 262);
+  --secondary: oklch(0.27 0.018 262);
+  --secondary-foreground: oklch(0.95 0.01 85);
+  --muted: oklch(0.27 0.018 262);
+  --muted-foreground: oklch(0.74 0.015 80);
+  --accent: oklch(0.27 0.018 262);
+  --accent-foreground: oklch(0.95 0.01 85);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: oklch(0.6 0.015 80);
   --link: var(--blue-300);
   /* 11.2:1 under its foreground. */
   --success: oklch(0.8 0.15 150);
@@ -174,4 +205,13 @@
 */
 @utility selection-root {
   transform: translate(0);
+}
+
+/*
+  Paper tooth for the sketchbook page: a generated fractal-noise speckle,
+  multiplied over the paper colour. Provisional — a stand-in for a scan of
+  Yash's own sheet, which replaces this url and nothing else.
+*/
+@utility paper-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

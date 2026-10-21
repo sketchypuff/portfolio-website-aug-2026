@@ -19,6 +19,7 @@ import { SectionLabel } from "@/components/section-label";
 import { TextLink } from "@/components/text-link";
 import { ThemeTextToggle } from "@/components/theme-toggle";
 import { WorkCard, WorkStrip } from "@/components/work-strip";
+import { Dab, PlaceholderTag, Wash, pigments, type Pigment } from "@/components/wash";
 
 // A living style guide: every specimen below is the real component or the real
 // class string, so this page can't drift from the site. Unlisted — not in the
@@ -31,13 +32,14 @@ export const metadata: Metadata = {
 // Tailwind needs literal class names, so each swatch spells its class out.
 // `origin` mirrors the table in docs/design/color.md.
 const colors = [
-  { token: "background", swatch: "bg-background", use: "Page, pill surface", origin: "shadcn neutral" },
-  { token: "foreground", swatch: "bg-foreground", use: "Default text", origin: "shadcn neutral" },
-  { token: "muted-foreground", swatch: "bg-muted-foreground", use: "Secondary text, metadata", origin: "shadcn neutral" },
-  { token: "muted", swatch: "bg-muted", use: "Image slots, placeholders, code", origin: "shadcn neutral" },
-  { token: "border", swatch: "bg-border", use: "Default borders", origin: "shadcn neutral" },
-  { token: "ring", swatch: "bg-ring", use: "Focus outline, at 50%", origin: "shadcn neutral" },
-  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle, pill icon", origin: "Figma · #2148f9" },
+  { token: "background", swatch: "bg-background", use: "Page paper (light), night desk (dark)", origin: "Sketchbook" },
+  { token: "foreground", swatch: "bg-foreground", use: "Default text, blue-black ink", origin: "Sketchbook" },
+  { token: "muted-foreground", swatch: "bg-muted-foreground", use: "Secondary text, metadata", origin: "Sketchbook" },
+  { token: "muted", swatch: "bg-muted", use: "Image slots, code", origin: "Sketchbook" },
+  { token: "border", swatch: "bg-border", use: "Default borders", origin: "Sketchbook" },
+  { token: "ring", swatch: "bg-ring", use: "Focus outline, at 50%", origin: "Sketchbook" },
+  { token: "plate", swatch: "bg-plate", use: "Paper under a painting, lit in both themes", origin: "Sketchbook" },
+  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle, pill icon", origin: "Ultramarine (light) · blue-300 (dark)" },
   { token: "destructive", swatch: "bg-destructive", use: "MdxError only", origin: "shadcn neutral" },
 ];
 
@@ -98,6 +100,19 @@ export default function DesignPage() {
               <p className="mt-3 font-mono text-xs">{c.token}</p>
               <p className="text-muted-foreground mt-1 text-xs">{c.use}</p>
               <p className="text-muted-foreground mt-1 font-mono text-xs">{c.origin}</p>
+            </li>
+          ))}
+        </ul>
+
+        <p className="text-muted-foreground mt-12 mb-4 text-sm">
+          Pigments — the paints placeholder washes are laid in. Same in both themes.
+        </p>
+        <ul role="list" className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
+          {(Object.keys(pigments) as Pigment[]).map((pigment) => (
+            <li key={pigment} className="flex items-center gap-2 font-mono text-xs">
+              <Dab pigment={pigment} />
+              {pigments[pigment].name}
+              <span className="text-muted-foreground">--pigment-{pigment}</span>
             </li>
           ))}
         </ul>
@@ -188,16 +203,27 @@ export default function DesignPage() {
           <Specimen label="CopyEmail · hover, then click">
             <CopyEmail />
           </Specimen>
-          <Specimen label="WorkStrip + WorkCard · scrolls sideways">
-            <WorkStrip heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>} name="Specimen" dimOnHover labels={["Work card with company", "Other work card"]}>
-              <WorkCard>
+          <Specimen label="WorkStrip + WorkCard · plate and study, swatch stepper">
+            <WorkStrip
+              heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
+              name="Specimen"
+              dimOnHover
+              labels={["Plate card with company", "Study card"]}
+              swatches={["ultramarine", "sienna"]}
+            >
+              <WorkCard art={<Wash palette={["cerulean", "ultramarine", "sap", "indigo"]} seed={7} />} note={<PlaceholderTag />} number="Pl. 01">
                 <p className="text-muted-foreground font-mono text-sm uppercase">Company</p>
-                <p className="mt-1">A work card with a company line and a title </p>
+                <p className="mt-1">A plate card with a company line and a title</p>
               </WorkCard>
-              <WorkCard>
-                <p className="text-muted-foreground">An “Other work” card, title only and muted</p>
+              <WorkCard size="study" art={<Wash palette={["ochre", "sienna", "sap", "indigo"]} seed={34} />} note={<PlaceholderTag />} number="St. 01">
+                <p className="text-muted-foreground">A study card, title only and muted</p>
               </WorkCard>
             </WorkStrip>
+          </Specimen>
+          <Specimen label="Wash · band variant (top of home, light mode only)">
+            <div className="h-40">
+              <Wash palette={["cerulean", "ultramarine", "sap", "ochre"]} seed={3} variant="band" />
+            </div>
           </Specimen>
         </div>
       </Section>

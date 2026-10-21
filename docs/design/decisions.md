@@ -6,6 +6,16 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-10-21** — `world/sketchbook` prototype: home rebuilt as Yash's
+  watercolour sketchbook. Prime motif the wash (loose first layer, refined
+  in layers = iteration and happy accidents). Paper and blue-black ink
+  replace the neutral grays; seven named pigments; links ultramarine.
+  Projects are plates/studies on lit paper with generated, labelled
+  placeholder washes until scans exist. Stepper ticks become pigment dabs.
+  Home reveals removed (hover-only motion). Dark mode is "lit paper": a
+  night page where paint only appears on paper sheets. Details in
+  `sketchbook.md`.
+
 - **2026-09-28** — Reading columns carry `selection-root`. WebKit fills
   selection gaps to the nearest clipped/transformed ancestor, which was the
   full-width `@container overflow-x-clip` wrapper, so highlighting a post

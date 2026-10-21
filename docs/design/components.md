@@ -29,10 +29,16 @@ character — these are chosen for personality, not literal meaning.
 <p className="font-mono text-sm uppercase">Writing</p>
 ```
 
-## WorkStrip + WorkCard (Decided, home only)
+## WorkStrip + WorkCard (Decided, home only; sheets are Prototype)
 
-`components/work-strip.tsx`. Horizontal snap-scrolling row of 570px cards with a
-4:3 `bg-muted rounded-xl` image slot and text `mt-5` below, under a row
+`components/work-strip.tsx`. Horizontal snap-scrolling row of cards. On
+`world/sketchbook` each `WorkCard` is a sheet of paper (`bg-plate`,
+`rounded-[3px]`, `p-2.5 pb-8`, `shadow-xs`, `ring-foreground/5`) holding its
+`art` (required; a `Wash` for now) in a 4:3 `overflow-hidden` frame, with
+mono margin notes (`note` left, `number` right) and text `mt-5` below.
+`size`: `plate` (570px, default — Selected work) | `study` (380px — Other
+work). `WorkStrip swatches` (one `Pigment` per card) turns the stepper ticks
+into `Dab`s. See [sketchbook.md](sketchbook.md). The strip sits under a row
 with the section heading left and a tick stepper right (spec in
 [layout.md](layout.md#horizontal-strips-decided)). Client component. Pass
 `heading` (the section's `SectionLabel` — the strip renders it, so don't add
@@ -176,3 +182,26 @@ Custom focusable elements use
 gets `-mx-3 px-3 rounded-lg` so the ring clears the text while the text stays
 on the column edge). Never remove focus styling
 without replacing it.
+
+## Wash, Dab, PlaceholderTag (Prototype — `world/sketchbook`)
+
+`components/wash.tsx`. Server Components, no JS.
+
+- `Wash` — **placeholder** for a scan of one of Yash's paintings: a seeded
+  SVG landscape wash. Props: `palette` (`[sky, far ridge, near ridge,
+  accents]`, keys of `pigments`), `seed`, `variant` (`plate` default, fills
+  a 4:3 parent | `band`, the faint sky behind the home header). Same seed,
+  same painting on every build. Never use it as decoration outside a plate
+  or the band, and never ship one without its `PlaceholderTag`.
+- `Dab` — one 12px swatch of a pigment, darker at the rim. For pigment
+  legends and the swatch stepper only.
+- `PlaceholderTag` — the "Placeholder wash" label. Exists so every
+  placeholder can be found with one grep and removed with its scan.
+
+```tsx
+// Correct — app/page.tsx
+<WorkCard art={<Wash palette={item.palette} seed={item.seed} />} note={<PlaceholderTag />} number="Pl. 01">
+
+// Incorrect — a wash with no tag reads as Yash's real painting
+<WorkCard art={<Wash palette={item.palette} seed={item.seed} />}>
+```
