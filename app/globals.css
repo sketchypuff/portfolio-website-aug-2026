@@ -32,6 +32,7 @@
   --color-plate: var(--plate);
   --color-plate-foreground: var(--plate-foreground);
   --color-plate-rule: var(--plate-rule);
+  --color-plate-ink: var(--plate-ink);
   --shadow-sheet: var(--sheet-shadow);
   --shadow-sheet-lifted: var(--sheet-shadow-lifted);
 
@@ -69,6 +70,8 @@
   --pigment-rose: oklch(0.62 0.16 8);
   --plate: oklch(0.992 0.004 85);
   --plate-foreground: oklch(0.46 0.015 70);
+  /* Ink written on a sheet. Fixed across themes, like the sheet itself. */
+  --plate-ink: oklch(0.25 0.03 262);
   --plate-rule: oklch(0.88 0.012 80);
 }
 

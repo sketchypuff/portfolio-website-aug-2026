@@ -1,18 +1,19 @@
 import Link from "next/link";
-import { Container } from "@/components/container";
 import { ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
 import { CopyEmail } from "@/components/copy-email";
 import { NoidaTime } from "@/components/noida-time";
 import { Oneko } from "@/components/oneko";
+import { Pile, type Study } from "@/components/pile";
 import { ProfessionPill } from "@/components/profession-pill";
-import { Sheet, SheetGrid } from "@/components/sheet";
 import { ThemeTextToggle } from "@/components/theme-toggle";
 import { TextLink } from "@/components/text-link";
-import { Dab, PlaceholderTag, SwatchStrip, Wash, pigments, type Pigment } from "@/components/wash";
+import { Dab, type Pigment } from "@/components/wash";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type Palette = readonly [Pigment, Pigment, Pigment, Pigment];
+
+const pad = (n: number) => String(n).padStart(2, "0");
 
 // Hardcoded from the Figma "Home" frame until these have real entries in
 // content/. Sheets are not linked yet for the same reason; a writing row
@@ -47,43 +48,42 @@ const selectedWork: { company: string; title: string; palette: Palette; seed: nu
   },
 ];
 
-// `muted` mirrors the design: the first three titles are dimmed, the last two are not.
-const otherWork: { title: string; muted: boolean; palette: Palette; seed: number }[] = [
+const otherWork: { title: string; palette: Palette; seed: number }[] = [
   {
     title:
       "Design domain-based (accounting, marketing etc.) skill driven experiences for Excel and Powerpoint agent mode",
-    muted: true,
     palette: ["ochre", "sap", "indigo", "sienna"],
     seed: 63,
   },
   {
     title: "Optimised image masking with a refined selection experience",
-    muted: true,
     palette: ["cerulean", "sap", "sienna", "indigo"],
     seed: 71,
   },
   {
     title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
-    muted: true,
     palette: ["rose", "ultramarine", "indigo", "sienna"],
     seed: 88,
   },
   {
     title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
-    muted: false,
     palette: ["ochre", "sienna", "indigo", "sap"],
     seed: 94,
   },
   {
     title: "Reduced time taken by developers in discovering new content and finding team resources",
-    muted: false,
     palette: ["cerulean", "ultramarine", "sap", "rose"],
     seed: 105,
   },
 ];
 
-// Each writing row gets one dab in the margin; hovering it lays a faint wash
-// of the same pigment behind the row.
+// Everything on the desk, in the order the pile lays it out: plates first.
+const studies: Study[] = [
+  ...selectedWork.map((w, i) => ({ kind: "plate" as const, number: `Pl. ${pad(i + 1)}`, ...w })),
+  ...otherWork.map((w, i) => ({ kind: "study" as const, number: `St. ${pad(i + 1)}`, ...w })),
+];
+
+// Each writing row gets one dab in the margin.
 const rowPigments: Pigment[] = ["ochre", "cerulean", "rose", "sap", "sienna"];
 
 // `href` is set once a post exists in content/posts; unlinked rows stay plain text.
@@ -124,18 +124,6 @@ const shortDate = new Intl.DateTimeFormat("en-GB", {
   timeZone: "UTC",
 });
 
-const pad = (n: number) => String(n).padStart(2, "0");
-
-/** A section heading as a pencil note on a ruled line, with a count or link at the right. */
-function RuledHeading({ children, aside }: { children: React.ReactNode; aside?: React.ReactNode }) {
-  return (
-    <div className="border-rule flex items-baseline justify-between gap-4 border-b pb-2">
-      <h2 className="note font-medium">{children}</h2>
-      {aside && <div className="note text-muted-foreground">{aside}</div>}
-    </div>
-  );
-}
-
 const quietLink = "hover:text-link transition-colors";
 
 export default function HomePage() {
@@ -144,47 +132,32 @@ export default function HomePage() {
   const posts = writing.toSorted((a, b) => b.date.localeCompare(a.date));
 
   return (
-    <div className="paper-grain @container relative isolate overflow-x-clip">
-      {/* The page's first wash, bleeding down from the top edge. Light mode
-          only: on the dark desk, paint lives on lit sheets and nowhere else. */}
-      <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-[460px] opacity-70 dark:hidden">
-        <Wash palette={["cerulean", "ultramarine", "sap", "ochre"]} seed={3} variant="band" />
-      </div>
-      <p className="note text-plate-foreground absolute top-3 right-4 hidden sm:block dark:hidden">
-        <PlaceholderTag />
-      </p>
+    <div className="paper-grain @container min-h-screen overflow-x-clip px-5 py-6 sm:px-8 sm:py-8 lg:px-10">
       <Oneko />
-      <Container size="wide" className="flex flex-col gap-24 pt-6 pb-20 text-[15px] leading-relaxed">
-        <div className="flex flex-col gap-14">
-          {/* The masthead, pencilled across the top of the sheet. */}
-          <div className="note border-rule flex justify-between gap-4 border-b pb-2.5">
-            <span>Yash Shenai · Sketchbook</span>
-            <span className="text-muted-foreground hidden sm:inline">Landscapes, wet and loose</span>
-            <span className="text-right">Noida, India</span>
+      <div className="mx-auto grid max-w-[1480px] gap-14 lg:grid-cols-[21rem_1fr] lg:gap-14 xl:grid-cols-[23rem_1fr] xl:gap-20">
+        {/* The notes pencilled beside the pile. */}
+        <aside className="flex flex-col gap-10 text-[15px] leading-relaxed lg:pt-2">
+          <div className="note border-rule flex items-baseline justify-between gap-4 border-b pb-2.5">
+            <span className="text-foreground">Yash Shenai</span>
+            <span className="text-muted-foreground">Sketchbook · Noida</span>
           </div>
 
-          <header className="grid gap-10 md:grid-cols-12">
-            <div className="flex flex-col gap-6 md:col-span-8">
-              <div className="flex flex-col items-start gap-2 text-xl leading-snug font-medium lg:flex-row lg:items-baseline lg:gap-3">
-                <h1 className="lg:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
-                <ProfessionPill />
-              </div>
-              <div className="max-w-[34rem] space-y-[1lh]">
-                <p>
-                  Currently, I make agentic AI experiences feel <strong>oh yeah!</strong> at Microsoft.
-                  Previously, I’ve worked at Adobe, Postman and Samsung.
-                </p>
-                <p className="text-muted-foreground">
-                  I believe all software should be opinionated and delightful to use in order to be
-                  called usable. A wash goes down loose and wet, keeps its happy accidents, and is then
-                  refined in layers. That is how I paint, and how I design.
-                </p>
-              </div>
+          <header className="flex flex-col gap-5">
+            <div className="flex flex-col items-start gap-1.5 text-xl leading-snug font-medium">
+              <h1>Hi! I’m Yash, your neighbourhood</h1>
+              <ProfessionPill />
             </div>
-            <nav
-              aria-label="Main"
-              className="flex flex-col items-start gap-1.5 md:col-span-3 md:col-start-10 md:items-end md:pt-1"
-            >
+            <div className="space-y-[1lh]">
+              <p>
+                Currently, I make agentic AI experiences feel <strong>oh yeah!</strong> at Microsoft.
+                Previously, I’ve worked at Adobe, Postman and Samsung.
+              </p>
+              <p className="text-muted-foreground">
+                I believe all software should be opinionated and delightful to use in order to be
+                called usable.
+              </p>
+            </div>
+            <nav aria-label="Main" className="flex flex-wrap gap-x-5 gap-y-1.5">
               <TextLink href={site.resume} icon={ArrowUpRightIcon}>
                 Résumé
               </TextLink>
@@ -192,153 +165,97 @@ export default function HomePage() {
               <ThemeTextToggle />
             </nav>
           </header>
-        </div>
 
-        <section className="flex flex-col gap-10">
-          <RuledHeading aside={`${pad(selectedWork.length)} plates`}>Selected work</RuledHeading>
-          <SheetGrid label="Selected work">
-            {selectedWork.map((item, i) => (
-              <Sheet
-                key={i}
-                number={`Pl. ${pad(i + 1)}`}
-                palette={item.palette}
-                art={<Wash palette={item.palette} seed={item.seed} />}
-              >
-                <p className="note text-muted-foreground">{item.company}</p>
-                <p className="text-base leading-snug font-normal text-pretty">{item.title}</p>
-              </Sheet>
-            ))}
-          </SheetGrid>
-        </section>
-
-        <section className="flex flex-col gap-4">
-          <RuledHeading aside={<TextLink href="/blog" className="normal-case tracking-normal">Open blog</TextLink>}>
-            Writing
-          </RuledHeading>
-          <ol role="list">
-            {posts.map((post, i) => {
-              const pigment = rowPigments[i % rowPigments.length];
-              const content = (
-                <>
-                  <Dab pigment={pigment} className="mt-1.5 size-3 self-start" />
-                  <span className={cn("text-base leading-snug text-pretty", post.href && "group-hover:text-link transition-colors")}>
-                    {post.title}
-                  </span>
-                  <time dateTime={post.date} className="note text-muted-foreground col-start-2 sm:col-start-3 sm:pt-1">
-                    {shortDate.format(new Date(post.date))}
-                  </time>
-                </>
-              );
-              const row =
-                "grid grid-cols-[0.75rem_1fr] gap-x-4 gap-y-1 py-3.5 sm:grid-cols-[0.75rem_1fr_auto] sm:items-baseline";
-              return (
-                <li key={post.title} className="border-border border-b">
-                  {post.href ? (
-                    <Link
-                      href={post.href}
-                      className={cn(
-                        row,
-                        "group focus-visible:ring-ring relative isolate -mx-3 rounded-sm px-3 focus-visible:ring-2 focus-visible:outline-none",
-                      )}
-                    >
-                      {/* A faint wash spreads behind the row on hover. Opacity is the
-                          only thing that transitions; the blur is static. */}
-                      <span
-                        aria-hidden
-                        className="absolute inset-y-1 left-0 -z-10 w-2/3 opacity-0 blur-md transition-opacity duration-300 ease-out group-hover:opacity-100 motion-reduce:transition-none dark:group-hover:opacity-35"
-                        style={{
-                          background: `radial-gradient(closest-side, color-mix(in oklch, ${pigments[pigment].color} 40%, transparent), transparent)`,
-                        }}
-                      />
-                      {content}
-                    </Link>
-                  ) : (
-                    <div className={row}>{content}</div>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
-        </section>
-
-        <section className="flex flex-col gap-10">
-          <RuledHeading aside="Studies">Other work</RuledHeading>
-          <SheetGrid label="Other work" columns={3}>
-            {otherWork.map((item, i) => (
-              <Sheet
-                key={i}
-                size="study"
-                number={`St. ${pad(i + 1)}`}
-                palette={item.palette}
-                art={<Wash palette={item.palette} seed={item.seed} />}
-              >
-                <p className={cn("leading-snug text-pretty", item.muted && "text-muted-foreground")}>{item.title}</p>
-              </Sheet>
-            ))}
-          </SheetGrid>
-        </section>
-
-        <footer className="flex flex-col gap-10">
-          <RuledHeading aside="Colophon">Palette</RuledHeading>
-          <div className="grid gap-10 lg:grid-cols-12">
-            {/* The swatch card: every pigment on the page, tested on its own sheet. */}
-            <div className="bg-plate text-plate-foreground shadow-sheet rounded-sm p-4 sm:p-5 lg:col-span-7">
-              <ul role="list" className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                {(Object.keys(pigments) as Pigment[]).map((pigment, i) => (
-                  <li key={pigment} className="flex flex-col gap-0.5">
-                    <SwatchStrip pigment={pigment} seed={i * 11 + 5} />
-                    <span className="note flex justify-between gap-3">
-                      <span>{pigments[pigment].name}</span>
-                      <span className="opacity-70">{pad(i + 1)}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <p className="note mt-5 flex justify-between gap-4 border-t pt-3" style={{ borderColor: "var(--plate-rule)" }}>
-                <span>Swatch card</span>
-                <PlaceholderTag />
-              </p>
+          <section className="flex flex-col gap-3">
+            <div className="note border-rule flex items-baseline justify-between gap-4 border-b pb-2">
+              <h2 className="font-medium">Notes</h2>
+              <TextLink href="/blog" className="normal-case tracking-normal">
+                Open blog
+              </TextLink>
             </div>
+            <ol role="list">
+              {posts.map((post, i) => {
+                const pigment = rowPigments[i % rowPigments.length];
+                const content = (
+                  <>
+                    <Dab pigment={pigment} className="mt-[0.45rem] size-2.5 self-start" />
+                    <span className="flex flex-col gap-0.5">
+                      <span className={cn("text-sm leading-snug text-pretty", post.href && "group-hover:text-link transition-colors")}>
+                        {post.title}
+                      </span>
+                      <time dateTime={post.date} className="note text-muted-foreground">
+                        {shortDate.format(new Date(post.date))}
+                      </time>
+                    </span>
+                  </>
+                );
+                const row = "grid grid-cols-[0.625rem_1fr] gap-x-3 py-2.5";
+                return (
+                  <li key={post.title} className="border-border border-b">
+                    {post.href ? (
+                      <Link
+                        href={post.href}
+                        className={cn(row, "group focus-visible:ring-ring -mx-2 rounded-sm px-2 focus-visible:ring-2 focus-visible:outline-none")}
+                      >
+                        {content}
+                      </Link>
+                    ) : (
+                      <div className={row}>{content}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
 
-            <div className="flex flex-col gap-8 lg:col-span-4 lg:col-start-9">
-              <p className="text-muted-foreground text-pretty">
-                Set in DM Mono on cold-press paper. Every painting here is a placeholder until my own
-                scans replace it; the paper tooth is a stand-in for a scan of my own sheet.
-              </p>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="flex flex-col gap-2">
-                  <span className="note text-muted-foreground">Contact</span>
-                  <ul role="list" className="flex flex-col gap-0.5">
-                    <li>
-                      <CopyEmail />
-                    </li>
-                    <li>
-                      <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className={quietLink}>
-                        LinkedIn
-                      </a>
-                    </li>
-                    <li>
-                      <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
-                        Résumé
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="flex flex-col gap-6">
-                  <div className="flex flex-col gap-2">
-                    <span className="note text-muted-foreground">Last wash</span>
-                    <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{shortDate.format(lastUpdated)}</time>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="note text-muted-foreground">Currently</span>
-                    <NoidaTime />
-                  </div>
-                </div>
+          <footer className="grid grid-cols-2 gap-x-6 gap-y-6 text-sm">
+            <div className="flex flex-col gap-1.5">
+              <span className="note text-muted-foreground">Contact</span>
+              <ul role="list" className="flex flex-col gap-0.5">
+                <li>
+                  <CopyEmail />
+                </li>
+                <li>
+                  <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                    Résumé
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-1.5">
+                <span className="note text-muted-foreground">Last wash</span>
+                <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{shortDate.format(lastUpdated)}</time>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <span className="note text-muted-foreground">Currently</span>
+                <NoidaTime />
               </div>
             </div>
+            <p className="note text-muted-foreground col-span-2 border-t pt-3">
+              Set in DM Mono on cold-press paper · every wash is a placeholder until my scans replace it
+            </p>
+          </footer>
+        </aside>
+
+        {/* The desk: the sheets are the index of the work. */}
+        <section aria-label="Work" className="flex flex-col gap-6 lg:pb-10">
+          <div className="note flex items-baseline justify-between gap-4 lg:hidden">
+            <h2 className="font-medium">Work</h2>
+            <span className="text-muted-foreground">Pl. selected · St. other</span>
           </div>
-        </footer>
-      </Container>
+          <Pile studies={studies} label="Work" />
+          <p className="note text-muted-foreground mt-[6%] hidden justify-end gap-6 lg:flex">
+            <span>Pl. — plates, selected work</span>
+            <span>St. — studies, other work</span>
+          </p>
+        </section>
+      </div>
     </div>
   );
 }
