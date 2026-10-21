@@ -1,23 +1,21 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Literata } from "next/font/google";
+import { Alegreya, IBM_Plex_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/lib/site";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "@/components/motion/page-transition";
 import "./globals.css";
 
-// The journal's text face: a book serif drawn for screens, with optical
-// sizing so 18px notes stay sturdy and 28px headlines stay fine. Everything
-// that is "written" on the page is set in it.
-const literata = Literata({
-  variable: "--font-literata",
+// The hand the journal is written in: a calligraphic book face with a real
+// italic, so notes read as set by someone who holds a pen. Everything written
+// on the page is Alegreya.
+const alegreya = Alegreya({
+  variable: "--font-alegreya",
   subsets: ["latin"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
 });
 
-// The journal's typed labels: entry numbers, dates, coordinates, captions.
-// Plex Mono has the typewriter's evenness without its nostalgia.
+// Everything typed: entry numbers, dates, coordinates, the specimen labels.
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
@@ -53,9 +51,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${literata.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${alegreya.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="bg-background text-foreground flex min-h-full flex-col">
+      {/* The body is the desk; the journal page is laid on it by app/page.tsx. */}
+      <body className="bg-desk text-foreground flex min-h-full flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

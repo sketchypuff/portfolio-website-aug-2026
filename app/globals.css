@@ -5,36 +5,41 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * The field journal. One object holds everything on the site: a naturalist's
- * notebook, open on a desk. The page is the desk, the entries are its pages.
+ * The field journal. The screen is a desk; on it lies one open page of a
+ * naturalist's notebook. Everything on the site is written on that page.
  *
  * Material rules:
- *  - The desk is cream paper by day and dark wood by night. Type on it is ink.
- *  - Every entry, plate and specimen tag is `paper`: a lit sheet in both
- *    themes, because watercolour takes its light from the paper and goes muddy
- *    on a dark ground. At night the desk goes dark and the paper stays lit.
- *  - Blue is fountain-pen ink, and ink means "this takes you somewhere".
- *  - Grays are never neutral; each carries a little of the paper's warmth.
+ *  - The page is cream paper and never changes with the theme. Dark mode is
+ *    the desk at night under a lamp: the desk goes dark, the page stays lit.
+ *    So the ink, the rules and the paint are the same by day and by night.
+ *  - A field notebook has a red margin rule. Entry numbers live in the
+ *    margin, left of the rule; everything else is written right of it.
+ *  - Ink is iron-gall brown-black. Links are fountain-pen blue-black, so
+ *    "ink that is bluer" means "this takes you somewhere".
+ *  - Plates are watercolour on the page itself, with pencil callouts.
  */
 @theme inline {
+  --color-desk: var(--desk);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-rule: var(--rule);
+  --color-margin: var(--margin);
   --color-ring: var(--ring);
   --color-link: var(--link);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
   --color-destructive: var(--destructive);
 
-  --color-paper: var(--paper);
-  --color-paper-foreground: var(--paper-foreground);
-  --color-paper-muted: var(--paper-muted);
-  --color-paper-rule: var(--paper-rule);
-  --shadow-paper: var(--paper-shadow);
-  --shadow-paper-lifted: var(--paper-shadow-lifted);
+  --color-paper: var(--background);
+  --color-paper-foreground: var(--foreground);
+  --color-paper-muted: var(--muted-foreground);
+  --color-paper-rule: var(--border);
+  --color-tag: var(--tag);
+  --shadow-page: var(--page-shadow);
+  --shadow-tag: var(--tag-shadow);
 
   --color-wash-sky: var(--wash-sky);
   --color-wash-sap: var(--wash-sap);
@@ -42,50 +47,49 @@
   --color-wash-ochre: var(--wash-ochre);
   --color-wash-indigo: var(--wash-indigo);
 
-  /* Everything written is Literata; everything typed is Plex Mono. */
-  --font-sans: var(--font-literata);
-  --font-serif: var(--font-literata);
+  --font-sans: var(--font-alegreya);
+  --font-serif: var(--font-alegreya);
+  --font-heading: var(--font-alegreya);
   --font-mono: var(--font-plex-mono);
-  --font-heading: var(--font-literata);
 
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
 }
 
 :root {
-  /* The desk: cream, cold-press paper under daylight. */
-  --background: oklch(0.962 0.014 84);
-  /* Iron-gall ink, a brown-black that has dried. */
-  --foreground: oklch(0.25 0.02 55);
-  --muted: oklch(0.925 0.016 82);
-  /* Faded ink, 5.2:1 on the desk: dates, labels, captions. */
-  --muted-foreground: oklch(0.48 0.025 65);
+  /* The desk: warm linen by day. */
+  --desk: oklch(0.885 0.018 78);
+  /* The page. `background` is the page, not the desk, so everything that
+     sits "on the background" (tooltips, selection) is on paper. */
+  --background: oklch(0.975 0.012 88);
+  /* Iron-gall ink. */
+  --foreground: oklch(0.24 0.02 55);
+  --muted: oklch(0.93 0.014 84);
+  /* Faded ink, 5.4:1 on the page. */
+  --muted-foreground: oklch(0.47 0.025 65);
   /* A pencil rule. */
   --border: oklch(0.84 0.022 80);
-  /* A heavier ink rule, for running heads and section lines. */
-  --rule: oklch(0.25 0.02 55 / 45%);
-  --ring: oklch(0.42 0.11 258);
-  /* Blue-black fountain-pen ink. 8.2:1 on the desk. */
-  --link: oklch(0.4 0.11 258);
-  /* Confirmation only (the "Copied" tooltip). */
+  /* A ruled line in ink. */
+  --rule: oklch(0.24 0.02 55 / 40%);
+  /* The notebook's red margin rule. */
+  --margin: oklch(0.6 0.16 32 / 80%);
+  --ring: oklch(0.4 0.11 258);
+  /* Blue-black fountain-pen ink. */
+  --link: oklch(0.38 0.11 258);
   --success: oklch(0.52 0.14 150);
   --success-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.577 0.245 27.325);
 
-  /* Lit paper: the sheet an entry is written on. */
-  --paper: oklch(0.984 0.01 88);
-  --paper-foreground: oklch(0.25 0.02 55);
-  --paper-muted: oklch(0.47 0.025 65);
-  --paper-rule: oklch(0.86 0.02 80);
-  --paper-shadow: 0 1px 1px oklch(0.3 0.03 60 / 0.06), 0 6px 14px -6px oklch(0.3 0.03 60 / 0.16);
-  --paper-shadow-lifted: 0 2px 2px oklch(0.3 0.03 60 / 0.05), 0 18px 32px -12px oklch(0.3 0.03 60 / 0.26);
+  /* A manila specimen tag. */
+  --tag: oklch(0.93 0.03 85);
+  --page-shadow: 0 1px 0 oklch(0.3 0.03 60 / 0.08), 0 2px 3px oklch(0.3 0.03 60 / 0.06), 0 24px 48px -24px oklch(0.3 0.03 60 / 0.35);
+  --tag-shadow: 0 1px 1px oklch(0.3 0.03 60 / 0.08), 0 6px 12px -6px oklch(0.3 0.03 60 / 0.25);
 
   /*
-   * Placeholder washes: a landscape painter's limited palette (cerulean, sap
-   * green, burnt sienna, yellow ochre, Payne's grey). They stand in for Yash's
-   * scanned plates and leave with the last PlaceholderWash.
+   * Placeholder washes: a landscape painter's limited palette. They stand
+   * in for Yash's scanned plates and leave with the last PlaceholderWash.
    */
   --wash-sky: oklch(0.7 0.075 238);
   --wash-sap: oklch(0.64 0.085 132);
@@ -94,23 +98,12 @@
   --wash-indigo: oklch(0.42 0.045 258);
 }
 
-/* Night: a dark desk under a lamp. The paper stays lit, dimmed a touch. */
+/* Night. Only the desk and the light change; the page is the same page. */
 .dark {
-  --background: oklch(0.19 0.012 62);
-  --foreground: oklch(0.91 0.016 84);
-  --muted: oklch(0.27 0.012 62);
-  --muted-foreground: oklch(0.71 0.022 78);
-  --border: oklch(0.91 0.016 84 / 16%);
-  --rule: oklch(0.91 0.016 84 / 45%);
-  --ring: oklch(0.72 0.08 255);
-  --link: oklch(0.78 0.08 255);
-  --success: oklch(0.8 0.15 150);
-  --success-foreground: oklch(0.145 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-
-  --paper: oklch(0.93 0.014 86);
-  --paper-shadow: 0 1px 1px oklch(0 0 0 / 0.3), 0 8px 18px -6px oklch(0 0 0 / 0.5);
-  --paper-shadow-lifted: 0 2px 2px oklch(0 0 0 / 0.3), 0 22px 36px -12px oklch(0 0 0 / 0.65);
+  --desk: oklch(0.17 0.012 60);
+  --background: oklch(0.945 0.014 87);
+  --page-shadow: 0 1px 0 oklch(0 0 0 / 0.3), 0 2px 3px oklch(0 0 0 / 0.3), 0 32px 64px -24px oklch(0 0 0 / 0.8);
+  --tag-shadow: 0 1px 1px oklch(0 0 0 / 0.15), 0 6px 12px -6px oklch(0 0 0 / 0.35);
 }
 
 @layer base {
@@ -119,11 +112,11 @@
   }
   html {
     @apply font-serif;
-    /* Book figures in running text; dates and numbers switch to lining/tabular in mono. */
     font-variant-numeric: oldstyle-nums proportional-nums;
+    font-feature-settings: "kern", "liga", "calt";
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
   .font-mono,
   code,
@@ -132,7 +125,7 @@
     font-variant-numeric: lining-nums tabular-nums;
   }
   ::selection {
-    background: oklch(0.4 0.11 258 / 0.18);
+    background: oklch(0.38 0.11 258 / 0.18);
   }
 }
 
@@ -147,15 +140,41 @@
   transform: translate(0);
 }
 
-/*
-  A mono label as the journal types it: small caps-height, letterspaced,
-  faded ink. One utility so every label on the page agrees.
-*/
+/* A typed label: small, letterspaced, uppercase, lining figures. */
 @utility label {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   line-height: 1rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-variant-numeric: lining-nums tabular-nums;
+}
+
+/*
+  The journal page's geometry, shared by the page frame and everything that
+  writes into the margin. `--margin-x` is where the red rule falls from the
+  page's left edge; `--gutter` is the gap between the rule and the text.
+*/
+@utility journal-page {
+  --margin-x: 3.25rem;
+  --gutter: 1.25rem;
+  --edge: 1.25rem;
+  @media (width >= 40rem) {
+    --margin-x: 5.5rem;
+    --gutter: 1.75rem;
+    --edge: 2.5rem;
+  }
+  @media (width >= 64rem) {
+    --margin-x: 6.5rem;
+    --gutter: 2rem;
+    --edge: 3.5rem;
+  }
+  padding-left: calc(var(--margin-x) + var(--gutter));
+  padding-right: var(--edge);
+}
+
+/* Text written vertically on a fore-edge tab. */
+@utility vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }

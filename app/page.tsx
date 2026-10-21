@@ -1,13 +1,15 @@
 import Link from "next/link";
-import { Container } from "@/components/container";
+import { ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
 import { CopyEmail } from "@/components/copy-email";
 import { Entry, EntryList } from "@/components/journal/entry";
 import { JournalHeading } from "@/components/journal/journal-heading";
-import { PlaceholderSwatch, type WashColor, type WashPalette } from "@/components/journal/placeholder-wash";
-import { Rail, type RailSection } from "@/components/journal/rail";
+import { JournalPage, MarginNote, RunningHead, TabRow, type Tab } from "@/components/journal/page-frame";
+import { type WashColor, type WashPalette } from "@/components/journal/placeholder-wash";
+import { SpecimenTag } from "@/components/journal/specimen-tag";
 import { NoidaTime } from "@/components/noida-time";
 import { Oneko } from "@/components/oneko";
 import { ProfessionPill } from "@/components/profession-pill";
+import { ThemeTextToggle } from "@/components/theme-toggle";
 import { TextLink } from "@/components/text-link";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -15,7 +17,7 @@ import { cn } from "@/lib/utils";
 // Hardcoded until these have real entries in content/, so entries are not
 // linked yet. `palette` and `seed` pick each placeholder wash; both go away
 // when Yash's scanned plates replace them. `notes` (observed / found /
-// changed) is the ink under each plate; none are written yet.
+// changed) is the written part of each entry; none are written yet.
 const selectedWork: {
   company: string;
   title: string;
@@ -49,7 +51,7 @@ const selectedWork: {
   },
 ];
 
-// Loose leaves: smaller work, kept as specimen tags with one test dab each.
+// Loose leaves: smaller work, kept on specimen tags with one test dab each.
 const otherWork: { title: string; swatch: WashColor }[] = [
   {
     title:
@@ -95,11 +97,19 @@ const writing: { date: string; title: string; href?: string }[] = [
   },
 ];
 
-const sections: RailSection[] = [
-  { id: "selected-work", numeral: "I", label: "Selected work" },
-  { id: "writing", numeral: "II", label: "Writing" },
-  { id: "loose-leaves", numeral: "III", label: "Loose leaves" },
-  { id: "colophon", numeral: "IV", label: "Colophon" },
+// The flyleaf: who keeps this journal, the way a naturalist's notebook opens.
+const flyleaf = [
+  { term: "Observer", detail: "Yash Shenai" },
+  { term: "Station", detail: "Noida, India" },
+  { term: "Field", detail: "Agentic AI in Excel and PowerPoint" },
+  { term: "Trained", detail: "Industrial design, NID" },
+];
+
+const tabs: Tab[] = [
+  { id: "selected-work", label: "Work", color: "text-wash-sky" },
+  { id: "notes", label: "Notes", color: "text-wash-sap" },
+  { id: "loose-leaves", label: "Leaves", color: "text-wash-sienna" },
+  { id: "colophon", label: "Colophon", color: "text-wash-ochre" },
 ];
 
 // Built from parts so the month is always three letters ("Sep", not en-GB's "Sept").
@@ -115,8 +125,6 @@ function formatDay(date: Date) {
   return `${part("day")} ${part("month")} ${part("year")}`;
 }
 
-const writingRow =
-  "grid grid-cols-[3.25rem_1fr] gap-x-4 gap-y-1 py-3.5 sm:grid-cols-[3.25rem_7.5rem_1fr] sm:items-baseline";
 const quietLink = "hover:text-link transition-colors";
 
 export default function HomePage() {
@@ -125,189 +133,196 @@ export default function HomePage() {
   const posts = writing.toSorted((a, b) => b.date.localeCompare(a.date));
 
   return (
-    <div className="@container overflow-x-clip">
+    <div className="@container min-h-screen overflow-x-clip px-3 py-4 sm:px-8 sm:py-8 lg:px-12 lg:py-10">
       <Oneko />
-      <Container size="wide" className="pt-8 pb-20 text-base leading-snug lg:pt-10">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-12">
-          <div className="lg:col-span-3">
-            <Rail sections={sections} />
+      <JournalPage tabs={tabs}>
+        <div className="flex flex-col gap-16 lg:gap-20">
+          <div className="flex flex-col gap-6">
+            <RunningHead>
+              <span className="text-foreground">
+                Field journal <span className="text-muted-foreground">· Vol. I</span>
+              </span>
+              <span className="text-muted-foreground hidden sm:inline">Noida · 28.54° N, 77.39° E</span>
+              <span className="text-muted-foreground">p. 1</span>
+            </RunningHead>
+            <TabRow tabs={tabs} />
           </div>
 
-          <div className="flex min-w-0 flex-col gap-20 lg:col-span-9 lg:gap-24">
-            {/* The first page: who is writing, in their own hand. */}
-            <header className="flex flex-col gap-6 lg:pt-1">
-              <div className="flex flex-col items-start gap-2 text-[1.75rem] leading-tight font-medium lg:flex-row lg:items-baseline lg:gap-3">
+          {/* The first page: who is writing, in their own hand, and the flyleaf. */}
+          <header className="relative flex flex-col gap-10">
+            <MarginNote>{formatDay(lastUpdated)}</MarginNote>
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col items-start gap-1 text-[1.75rem] leading-tight font-medium sm:text-[2rem] lg:flex-row lg:items-baseline lg:gap-3">
                 <h1 className="lg:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
-                <span className="text-xl font-normal lg:text-[1.75rem]">
+                <span className="text-2xl font-normal sm:text-[1.75rem] lg:text-[2rem]">
                   <ProfessionPill />
                 </span>
               </div>
-              <div className="max-w-[36rem] space-y-[1lh] text-lg leading-relaxed">
+              <div className="max-w-[38rem] space-y-[0.9lh] text-[1.1875rem] leading-relaxed">
                 <p>
                   Currently, I make agentic AI experiences feel <em>oh yeah!</em> at Microsoft.
                   Previously, I’ve worked at Adobe, Postman and Samsung.
                 </p>
                 <p className="text-muted-foreground">
                   I believe all software should be opinionated and delightful to use in order to be
-                  called usable. I design on paper first, and I paint landscapes wet and loose. This
-                  journal keeps both.
+                  called usable.
                 </p>
               </div>
-            </header>
+            </div>
 
-            <section className="flex flex-col gap-2">
-              <JournalHeading
-                id="selected-work"
-                numeral="I"
-                aside={`${String(selectedWork.length).padStart(2, "0")} entries`}
-              >
-                Selected work
-              </JournalHeading>
-              <EntryList label="Selected work">
-                {selectedWork.map((item, i) => (
-                  <Entry
-                    key={i}
-                    index={i}
-                    company={item.company}
-                    title={item.title}
-                    palette={item.palette}
-                    seed={item.seed}
-                  />
+            <div className="grid gap-x-12 gap-y-4 md:grid-cols-12">
+              <dl className="grid gap-x-10 gap-y-2.5 sm:grid-cols-2 md:col-span-8">
+                {flyleaf.map((row) => (
+                  <div key={row.term} className="flex items-baseline gap-2.5">
+                    <dt className="label text-muted-foreground shrink-0 pt-px">{row.term}</dt>
+                    <span aria-hidden className="border-foreground/35 mb-1 flex-1 border-b border-dotted" />
+                    <dd className="text-right text-[1.0625rem] leading-snug">{row.detail}</dd>
+                  </div>
                 ))}
-              </EntryList>
-            </section>
-
-            <section className="flex flex-col gap-2">
-              <JournalHeading
-                id="writing"
-                numeral="II"
-                aside={
-                  <TextLink href="/blog" className="normal-case tracking-normal">
-                    Open blog
-                  </TextLink>
-                }
+              </dl>
+              <nav
+                aria-label="Main"
+                className="label flex flex-wrap gap-x-5 gap-y-2 md:col-span-4 md:flex-col md:items-end md:gap-y-2"
               >
-                Writing
-              </JournalHeading>
-              <ol role="list" className="border-border border-b">
-                {posts.map((post, i) => {
-                  const content = (
-                    <>
-                      <span className="label text-muted-foreground pt-1">
-                        No. {String(posts.length - i).padStart(2, "0")}
-                      </span>
-                      <time
-                        dateTime={post.date}
-                        className="label text-muted-foreground col-start-2 row-start-2 pt-1 sm:row-start-1"
-                      >
-                        {formatDay(new Date(post.date))}
-                      </time>
-                      <span
-                        className={cn(
-                          "col-start-2 row-start-1 text-lg leading-snug text-pretty sm:col-start-3",
-                          post.href && "group-hover:text-link transition-colors",
-                        )}
-                      >
-                        {post.title}
-                      </span>
-                    </>
-                  );
-                  return (
-                    <li key={post.title} className="border-border border-t">
-                      {post.href ? (
-                        <Link
-                          href={post.href}
-                          className={cn(
-                            writingRow,
-                            "group focus-visible:ring-ring -mx-2 rounded-sm px-2 focus-visible:ring-2 focus-visible:outline-none",
-                          )}
-                        >
-                          {content}
-                        </Link>
-                      ) : (
-                        <div className={writingRow}>{content}</div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ol>
-            </section>
+                <TextLink href={site.resume} icon={ArrowUpRightIcon} className="normal-case tracking-wide">
+                  Résumé
+                </TextLink>
+                <TextLink href="/about" className="normal-case tracking-wide">
+                  About
+                </TextLink>
+                <span className="normal-case tracking-wide">
+                  <ThemeTextToggle />
+                </span>
+              </nav>
+            </div>
+          </header>
 
-            <section className="flex flex-col gap-8">
-              <JournalHeading id="loose-leaves" numeral="III" aside="Other work">
-                Loose leaves
-              </JournalHeading>
-              <ul role="list" className="grid gap-5 sm:grid-cols-2">
-                {otherWork.map((item, i) => (
-                  <li
-                    key={i}
-                    className="bg-paper text-paper-foreground shadow-paper relative flex gap-4 rounded-sm p-4 pr-10"
-                  >
-                    {/* The punched hole of a specimen tag. */}
+          <section className="flex flex-col gap-6">
+            <JournalHeading
+              id="selected-work"
+              numeral="I"
+              aside={`${String(selectedWork.length).padStart(2, "0")} entries`}
+            >
+              Selected work
+            </JournalHeading>
+            <EntryList label="Selected work">
+              {selectedWork.map((item, i) => (
+                <Entry
+                  key={i}
+                  index={i}
+                  company={item.company}
+                  title={item.title}
+                  palette={item.palette}
+                  seed={item.seed}
+                />
+              ))}
+            </EntryList>
+          </section>
+
+          <section className="flex flex-col gap-2">
+            <JournalHeading
+              id="notes"
+              numeral="II"
+              aside={
+                <TextLink href="/blog" className="normal-case tracking-wide">
+                  Open blog
+                </TextLink>
+              }
+            >
+              Notes
+            </JournalHeading>
+            <ol role="list">
+              {posts.map((post, i) => {
+                const number = String(posts.length - i).padStart(2, "0");
+                const content = (
+                  <>
+                    <MarginNote>{number}</MarginNote>
+                    <time dateTime={post.date} className="label text-muted-foreground pt-1.5 sm:w-28 sm:shrink-0">
+                      {formatDay(new Date(post.date))}
+                    </time>
                     <span
-                      aria-hidden
-                      className="border-paper-rule bg-background absolute top-3 right-3 size-2.5 rounded-full border"
-                    />
-                    <PlaceholderSwatch
-                      id={`leaf-${i}`}
-                      seed={i * 5 + 2}
-                      color={item.swatch}
-                      className="mt-0.5 size-10 shrink-0"
-                    />
-                    <div className="flex flex-col gap-1.5">
-                      <span className="label text-paper-muted">Specimen {String(i + 1).padStart(2, "0")}</span>
-                      <p className="leading-snug text-pretty">{item.title}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <footer className="flex flex-col gap-8">
-              <JournalHeading id="colophon" numeral="IV">
-                Colophon
-              </JournalHeading>
-              <div className="grid gap-10 sm:grid-cols-3">
-                <div className="flex flex-col gap-2">
-                  <span className="label text-muted-foreground">Contact</span>
-                  <ul role="list" className="flex flex-col gap-0.5">
-                    <li>
-                      <CopyEmail />
-                    </li>
-                    <li>
-                      <a
-                        href={site.social.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={quietLink}
+                      className={cn(
+                        "text-[1.1875rem] leading-snug text-pretty",
+                        post.href && "group-hover:text-link transition-colors",
+                      )}
+                    >
+                      {post.title}
+                    </span>
+                  </>
+                );
+                const row = "relative flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-6";
+                return (
+                  <li key={post.title} className="border-border border-b">
+                    {post.href ? (
+                      <Link
+                        href={post.href}
+                        className={cn(row, "group focus-visible:ring-ring rounded-sm focus-visible:ring-2 focus-visible:outline-none")}
                       >
-                        LinkedIn
-                      </a>
-                    </li>
-                    <li>
-                      <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
-                        Résumé
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <span className="label text-muted-foreground">Last entry</span>
-                  <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
-                </div>
-                <div className="flex flex-col gap-2 sm:items-end sm:text-right">
-                  <span className="label text-muted-foreground">Currently</span>
-                  <NoidaTime />
-                </div>
+                        {content}
+                      </Link>
+                    ) : (
+                      <div className={row}>{content}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+
+          <section className="flex flex-col gap-8">
+            <JournalHeading id="loose-leaves" numeral="III" aside="Other work">
+              Loose leaves
+            </JournalHeading>
+            <ul role="list" className="grid gap-x-6 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
+              {otherWork.map((item, i) => (
+                <SpecimenTag key={i} index={i} color={item.swatch}>
+                  {item.title}
+                </SpecimenTag>
+              ))}
+            </ul>
+          </section>
+
+          <footer className="flex flex-col gap-8">
+            <JournalHeading id="colophon" numeral="IV">
+              Colophon
+            </JournalHeading>
+            <div className="grid gap-10 sm:grid-cols-3">
+              <div className="flex flex-col gap-2">
+                <span className="label text-muted-foreground">Contact</span>
+                <ul role="list" className="flex flex-col gap-0.5 text-[1.0625rem]">
+                  <li>
+                    <CopyEmail />
+                  </li>
+                  <li>
+                    <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                      LinkedIn
+                    </a>
+                  </li>
+                  <li>
+                    <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                      Résumé
+                    </a>
+                  </li>
+                </ul>
               </div>
-              <div className="label text-muted-foreground border-border flex flex-col justify-between gap-2 border-t pt-3 sm:flex-row">
-                <span>Fauna sighted on this page: one cat, wandering</span>
-                <span>Set in Literata and Plex Mono · plates are placeholder washes until the scans are in</span>
+              <div className="flex flex-col gap-2">
+                <span className="label text-muted-foreground">Last entry</span>
+                <time dateTime={lastUpdated.toISOString().slice(0, 10)} className="text-[1.0625rem]">
+                  {formatDay(lastUpdated)}
+                </time>
               </div>
-            </footer>
-          </div>
+              <div className="flex flex-col gap-2 text-[1.0625rem] sm:items-end sm:text-right">
+                <span className="label text-muted-foreground">Conditions</span>
+                <NoidaTime />
+              </div>
+            </div>
+            <div className="label text-muted-foreground border-border flex flex-col justify-between gap-2 border-t pt-3 sm:flex-row">
+              <span>Fauna sighted on this page: one cat, wandering</span>
+              <span>Written in Alegreya, typed in Plex Mono · plates are placeholder washes until the scans are in</span>
+            </div>
+          </footer>
         </div>
-      </Container>
+      </JournalPage>
     </div>
   );
 }

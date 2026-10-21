@@ -2,89 +2,89 @@
 
 Branch `world/field-journal`: one of three world prototypes (field journal,
 book, watercolour sketchbook) built so Yash can compare them. On this branch
-it **overrides** the achromatic, minimal direction in the other topic files
-wherever they disagree. Everything here is **Provisional** until Yash picks a
-world. The `/design` style guide has not been brought along; it still compiles
-but is not the reference for this branch.
+it **replaces** the achromatic, minimal direction in the other topic files.
+Everything here is **Provisional** until Yash picks a world. The `/design`
+style guide has not been brought along; it compiles but is not the reference.
 
-## The idea
+## The object
 
-A naturalist's field journal, open on a desk. One object already holds
-everything Yash does: notes in fountain pen, loose landscape washes, and going
-out to observe. The page *is* the desk; every entry is a lit sheet on it.
+The screen is a desk. On it lies **one open page of a naturalist's field
+journal**, and everything on the site is written on that page. Nothing on
+home is a web section: the running head, the red margin rule, the index tabs
+cut into the fore-edge, the flyleaf, the numbered entries, the specimen tags
+and the colophon are all parts of the notebook.
 
-- **Prime motif: the entry.** Each project is one page of the journal: a
-  watercolour plate on its own sheet, a typed header (entry number, where,
-  status), and ink notes underneath (observed / found / changed).
+- **Prime motif: the entry.** Each project is one entry: a number in the
+  margin, a plate painted straight onto the page with pencil callouts
+  pointing into it, and the written entry beside it (observed / found /
+  changed).
 - **Double meaning:** design is fieldwork. Go out, observe people, come back
-  with insight.
-- **Tasteful maximalism, Bill Guo's way:** a calm, strict margin (the rail)
-  and typed labels frame one rich object, the entries. Richness comes from
-  the detail on each entry (plate, caption, dabs, pigment key, notes), not
-  from more kinds of thing.
+  with insight. The callouts are the visual of that: labels with leader lines
+  into the thing observed.
+- **Tasteful maximalism, Bill Guo's way:** the page is the calm frame; the
+  richness is in the entry (plate, callouts, caption, margin number, notes).
 
-## Second pass (this commit)
+## Third pass (this commit): make it the object
 
-The first prototype was a pile of tilted cards in the home page's old
-skeleton, with Geist still doing the talking. This pass drops the shadcn look
-and builds the journal from its own materials:
+The previous passes kept a web skeleton (a column, sections on ruled
+headings, cards on shadows). This pass throws that out:
 
-- **Type.** Literata (variable, `opsz`, old-style figures) for everything
-  written; IBM Plex Mono for everything typed. Geist is gone from this branch.
-  One `label` utility (`app/globals.css`) sets every mono label the same way:
-  12px, letterspaced, uppercase, lining tabular figures.
-- **Layout.** `Container size="wide"`, a 12-column grid. The **rail**
-  (`components/journal/rail.tsx`, 3 cols, sticky at `lg`) carries the running
-  head and coordinates, the observer flyleaf, an index of the four sections
-  with anchor links, the resumé / about / lamp links, and a **key** of the
-  pigments on the page. The journal (9 cols) holds the intro and sections
-  I–IV. Below `lg` the rail becomes the top of the page.
-- **Entries** (`components/journal/entry.tsx`) are stacked full-width pages on
-  pencil rules rather than a tilted pile: plate left (5 cols), notes right (7
-  cols). The plate's caption carries its number and three dabs of the washes
-  used; the notes column repeats them by tube name. Hovering an entry lifts
-  the sheet and blooms the wash, and quiets the other entries.
-- **Ink links.** `TextLink`, the theme toggle and the profession blank are all
-  blue-black ink with a dotted underline that firms up on hover. No boxes, no
-  pills. The theme toggle reads "Lamp on / Lamp off".
-- **Pill → blank.** `ProfessionPill` is a filled-in blank on a form: ink on a
-  dotted baseline. Same cycling behaviour.
+- **The desk and the page.** `body` is `bg-desk` (warm linen by day, dark
+  wood by night). `JournalPage` (`components/journal/page-frame.tsx`) is the
+  single cream sheet, max 1100px, with a page shadow, a red margin rule at
+  `--margin-x`, and fore-edge **index tabs** at the right on `lg` (a
+  `TabRow` of tags below that). The page never changes with the theme: dark
+  mode only darkens the desk and dims the page a touch (`--background`).
+- **The margin.** `MarginNote` writes left of the red rule, aligned to its
+  first line: the date on the flyleaf, section numerals, entry numbers,
+  note numbers. `journal-page` in `globals.css` holds the geometry.
+- **Annotated plates.** `Entry` paints the wash directly on the page inside
+  a hairline pencil frame (no sheet, no card) and draws three pencil leader
+  lines from labels at the right to points on the plate. Until the scans and
+  notes exist the labels name the washes (Cerulean, sky, wet-in-wet). Hovering
+  an entry darkens the lines and blooms the wash.
+- **Specimen tags** (`components/journal/specimen-tag.tsx`) are manila tags
+  with a clipped corner, a reinforced hole with its string, one test dab and
+  a typed number. Each lies at its own slight angle.
+- **Type.** Alegreya (a calligraphic book face, real italic) for everything
+  written; section titles in Alegreya small capitals. IBM Plex Mono for
+  everything typed, via one `label` utility. Geist is gone.
+- **Flyleaf** rows use dotted leaders from term to detail, like a filled-in
+  form. The theme toggle reads *Lamp on / Lamp off*; "Currently" is
+  "Conditions", as a journal logs them.
 
 ## Home, top to bottom (`app/page.tsx`)
 
-| Part | What it is | Built from |
-| --- | --- | --- |
-| Rail | running head, flyleaf, index, links, pigment key | `Rail` |
-| Intro | headline + blank, two paragraphs | Literata 28 / 18 |
-| I. Selected work | four `Entry` pages on rules | `EntryList`, `Entry`, `PlaceholderWash` |
-| II. Writing | a dated log: No., date, title | ruled rows; titles turn ink on hover |
-| III. Loose leaves | other work as specimen tags with a punched hole and one dab | `bg-paper`, `PlaceholderSwatch` |
-| IV. Colophon | contact, last entry, Noida time, footnotes | `CopyEmail`, `NoidaTime` |
+| Part | What it is |
+| --- | --- |
+| Running head | "Field journal · Vol. I" · coordinates · "p. 1" on a rule |
+| Tabs | fore-edge tabs at `lg`; a row of tags below |
+| First page | date in the margin; headline + ink blank; two paragraphs; flyleaf table; résumé / about / lamp |
+| I. Selected work | four numbered entries with annotated plates |
+| II. Notes | the writing, numbered in the margin, dated in mono |
+| III. Loose leaves | other work on specimen tags |
+| IV. Colophon | contact, last entry, conditions, footnotes |
 
 ## Placeholders (must be replaced by Yash's own work)
 
-- **Plates** — `PlaceholderWash`, captioned "Placeholder wash" on the sheet.
-  Replace each with a scan loaded through `lib/images.ts`, not from `public/`.
+- **Plates** — `PlaceholderWash`, labelled "Placeholder wash" on the plate.
+  Replace with scans loaded through `lib/images.ts`, keeping the 4:3 frame.
+- **Callouts** — currently name the washes; replace their text with real
+  observations when the notes are written. The leader geometry is in
+  `CALLOUTS` in `entry.tsx`.
 - **Dabs** — `PlaceholderSwatch`. Replace with scanned test dabs.
-- **Ink notes** — `Entry` takes optional `notes`. Until they exist each entry
-  prints "Notes to follow". Process sketches from Microsoft or Adobe work must
-  be redrawn with generic labels (NDA) before they appear on a plate.
+- **Ink notes** — `Entry` takes optional `notes`; until then each entry
+  prints "Entry to be written up".
 
 No handwriting font and no stock texture, ever. Handwriting appears only as
 scans of Yash's own pen.
 
-## Dark mode: lit paper on a dark desk
-
-At night the desk goes dark, and every sheet (`--paper`) stays lit, dimmed a
-touch. Text on paper uses `paper-foreground` and `paper-muted`, which do not
-change with the theme. Only the shadows change.
-
 ## Rules for this world
 
-- The work is the hero: entry titles are 22px Literata and always readable at
-  a glance. The frame stays 12px mono and quiet.
-- One object carries the richness. No tape, grid paper, stamps, pins or
-  doodles, and no second kind of page.
-- Loose paint against a strict frame: washes may wander, but rules, labels
-  and columns stay straight.
+- The work is the hero: entry titles are 23px Alegreya and always readable.
+  The frame stays 11px mono and quiet.
+- One object carries the richness. No tape, grid paper, stamps or doodles,
+  and no second kind of page.
+- Loose paint against a strict frame: washes may wander; rules, labels and
+  leader lines stay straight.
 - Motion is hover only. Nothing plays on load.
