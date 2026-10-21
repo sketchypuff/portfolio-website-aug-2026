@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import { ArrowUpRightIcon, SmileyXEyesIcon } from "@phosphor-icons/react/ssr";
+import { ArrowUpRightIcon } from "@phosphor-icons/react/ssr";
 import { CopyEmail } from "@/components/copy-email";
 import { NoidaTime } from "@/components/noida-time";
 import { Oneko } from "@/components/oneko";
@@ -10,13 +10,12 @@ import { TextLink } from "@/components/text-link";
 import { ContentsSpread, Leader, type Chapter } from "@/components/book/contents-spread";
 import { PartHeading } from "@/components/book/part-heading";
 import type { Wash } from "@/components/book/plate";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 // Hardcoded from the Figma "Home" frame until these have real entries in
-// content/. Cards are not linked yet for the same reason; a writing row links
-// once its post exists.
+// content/. Chapters are not linked yet for the same reason; a writing row
+// links once its post exists.
 // Each chapter's `wash` drives its PLACEHOLDER frontispiece until Yash paints it.
 const selectedWork: Chapter[] = [
   {
@@ -94,88 +93,81 @@ const writing: { date: string; title: string; href?: string }[] = [
   },
 ];
 
-// Built from parts so the month is always three letters ("Sep", not en-GB's "Sept").
-const dateParts = new Intl.DateTimeFormat("en-US", {
+// A contents page dates its pieces the long way: "20 July 2025".
+const longDate = new Intl.DateTimeFormat("en-GB", {
   day: "numeric",
-  month: "short",
+  month: "long",
   year: "numeric",
   timeZone: "UTC",
 });
 
-function formatDay(date: Date) {
-  const part = (type: string) => dateParts.formatToParts(date).find((p) => p.type === type)?.value;
-  return `${part("day")} ${part("month")} ${part("year")}`;
-}
-
-const quietLink = "hover:text-muted-foreground transition-colors";
+const quietLink = "hover:text-link transition-colors";
 
 export default function HomePage() {
   // The page is prerendered, so this is the deploy date.
   const lastUpdated = new Date();
 
   const titlePage = (
-    <Reveal as="header" className="flex flex-col gap-6">
-      <p className="text-muted-foreground font-mono text-xs uppercase">A portfolio in chapters</p>
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <h1 className="font-serif text-[1.75rem] leading-tight font-normal">
-          Hi! I’m Yash, your neighbourhood
-        </h1>
+    <header className="flex flex-col items-center gap-8 text-center">
+      <p className="caps text-muted-foreground text-sm">A portfolio in chapters</p>
+      <div className="flex flex-col items-center gap-1 text-[1.875rem] leading-tight">
+        <h1>Hi! I’m Yash, your neighbourhood</h1>
         <ProfessionPill />
       </div>
-      <div className="max-w-[34rem] space-y-[1lh] font-serif text-lg leading-relaxed font-normal">
-        <p className="first-letter:text-rubric first-letter:float-left first-letter:mt-1.5 first-letter:mr-2 first-letter:text-[3.4rem] first-letter:leading-[0.8]">
+      {/* The epigraph: the one belief the whole book argues for. */}
+      <p className="max-w-[26rem] text-lg leading-relaxed italic text-pretty">
+        “All software should be opinionated and delightful to use in order to be called usable.”
+      </p>
+      <p className="caps text-muted-foreground text-sm">for Nana, who dropped in</p>
+      <div className="mt-4 max-w-[34rem] space-y-[1lh] text-left text-lg leading-relaxed">
+        <p className="first-letter:text-rubric first-letter:float-left first-letter:mt-2 first-letter:mr-2.5 first-letter:text-[3.6rem] first-letter:leading-[0.75] first-letter:font-normal">
           Currently, I make agentic AI experiences feel <em>oh yeah!</em> at Microsoft. Previously,
-          I’ve worked at Adobe, Postman and Samsung.
-        </p>
-        <p className="text-muted-foreground">
-          I believe all software should be opinionated and delightful to use in order to be
-          called usable.
+          I’ve worked at Adobe, Postman and Samsung. I was trained as an industrial designer, I
+          design on paper before I design in Figma, and I paint landscapes wet and loose. Each
+          chapter that follows opens on one of those paintings.
         </p>
       </div>
-    </Reveal>
+    </header>
   );
 
   const after = (
     <>
-      <section aria-label="Other work" className="flex flex-col gap-4">
+      <section aria-label="Other work" className="flex flex-col gap-6">
         <PartHeading part="Part Two" title="Other work" />
-        <RevealGroup as="ul">
+        <ul role="list">
           {otherWork.map((item, i) => (
-            <RevealItem
-              as="li"
+            <li
               key={i}
               className={cn(
-                "border-border border-b py-3 font-serif text-base font-normal",
+                "border-border grid grid-cols-[3rem_1fr] border-b py-3 text-lg leading-snug",
                 item.muted && "text-muted-foreground",
               )}
             >
-              {item.title}
-            </RevealItem>
+              <span className="text-muted-foreground figures">{i + 1}</span>
+              <span className="text-pretty">{item.title}</span>
+            </li>
           ))}
-        </RevealGroup>
+        </ul>
       </section>
 
-      <section aria-label="Writing" className="flex flex-col gap-4">
+      <section aria-label="Writing" className="flex flex-col gap-6">
         <PartHeading part="Part Three" title="Writing" />
-        <RevealGroup as="ul">
+        <ul role="list">
           {writing.toSorted((a, b) => b.date.localeCompare(a.date)).map((post) => {
             const row = (
               <>
-                <span className="font-serif text-base font-normal text-pretty">{post.title}</span>
+                <span className="text-lg leading-snug text-pretty">{post.title}</span>
                 <span className="hidden flex-1 self-stretch sm:flex sm:items-baseline">
                   <Leader />
                 </span>
-                <time
-                  dateTime={post.date}
-                  className="text-muted-foreground shrink-0 font-mono text-xs uppercase"
-                >
-                  {formatDay(new Date(post.date))}
+                <time dateTime={post.date} className="text-muted-foreground figures shrink-0 text-sm italic">
+                  {longDate.format(new Date(post.date))}
                 </time>
               </>
             );
             const rowClass = "flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:gap-3";
             return (
-              <RevealItem as="li" key={post.title} className="border-border border-b">
+              <li key={post.title} className="border-border border-b">
                 {post.href ? (
                   <Link
                     href={post.href}
@@ -190,15 +182,13 @@ export default function HomePage() {
                 ) : (
                   <div className={rowClass}>{row}</div>
                 )}
-              </RevealItem>
+              </li>
             );
           })}
-        </RevealGroup>
-        <div>
-          <TextLink href="/blog" icon={ArrowUpRightIcon}>
-            Open blog
-          </TextLink>
-        </div>
+        </ul>
+        <p className="text-center">
+          <TextLink href="/blog">Read the whole shelf</TextLink>
+        </p>
       </section>
     </>
   );
@@ -206,25 +196,20 @@ export default function HomePage() {
   return (
     <div className="@container overflow-x-clip">
       <Oneko />
-      <Container size="wide" className="flex flex-col gap-14 pt-8 pb-16 text-base leading-snug font-medium">
-        {/* Running head, as at the top of a printed page. */}
-        <Reveal
-          as="header"
-          className="border-border flex flex-col gap-3 border-b pb-3 sm:flex-row sm:items-center sm:justify-between"
-        >
-          <p className="font-mono text-xs uppercase">
+      <Container size="wide" className="flex flex-col gap-16 pt-8 pb-20 text-base leading-snug">
+        {/* The running head, as at the top of every printed page. */}
+        <header className="border-rule caps flex flex-col gap-3 border-b pb-3 text-sm sm:flex-row sm:items-baseline sm:justify-between">
+          <p>
             Yash Shenai <span className="text-muted-foreground">· Product designer</span>
           </p>
-          <nav aria-label="Main" className="flex flex-wrap items-center gap-x-5 gap-y-1">
+          <nav aria-label="Main" className="flex flex-wrap items-baseline gap-x-6 gap-y-1">
             <TextLink href={site.resume} icon={ArrowUpRightIcon}>
-              Open resumé
+              Résumé
             </TextLink>
-            <TextLink href="/about" icon={SmileyXEyesIcon}>
-              About
-            </TextLink>
+            <TextLink href="/about">About the author</TextLink>
             <ThemeTextToggle />
           </nav>
-        </Reveal>
+        </header>
 
         <ContentsSpread
           frontispiece={frontispiece}
@@ -234,19 +219,20 @@ export default function HomePage() {
         />
 
         {/* The colophon: how the book was made, then where to find its author. */}
-        <Reveal as="footer" className="border-border mx-auto flex w-full max-w-xl flex-col items-center gap-8 border-t pt-12 text-center">
-          <span aria-hidden className="text-rubric font-serif text-2xl">
+        <footer className="border-rule mx-auto mt-8 flex w-full max-w-xl flex-col items-center gap-6 border-t pt-12 text-center">
+          <span aria-hidden className="text-rubric text-2xl">
             ❦
           </span>
-          <h2 className="font-serif text-sm uppercase tracking-[0.2em]">Colophon</h2>
-          <p className="text-muted-foreground font-serif text-base leading-relaxed font-normal italic text-pretty">
-            Set in Newsreader and Geist Mono. Designed on paper with a Pilot Metropolitan, then in
-            Figma, and built with Next.js. The frontispieces will be painted in watercolour by the
-            author; until then, each plate is marked as a placeholder.
+          <h2 className="caps text-base">Colophon</h2>
+          <p className="text-muted-foreground text-base leading-relaxed italic text-pretty">
+            Set in Newsreader, in roman, italic and small capitals, and nothing else. Designed on
+            paper with a Pilot Metropolitan, then in Figma, and bound with Next.js. The frontispieces
+            will be painted in watercolour by the author; until then each plate is marked as a
+            placeholder under its tissue.
           </p>
-          <div className="grid w-full gap-8 text-left sm:grid-cols-3">
+          <div className="mt-4 grid w-full gap-8 text-left sm:grid-cols-3">
             <div className="flex flex-col gap-2">
-              <p className="text-muted-foreground font-mono text-xs uppercase">Contact</p>
+              <p className="caps text-muted-foreground text-sm">Correspondence</p>
               <ul role="list">
                 <li>
                   <CopyEmail />
@@ -262,21 +248,23 @@ export default function HomePage() {
                 </li>
                 <li>
                   <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
-                    Resumé
+                    Résumé
                   </a>
                 </li>
               </ul>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="text-muted-foreground font-mono text-xs uppercase">This edition</p>
-              <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
+              <p className="caps text-muted-foreground text-sm">This edition</p>
+              <time dateTime={lastUpdated.toISOString().slice(0, 10)} className="figures">
+                {longDate.format(lastUpdated)}
+              </time>
             </div>
             <div className="flex flex-col gap-2 sm:items-end sm:text-right">
-              <p className="text-muted-foreground font-mono text-xs uppercase">Currently</p>
+              <p className="caps text-muted-foreground text-sm">The author, now</p>
               <NoidaTime />
             </div>
           </div>
-        </Reveal>
+        </footer>
       </Container>
     </div>
   );

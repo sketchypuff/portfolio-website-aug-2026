@@ -28,7 +28,7 @@ const outro = { label: "that’s all of me", icon: SmileyWinkIcon };
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
 /**
- * The "product designer" pill in the home intro. Clicking cycles through the
+ * The "product designer" blank on the title page. Clicking cycles through the
  * other things Yash is. Finishing the first lap earns one extra label
  * (`outro`) before it wraps back to the start.
  *
@@ -45,7 +45,8 @@ export function ProfessionPill() {
   const [width, setWidth] = useState<number | null>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
-  const { label, icon: Icon } = professions[index] ?? outro;
+  // The icons stay in the list for the other worlds; a title page sets no icons.
+  const { label } = professions[index] ?? outro;
 
   function next() {
     if (index < professions.length - 1) {
@@ -72,7 +73,9 @@ export function ProfessionPill() {
     <button
       type="button"
       onClick={next}
-      className="bg-background border-border inline-flex shrink-0 cursor-pointer items-center rounded-lg border px-2 py-1 shadow-xs transition-[scale] duration-150 ease-out select-none active:scale-[0.96] motion-reduce:transition-none"
+      // On a title page the blank is set in italic ink on a hairline rule,
+      // not in a box. Clicking rewrites it.
+      className="text-link decoration-link/40 hover:decoration-link inline-flex shrink-0 cursor-pointer items-baseline underline decoration-1 underline-offset-[0.2em] italic transition-[scale,text-decoration-color] duration-150 ease-out select-none active:scale-[0.97] motion-reduce:transition-none"
     >
       <motion.span
         className="relative inline-flex overflow-hidden"
@@ -86,7 +89,7 @@ export function ProfessionPill() {
             <motion.span
               key={label}
               aria-live="polite"
-              className="inline-flex items-center gap-1.5 whitespace-nowrap"
+              className="inline-flex items-baseline gap-1.5 whitespace-nowrap"
               initial={reduced ? false : { opacity: 0, y: 10, filter: "blur(4px)" }}
               animate={{
                 opacity: 1,
@@ -105,7 +108,6 @@ export function ProfessionPill() {
                     }
               }
             >
-              <Icon aria-hidden className="text-link size-6 shrink-0" />
               {label}
             </motion.span>
           </AnimatePresence>

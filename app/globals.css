@@ -4,115 +4,77 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * The book. The site is a novel: the home page is its title page and
+ * contents, each case study a chapter opening on a painted frontispiece,
+ * the footer a colophon.
+ *
+ * Material rules:
+ *  - Uncoated book paper and ink by day; the cloth binding and cream type by
+ *    night. Flat colour only, no texture, no vignette, no page curl.
+ *  - One face, Newsreader, in roman, italic and small caps. There is no mono
+ *    on the page: a book's frame is rules, folios, leaders and caps.
+ *  - Rubric red is for numbering: chapter numerals, the drop cap, the
+ *    fleuron. Nothing else.
+ *  - A plate is printed on its own lit sheet (`paper`) in both themes, under
+ *    a tissue guard, so a painting never sits on the dark cloth.
+ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-rule: var(--rule);
+  --color-ring: var(--ring);
   --color-link: var(--link);
+  --color-rubric: var(--rubric);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-newsreader);
-  --font-heading: var(--font-sans);
-  --color-rubric: var(--rubric);
+  --color-destructive: var(--destructive);
+
   --color-paper: var(--paper);
   --color-paper-foreground: var(--paper-foreground);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-tissue: var(--tissue);
+
+  --font-sans: var(--font-newsreader);
+  --font-serif: var(--font-newsreader);
+  --font-heading: var(--font-newsreader);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
 }
 
-/*
- * Blue scale built from the link blue (#2148f9, step 600). One hue (266),
- * lightness evenly spaced from 0.97 to 0.22, chroma a fraction of the sRGB
- * ceiling at each step so every value renders faithfully.
- *
- * Primitives only: deliberately outside @theme so they generate no utility
- * classes. Components use semantic tokens (`text-link`); a new use of a step
- * gets a semantic token that points here. The scale is the same in both
- * themes — dark mode picks different steps, it doesn't redefine them.
- */
 :root {
-  --blue-50: oklch(0.97 0.008 266);
-  --blue-100: oklch(0.894 0.033 266);
-  --blue-200: oklch(0.817 0.065 266);
-  --blue-300: oklch(0.741 0.106 266);
-  --blue-400: oklch(0.665 0.159 266);
-  --blue-500: oklch(0.588 0.215 266);
-  --blue-600: oklch(0.512 0.262 266);
-  --blue-700: oklch(0.439 0.263 266);
-  --blue-800: oklch(0.366 0.179 266);
-  --blue-900: oklch(0.293 0.11 266);
-  --blue-950: oklch(0.22 0.06 266);
-}
-
-/*
- * The book (world/book). Every gray is warmed slightly toward hue 70 so the
- * page reads as uncoated book paper and ink rather than screen white and
- * black. Flat colour only: no paper texture, no vignette.
- */
-:root {
-  --background: oklch(0.975 0.007 80);
-  --foreground: oklch(0.22 0.012 60);
-  --card: oklch(0.975 0.007 80);
-  --card-foreground: oklch(0.22 0.012 60);
-  --popover: oklch(0.985 0.005 80);
-  --popover-foreground: oklch(0.22 0.012 60);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  /* Uncoated book paper. */
+  --background: oklch(0.975 0.008 82);
+  /* Printer's ink, a warm black. */
+  --foreground: oklch(0.22 0.014 60);
   --muted: oklch(0.94 0.01 80);
-  --muted-foreground: oklch(0.5 0.016 60);
-  --accent: oklch(0.94 0.01 80);
-  --accent-foreground: oklch(0.22 0.012 60);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.012 75);
-  --input: oklch(0.88 0.012 75);
-  --ring: oklch(0.65 0.015 60);
-  /* Blue-black fountain-pen ink (the Pilot Metropolitan), reserved for links. 8.6:1 on the page. */
-  --link: oklch(0.4 0.11 262);
-  /* Rubrication: the red a printer uses for chapter numerals. Numerals and the drop cap only. */
-  --rubric: oklch(0.53 0.16 33);
-  /* The paper a frontispiece plate is printed on. Identical in both themes: a lit card. */
-  --paper: oklch(0.985 0.006 85);
-  --paper-foreground: oklch(0.3 0.012 60);
-  /* Confirmation only (the "Copied" tooltip). 4.95:1 under its foreground. */
+  /* Secondary text, 5.6:1 on the page: running heads, captions, companies. */
+  --muted-foreground: oklch(0.47 0.016 60);
+  /* A hairline rule. */
+  --border: oklch(0.87 0.012 75);
+  /* A printed rule: running heads, section openings. */
+  --rule: oklch(0.22 0.014 60 / 50%);
+  --ring: oklch(0.4 0.1 262);
+  /* Blue-black ink, reserved for links. 8.4:1 on the page. */
+  --link: oklch(0.4 0.1 262);
+  /* Rubrication: the red a printer uses for chapter numerals. */
+  --rubric: oklch(0.52 0.17 30);
   --success: oklch(0.52 0.14 150);
   --success-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* The sheet a plate is printed on. Identical in both themes. */
+  --paper: oklch(0.985 0.006 85);
+  --paper-foreground: oklch(0.3 0.012 60);
+  /* The tissue guard laid over a plate: translucent, slightly warm. */
+  --tissue: oklch(0.985 0.006 85 / 0.6);
+
   /*
    * Watercolour pigments for the placeholder frontispieces, named after the
    * tubes. Placeholders only — Yash's scans replace them. Same in both themes
@@ -124,71 +86,44 @@
   --pigment-ochre: oklch(0.76 0.12 80);
   --pigment-sienna: oklch(0.56 0.13 45);
   --pigment-sepia: oklch(0.42 0.04 60);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* Dark is the cloth binding: warm near-black board, cream type. Plates stay lit paper. */
+/* Night: the cloth binding, cream type. Plates stay lit paper. */
 .dark {
-  --background: oklch(0.2 0.01 55);
-  --foreground: oklch(0.93 0.012 80);
-  --card: oklch(0.24 0.01 55);
-  --card-foreground: oklch(0.93 0.012 80);
-  --popover: oklch(0.24 0.01 55);
-  --popover-foreground: oklch(0.93 0.012 80);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.27 0.01 55);
-  --muted-foreground: oklch(0.72 0.014 70);
-  --accent: oklch(0.27 0.01 55);
-  --accent-foreground: oklch(0.93 0.012 80);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.93 0.012 80 / 14%);
-  --input: oklch(0.93 0.012 80 / 18%);
-  --ring: oklch(0.55 0.014 60);
+  --background: oklch(0.2 0.012 55);
+  --foreground: oklch(0.92 0.014 80);
+  --muted: oklch(0.26 0.012 55);
+  --muted-foreground: oklch(0.7 0.016 70);
+  --border: oklch(0.92 0.014 80 / 14%);
+  --rule: oklch(0.92 0.014 80 / 45%);
+  --ring: oklch(0.78 0.09 255);
   --link: oklch(0.78 0.09 255);
-  --rubric: oklch(0.72 0.13 38);
-  /* 11.2:1 under its foreground. */
+  --rubric: oklch(0.72 0.14 36);
   --success: oklch(0.8 0.15 150);
   --success-foreground: oklch(0.145 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply font-serif;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+    font-feature-settings: "kern", "liga", "calt";
+    text-rendering: optimizeLegibility;
+  }
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
+  code,
+  kbd,
+  pre {
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  ::selection {
+    background: oklch(0.52 0.17 30 / 0.16);
   }
 }
 
@@ -201,4 +136,20 @@
 */
 @utility selection-root {
   transform: translate(0);
+}
+
+/*
+  Letterspaced small caps: running heads, part titles, captions, the
+  contents heading. The one place the book tracks its type.
+*/
+@utility caps {
+  font-variant-caps: all-small-caps;
+  font-variant-numeric: oldstyle-nums;
+  letter-spacing: 0.12em;
+  font-feature-settings: "kern", "liga", "smcp", "c2sc";
+}
+
+/* Figures that line up in a column: dates on a contents page. */
+@utility figures {
+  font-variant-numeric: oldstyle-nums tabular-nums;
 }
