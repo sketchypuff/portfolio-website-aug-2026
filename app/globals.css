@@ -5,21 +5,22 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * The book. The site is a novel: the home page is its title page and
- * contents, each case study a chapter opening on a painted frontispiece,
- * the footer a colophon.
+ * The book. The screen is a table; on it lies a bound book, open. The home
+ * page is the book's front matter, spread by spread: frontispiece and title
+ * page, epigraph and preface, contents, list of plates, colophon.
  *
  * Material rules:
- *  - Uncoated book paper and ink by day; the cloth binding and cream type by
- *    night. Flat colour only, no texture, no vignette, no page curl.
- *  - One face, Newsreader, in roman, italic and small caps. There is no mono
- *    on the page: a book's frame is rules, folios, leaders and caps.
- *  - Rubric red is for numbering: chapter numerals, the drop cap, the
- *    fleuron. Nothing else.
- *  - A plate is printed on its own lit sheet (`paper`) in both themes, under
- *    a tissue guard, so a painting never sits on the dark cloth.
+ *  - Three materials: the table (linen by day, dark at night), the boards
+ *    (ink-blue cloth), and the page block (uncoated cream). The page is the
+ *    same by day and by night; the lamp just dims it a little.
+ *  - One face, Newsreader, in roman, italic and small caps. No mono on the
+ *    page. A book's frame is margins, running heads, folios, rules, leaders.
+ *  - Rubric red is for numbering: chapter numerals, the drop cap, ornaments.
+ *  - A plate is printed under a tissue guard and never sits on the cloth.
  */
 @theme inline {
+  --color-table: var(--table);
+  --color-cloth: var(--cloth);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
@@ -33,35 +34,40 @@
   --color-success-foreground: var(--success-foreground);
   --color-destructive: var(--destructive);
 
-  --color-paper: var(--paper);
-  --color-paper-foreground: var(--paper-foreground);
+  --color-paper: var(--background);
+  --color-paper-foreground: var(--foreground);
   --color-tissue: var(--tissue);
+  --shadow-book: var(--book-shadow);
 
   --font-sans: var(--font-newsreader);
   --font-serif: var(--font-newsreader);
   --font-heading: var(--font-newsreader);
   --font-mono: var(--font-geist-mono);
 
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
 }
 
 :root {
-  /* Uncoated book paper. */
+  /* The table the book lies on. */
+  --table: oklch(0.87 0.014 76);
+  /* The boards: ink-blue book cloth. */
+  --cloth: oklch(0.3 0.035 262);
+  /* The page. `background` is the page, so tooltips and selection sit on paper. */
   --background: oklch(0.975 0.008 82);
   /* Printer's ink, a warm black. */
   --foreground: oklch(0.22 0.014 60);
   --muted: oklch(0.94 0.01 80);
-  /* Secondary text, 5.6:1 on the page: running heads, captions, companies. */
+  /* Secondary text, 5.6:1 on the page. */
   --muted-foreground: oklch(0.47 0.016 60);
   /* A hairline rule. */
   --border: oklch(0.87 0.012 75);
-  /* A printed rule: running heads, section openings. */
+  /* A printed rule. */
   --rule: oklch(0.22 0.014 60 / 50%);
   --ring: oklch(0.4 0.1 262);
-  /* Blue-black ink, reserved for links. 8.4:1 on the page. */
+  /* Blue-black ink, reserved for links. */
   --link: oklch(0.4 0.1 262);
   /* Rubrication: the red a printer uses for chapter numerals. */
   --rubric: oklch(0.52 0.17 30);
@@ -69,16 +75,13 @@
   --success-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.577 0.245 27.325);
 
-  /* The sheet a plate is printed on. Identical in both themes. */
-  --paper: oklch(0.985 0.006 85);
-  --paper-foreground: oklch(0.3 0.012 60);
-  /* The tissue guard laid over a plate: translucent, slightly warm. */
+  /* The tissue guard laid over a plate. */
   --tissue: oklch(0.985 0.006 85 / 0.6);
+  --book-shadow: 0 2px 2px oklch(0.2 0.02 60 / 0.1), 0 12px 24px -8px oklch(0.2 0.02 60 / 0.3), 0 40px 80px -32px oklch(0.2 0.02 60 / 0.45);
 
   /*
    * Watercolour pigments for the placeholder frontispieces, named after the
-   * tubes. Placeholders only — Yash's scans replace them. Same in both themes
-   * because they always sit on --paper.
+   * tubes. Placeholders only — Yash's scans replace them.
    */
   --pigment-indigo: oklch(0.42 0.08 265);
   --pigment-cerulean: oklch(0.68 0.09 230);
@@ -88,20 +91,12 @@
   --pigment-sepia: oklch(0.42 0.04 60);
 }
 
-/* Night: the cloth binding, cream type. Plates stay lit paper. */
+/* Night: the table goes dark and the page is read by lamplight. */
 .dark {
-  --background: oklch(0.2 0.012 55);
-  --foreground: oklch(0.92 0.014 80);
-  --muted: oklch(0.26 0.012 55);
-  --muted-foreground: oklch(0.7 0.016 70);
-  --border: oklch(0.92 0.014 80 / 14%);
-  --rule: oklch(0.92 0.014 80 / 45%);
-  --ring: oklch(0.78 0.09 255);
-  --link: oklch(0.78 0.09 255);
-  --rubric: oklch(0.72 0.14 36);
-  --success: oklch(0.8 0.15 150);
-  --success-foreground: oklch(0.145 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  --table: oklch(0.15 0.01 60);
+  --cloth: oklch(0.26 0.03 262);
+  --background: oklch(0.935 0.012 80);
+  --book-shadow: 0 2px 2px oklch(0 0 0 / 0.3), 0 16px 32px -8px oklch(0 0 0 / 0.6), 0 48px 96px -32px oklch(0 0 0 / 0.8);
 }
 
 @layer base {
@@ -115,7 +110,7 @@
     text-rendering: optimizeLegibility;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
   code,
   kbd,
@@ -138,10 +133,7 @@
   transform: translate(0);
 }
 
-/*
-  Letterspaced small caps: running heads, part titles, captions, the
-  contents heading. The one place the book tracks its type.
-*/
+/* Letterspaced small caps: running heads, part titles, captions, labels. */
 @utility caps {
   font-variant-caps: all-small-caps;
   font-variant-numeric: oldstyle-nums;
@@ -152,4 +144,34 @@
 /* Figures that line up in a column: dates on a contents page. */
 @utility figures {
   font-variant-numeric: oldstyle-nums tabular-nums;
+}
+
+/* Book text: justified, hyphenated, with a modest measure. */
+@utility book-text {
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-wrap: pretty;
+  @media (width >= 40rem) {
+    text-align: justify;
+  }
+}
+
+/*
+  The fore-edge: the pages beneath the open one, drawn as alternating page
+  and shadow hairlines on both outer edges of the page block.
+*/
+@utility fore-edge {
+  box-shadow:
+    -2px 0 0 var(--background),
+    -3px 0 0 oklch(0 0 0 / 0.18),
+    -5px 0 0 var(--background),
+    -6px 0 0 oklch(0 0 0 / 0.14),
+    -8px 0 0 var(--background),
+    -9px 0 0 oklch(0 0 0 / 0.1),
+    2px 0 0 var(--background),
+    3px 0 0 oklch(0 0 0 / 0.18),
+    5px 0 0 var(--background),
+    6px 0 0 oklch(0 0 0 / 0.14),
+    8px 0 0 var(--background),
+    9px 0 0 oklch(0 0 0 / 0.1);
 }

@@ -2,93 +2,74 @@
 
 **Status: Prototype.** This branch tries one of three candidate "worlds" for
 the site (field journal, book, watercolour sketchbook), built so Yash can
-compare them. Where this file disagrees with the achromatic, minimal rules in
-the other topic files, this file wins *on this branch only*. The `/design`
-style guide has not been brought along; it compiles but is not the reference
-here.
+compare them. On this branch this file **replaces** the achromatic, minimal
+rules in the other topic files. The `/design` style guide has not been
+brought along; it compiles but is not the reference here.
 
-## The world
+## The object
 
-The site is a novel. The home page is its **title page and contents**, each
-case study will be a **chapter** opening on a painted **frontispiece**, and
-the footer is the **colophon**.
+The screen is a table. On it lies **a bound book, open**. The home page is
+the book's front matter, opening by opening: frontispiece and title page;
+epigraph and preface; contents; list of plates and colophon. Nothing on home
+is a web section. Every element is a part of a printed book: boards, a page
+block with its fore-edge, a shaded gutter, running heads, folios, rules,
+leaders, small capitals, a drop cap, a tissue guard over the frontispiece.
 
-- **Prime motif: the chapter.** Selected work is numbered I–IV in rubric red;
+- **Prime motif: the chapter.** Selected work is Chapters I–IV in rubric red;
   other work and writing are Parts Two and Three.
 - **Double meaning:** case studies are stories, the subject of Yash's post on
   storytelling in UX case studies.
-- **Where the watercolour lives:** in the plates. The verso holds the
-  frontispiece under a tissue guard; hovering a chapter lifts the tissue and
-  turns to that chapter's plate. A list of plates shows all four at once.
+- **Where the watercolour lives:** the frontispiece under its tissue, and the
+  list of plates. Each case study will open on its own plate.
 
-## Second pass (this commit)
+## Third pass (this commit): make it the object
 
-The first prototype kept Geist and mono labels around a serif. This pass
-makes the page out of what a printed book is made of, and nothing else:
-
-- **One face.** Newsreader in roman, italic and small caps. Geist Sans is
-  gone; Geist Mono is loaded only for code in blog posts and the home page
-  sets nothing in it. Old-style figures everywhere (`html`), tabular where
-  dates stack (`figures`). Letterspaced small caps come from one utility,
-  `caps`, used for running heads, part titles, captions and labels.
-- **A real title page.** Centred: a half-title line, the headline with the
-  profession blank set in italic ink, an epigraph (the "opinionated and
-  delightful" line in quotation marks), a dedication, and a preface with a
-  rubric drop cap. The dedication reads *for Nana, who dropped in*: it is a
-  suggestion from the identity notes, and Yash should confirm or cut it.
-- **Tissue guards.** `Plate` takes `guarded` and `lifted`. On the verso the
-  frontispiece rests under a translucent sheet printed with its number; hovering
-  the plate, a chapter, or a thumbnail lifts it. It is the one "book object"
-  detail on the page, and it is a real one.
-- **Part headings** are centred small caps between rules, like a novel's part
-  openings, and the chapter rows carry a leader from the company to *in
-  draft* in italic.
-- **Links** are ink blue with a hairline underline. The theme toggle reads
-  *Lamplight / Daylight*. No pills, boxes or icons apart from the ↗ on the
-  resumé.
-- **Colophon** is centred under a fleuron, with the correspondence, edition
-  date, and the author's local time.
-
-## The spread (`components/book/contents-spread.tsx`)
-
-```
-lg and up                                   below lg
-┌──────────── running head ──────────────┐  running head
-│ verso (5fr)       │ recto (7fr)        │  frontispiece (landscape)
-│ sticky Plate      │ title page         │  title page
-│  under tissue     │ Contents           │  Contents — each chapter with
-│ list of plates    │  Part One  I–IV    │    its own inline plate
-│                   │  Part Two          │  Part Two, Part Three
-│                   │  Part Three        │
-└──────── gutter rule between ───────────┘
-              colophon (centred)
-```
-
-`Container size="wide"`. The gutter is a 1px `bg-rule`. Below `lg` nothing
-depends on hover.
+- **Three materials.** `body` is the table (`bg-table`, linen by day, dark at
+  night). Each `Spread` has ink-blue cloth boards (`bg-cloth`) around a cream
+  page block (`bg-paper`) with a `fore-edge` (alternating page and shadow
+  hairlines on both outer edges). The page never changes with the theme; the
+  lamp dims it slightly.
+- **Pages** (`Page` in `components/book/book.tsx`) have a narrower inner
+  margin than outer, a running head at the top outer corner, a folio at the
+  bottom outer corner (front matter, so roman: ii–vii), and a soft shade
+  where the page meets the gutter. Below `lg` the two pages of a spread stack,
+  verso first, each still a full page.
+- **The openings.** ii frontispiece under tissue · iii title page (author,
+  title, ornament, subtitle, imprint, the three links) · iv epigraph,
+  dedication, preface (justified, hyphenated, rubric drop cap) · v contents
+  (Part One chapters with leaders to *in draft*, Part Two other work) · vi
+  Part Three writing with leaders to dates · vii list of plates and colophon.
+- **Hover.** A chapter row rings its plate in the list of plates, and its
+  leader turns solid rubric; a thumbnail does the same for its row. The
+  frontispiece lifts its tissue on hover. Nothing else moves.
+- **Type.** Newsreader only, roman, italic and small caps (`caps`), old-style
+  figures, tabular where dates stack (`figures`). Geist Mono is loaded only
+  for code in posts.
+- The dedication *for Nana, who dropped in* is a suggestion from the identity
+  notes; Yash should confirm or cut it.
 
 ## Rules
 
-1. **No fake book.** No paper texture, aged edges, leather, page curls or
-   page-flip animation. The book comes from real book typography and, later,
-   real paintings. The tissue guard is allowed because bound plates have one.
+1. **No fake book.** No paper texture, aged edges, page curls or page-flip
+   animation. The book is boards, a page block, margins and type. The fore-edge
+   lines, gutter shade and tissue are the lighting and parts of a real book,
+   not decoration.
 2. **Placeholders say so.** Every plate prints "Placeholder · to be painted"
-   on itself. Never ship a placeholder wash as if it were Yash's painting.
-3. **The work stays readable.** Chapter titles are 20px, always visible,
-   never hidden behind hover.
-4. **Rubric red is for numbering.** `text-rubric` goes on chapter numerals,
-   the drop cap, the fleuron, and the active plate in the list of plates.
-5. **Plates are lit paper.** A plate's sheet is `bg-paper` in both themes.
+   on itself.
+3. **The work stays readable.** Chapter titles are 19px, always visible.
+4. **Rubric red is for numbering.** Chapter numerals, the drop cap, ornaments,
+   the active plate and leader. Nothing else.
+5. **Plates are on the page.** A plate never sits on the cloth or the table.
 
 ## Dark mode
 
-Dark is the **cloth binding**: a warm near-black board with cream type.
-Plates stay lit paper cards (`--paper` does not change) so a scanned
-watercolour never sits on a dark ground.
+Night: the table goes near-black, the cloth a little deeper, and the page is
+read by lamplight (`--background` dims a touch). Ink, rubric and paint do not
+change.
 
 ## Replacing a placeholder with a painting
 
 Add the scan under the chapter's content directory and render it with the
 existing image pipeline (`lib/images.ts`) in place of `PlaceholderWash`
-inside `Plate`. Keep the `bg-paper` sheet, the tissue, and the 4:5 (verso) /
-3:2 (inline) frames so nothing shifts.
+inside `Plate` (frontispiece) and in the list of plates. Keep the tissue and
+the 4:5 / 4:3 frames so nothing shifts.
