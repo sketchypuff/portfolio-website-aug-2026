@@ -10,6 +10,9 @@ import { Container } from "@/components/container";
 import { Figure } from "@/components/content/figure";
 import { PostNav } from "@/components/content/post-nav";
 import { IconCircle } from "@/components/icon-circle";
+import { Entry, EntrySpread } from "@/components/journal/entry";
+import { JournalHeading } from "@/components/journal/journal-heading";
+import { PlaceholderSwatch } from "@/components/journal/placeholder-wash";
 import { Mdx } from "@/components/content/mdx";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { CopyEmail } from "@/components/copy-email";
@@ -37,12 +40,18 @@ const colors = [
   { token: "muted", swatch: "bg-muted", use: "Image slots, placeholders, code", origin: "shadcn neutral" },
   { token: "border", swatch: "bg-border", use: "Default borders", origin: "shadcn neutral" },
   { token: "ring", swatch: "bg-ring", use: "Focus outline, at 50%", origin: "shadcn neutral" },
-  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle, pill icon", origin: "Figma · #2148f9" },
+  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle, pill icon", origin: "Field journal · blue-black ink" },
+  { token: "paper", swatch: "bg-paper", use: "Entries, specimen tags — lit in both themes", origin: "Field journal" },
+  { token: "wash-sky", swatch: "bg-wash-sky", use: "Placeholder washes only", origin: "Field journal · placeholder" },
+  { token: "wash-sap", swatch: "bg-wash-sap", use: "Placeholder washes only", origin: "Field journal · placeholder" },
+  { token: "wash-sienna", swatch: "bg-wash-sienna", use: "Placeholder washes only", origin: "Field journal · placeholder" },
+  { token: "wash-ochre", swatch: "bg-wash-ochre", use: "Placeholder washes only", origin: "Field journal · placeholder" },
+  { token: "wash-indigo", swatch: "bg-wash-indigo", use: "Placeholder washes only", origin: "Field journal · placeholder" },
   { token: "destructive", swatch: "bg-destructive", use: "MdxError only", origin: "shadcn neutral" },
 ];
 
 // The blue scale is primitives-only (no utility classes), so swatches read the
-// variables directly. Step 600 is the light-mode link.
+// variables directly. No longer used by the link (see color.md).
 const blueSteps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
 const containers = [
@@ -103,8 +112,8 @@ export default function DesignPage() {
         </ul>
 
         <p className="text-muted-foreground mt-12 mb-4 text-sm">
-          Blue scale — primitives in <Code>globals.css</Code>, built from the link blue (600).
-          Not used by components directly.
+          Blue scale — primitives in <Code>globals.css</Code>, built from the old link blue (600).
+          Unused since the field-journal ink link.
         </p>
         <ul role="list" className="grid grid-cols-11 gap-1 sm:gap-2">
           {blueSteps.map((step) => (
@@ -198,6 +207,31 @@ export default function DesignPage() {
                 <p className="text-muted-foreground">An “Other work” card, title only and muted</p>
               </WorkCard>
             </WorkStrip>
+          </Specimen>
+        </div>
+      </Section>
+
+      <Section title="Field journal" source="components/journal/ · docs/design/components.md">
+        <div className="space-y-10 font-serif text-base leading-snug">
+          <Specimen label="JournalHeading · numeral, label, aside">
+            <JournalHeading numeral="I" aside="04 entries">
+              Selected work
+            </JournalHeading>
+          </Specimen>
+          <Specimen label="EntrySpread + Entry · hover lifts the page and blooms the plate">
+            <EntrySpread label="Specimen entries">
+              <Entry index={0} company="Microsoft" title="An entry: plate above, ink notes below" palette="dawn" seed={4} />
+              <Entry index={1} company="Adobe" title="The second column drops half a plate" palette="dusk" seed={11} />
+            </EntrySpread>
+          </Specimen>
+          <Specimen label="PlaceholderSwatch · one test dab per wash token">
+            <div className="flex gap-3">
+              {(["text-wash-sky", "text-wash-sap", "text-wash-sienna", "text-wash-ochre", "text-wash-indigo"] as const).map(
+                (color, i) => (
+                  <PlaceholderSwatch key={color} id={`design-dab-${i}`} seed={i * 5 + 2} color={color} className="size-11" />
+                ),
+              )}
+            </div>
           </Specimen>
         </div>
       </Section>

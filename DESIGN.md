@@ -1,5 +1,11 @@
 # Design
 
+> **Branch `world/field-journal`.** Home is rebuilt as a naturalist's field
+> journal: warm paper, ink-blue links, serif notes, and projects as journal
+> entries with watercolour plates. Where this file or a topic file still
+> describes the achromatic site, [field-journal.md](docs/design/field-journal.md)
+> wins on this branch. Read it first.
+
 A quiet, achromatic portfolio where the work and the writing carry the page.
 Hierarchy comes from weight, size, and the one gray (`muted-foreground`), never
 from color. The only hue on the site is `link` blue, and it means "this takes
@@ -55,6 +61,7 @@ Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
 | [links.md](docs/design/links.md) | adding any link or clickable text |
 | [components.md](docs/design/components.md) | building UI — lists every shared component |
 | [motion.md](docs/design/motion.md) | anything that moves, hovers, or presses |
+| [field-journal.md](docs/design/field-journal.md) | **this branch's world**: motif, placeholders, dark mode |
 | [decisions.md](docs/design/decisions.md) | the dated log of what was decided and why |
 
 ## Keeping this current

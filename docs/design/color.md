@@ -1,5 +1,33 @@
 # Color
 
+## Field journal palette (branch `world/field-journal`, Provisional)
+
+The neutral ramp below is replaced in `globals.css` by warm paper and ink;
+every gray now carries a little hue (70–85) so it reads as paper and pencil.
+Token names are unchanged, so components didn't move.
+
+| Token | Light | Dark | Meaning |
+| --- | --- | --- | --- |
+| `background` | cream `0.962 0.014 84` | warm desk `0.2 0.012 62` | the page / desk |
+| `foreground` | iron-gall ink `0.24 0.018 60` | cream `0.92 0.016 84` | text |
+| `muted-foreground` | faded ink `0.49 0.025 65` | `0.72 0.022 78` | labels, dates |
+| `border` | pencil rule `0.85 0.022 80` | cream 14% | rules |
+| `link` | blue-black ink `0.42 0.11 258` | `0.78 0.08 255` | links only; replaces `#2148f9` |
+| `paper` | `0.982 0.01 88` | `0.93 0.014 86` | entries, specimen tags, stays lit |
+| `paper-foreground`, `paper-muted`, `paper-rule` | same in both themes | | text and rules on paper |
+| `shadow-paper`, `shadow-paper-lifted` | warm, soft | deeper, black | resting / hovered entry |
+| `wash-sky`, `wash-sap`, `wash-sienna`, `wash-ochre`, `wash-indigo` | same in both themes | | **placeholder washes only** |
+
+Blue still means "this takes you somewhere"; it is now the colour of
+fountain-pen ink, so the link is literally the ink. The `--blue-*` scale is
+kept as primitives but no token points at it any more. The `wash-*` tokens
+exist only for `PlaceholderWash`/`PlaceholderSwatch`; delete them with the
+last placeholder.
+
+---
+
+*The rest of this file describes the achromatic palette on `main`.*
+
 Source: `app/globals.css`. Light values live on `:root`, dark values on
 `.dark`; the `@theme inline` block turns each `--token` into Tailwind classes
 (`--muted-foreground` → `text-muted-foreground`, `bg-muted-foreground`, …).

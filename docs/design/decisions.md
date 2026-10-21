@@ -6,6 +6,15 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-10-21** — *(branch `world/field-journal`, prototype)* Home rebuilt
+  as a naturalist's field journal. Prime motif: the entry (plate + ink
+  notes); design as fieldwork. Warm paper/ink palette, blue-black ink links,
+  Newsreader serif with mono labels, roman-numbered sections, a flyleaf, a
+  dated writing log, specimen tags for other work, a colophon that logs the
+  cat. Dark mode: dark desk, lit paper. Washes are labelled SVG
+  placeholders until Yash's scans exist. Home drops reveals: hover only.
+  See [field-journal.md](field-journal.md).
+
 - **2026-09-28** — Reading columns carry `selection-root`. WebKit fills
   selection gaps to the nearest clipped/transformed ancestor, which was the
   full-width `@container overflow-x-clip` wrapper, so highlighting a post

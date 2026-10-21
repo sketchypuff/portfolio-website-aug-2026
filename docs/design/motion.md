@@ -1,5 +1,23 @@
 # Motion
 
+## Field journal (branch `world/field-journal`, Provisional)
+
+Home has **no reveals and nothing on load**: motion is quiet hovers only.
+
+| Effect | Classes | Where |
+| --- | --- | --- |
+| Entry lift | `motion-safe:hover:-translate-y-1.5 motion-safe:hover:rotate-0`, `shadow-paper` → `shadow-paper-lifted`, 500ms house curve | `Entry` |
+| Plate bloom | wash `motion-safe:group-hover/entry:scale-[1.04]` + a wetter sky layer to 30% opacity, 700ms | `PlaceholderWash` |
+| Sibling quiet | other entries `opacity-75`, 300ms, hover devices only | `EntrySpread` |
+| Ink hover | `hover:text-link transition-colors` | writing titles, colophon links |
+
+Under reduced motion the page is static: no lift, no tilt change, no bloom;
+the shadow swaps without a transition. The cat still hides itself.
+
+---
+
+*The rest of this file describes motion on `main`.*
+
 Alive, but the content stays the star. Motion confirms; it never performs.
 
 ## House curve and defaults (Decided)

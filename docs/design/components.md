@@ -9,6 +9,36 @@ Links (`TextLink`, `ThemeTextToggle`, and the other link treatments) are in [lin
 `Container` is in [layout.md](layout.md). Motion components are in
 [motion.md](motion.md).
 
+## Field journal components (branch `world/field-journal`, Provisional)
+
+All in `components/journal/`, all Server Components (hover is CSS). Specimens
+on `/design` under "Field journal". The world itself is in
+[field-journal.md](field-journal.md).
+
+- **`EntrySpread`** (`entry.tsx`) — the `ul` holding entries: two columns
+  from `md`, the even column dropped 64px, siblings quiet to 75% on hover.
+  Takes `label` (its accessible name).
+- **`Entry`** (`entry.tsx`) — one project page: "Entry 01 · Company" header,
+  a 4:3 plate with "Placeholder wash" tag and "Pl. I · scan to come" caption,
+  then the title in 18px serif. Optional `notes` adds the observed / found /
+  changed list. Tilt cycles by `index`. Use only inside `EntrySpread`.
+- **`JournalHeading`** (`journal-heading.tsx`) — section heading: roman
+  numeral, mono label, optional `aside` (a count, "Open blog →"), on a rule.
+  Replaces `SectionLabel` on home; numerals, not icons.
+- **`PlaceholderWash`**, **`PlaceholderSwatch`** (`placeholder-wash.tsx`) —
+  SVG stand-ins for scans. Need a page-unique `id` (namespaces SVG filter
+  ids). Never ship one unlabelled; delete them when the scans arrive.
+
+```tsx
+// Correct
+<EntrySpread label="Selected work">
+  <Entry index={0} company="Adobe" title="…" palette="dusk" seed={11} />
+</EntrySpread>
+
+// Incorrect — an Entry outside the spread loses its list and sibling quiet
+<div><Entry index={0} … /></div>
+```
+
 ## SectionLabel (Decided)
 
 `components/section-label.tsx`. Heading for a home-page section: mono,

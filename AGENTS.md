@@ -183,6 +183,10 @@ directory.
 
 ## Design status
 
+**On branch `world/field-journal`** the home page is the field-journal world
+prototype (`components/journal/`, `docs/design/field-journal.md`); the
+paragraph below describes `main`.
+
 The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its
 project cards and writing rows are hardcoded arrays for now. A writing row
 links to its post once the post exists in `content/posts/` (set `href`); the

@@ -1,57 +1,76 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import {
-  ArrowUpRightIcon,
-  ClockIcon,
-  CrownIcon,
-  HandHeartIcon,
-  IdentificationCardIcon,
-  PenNibIcon,
-  SmileyXEyesIcon,
-  WarningCircleIcon,
-} from "@phosphor-icons/react/ssr";
+import { ArrowRightIcon, ArrowUpRightIcon, SmileyXEyesIcon } from "@phosphor-icons/react/ssr";
 import { CopyEmail } from "@/components/copy-email";
+import { Entry, EntrySpread } from "@/components/journal/entry";
+import { JournalHeading } from "@/components/journal/journal-heading";
+import { PlaceholderSwatch, type WashColor, type WashPalette } from "@/components/journal/placeholder-wash";
 import { NoidaTime } from "@/components/noida-time";
 import { Oneko } from "@/components/oneko";
 import { ProfessionPill } from "@/components/profession-pill";
 import { ThemeTextToggle } from "@/components/theme-toggle";
-import { SectionLabel } from "@/components/section-label";
 import { TextLink } from "@/components/text-link";
-import { WorkCard, WorkStrip } from "@/components/work-strip";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-// Hardcoded from the Figma "Home" frame until these have real entries in
-// content/. Cards are not linked yet for the same reason; a writing row links
-// once its post exists.
-const selectedWork = [
+// Hardcoded until these have real entries in content/, so entries are not
+// linked yet. `palette` and `seed` pick each placeholder wash; both go away
+// when Yash's scanned plates replace them.
+const selectedWork: {
+  company: string;
+  title: string;
+  palette: WashPalette;
+  seed: number;
+}[] = [
   {
     company: "Microsoft",
     title:
       "Design domain-based (accounting, marketing etc.) skill driven experiences for Excel and Powerpoint agent mode",
+    palette: "dawn",
+    seed: 4,
   },
-  { company: "Adobe", title: "Optimised image masking with a refined selection experience" },
-  { company: "Adobe", title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature" },
+  {
+    company: "Adobe",
+    title: "Optimised image masking with a refined selection experience",
+    palette: "dusk",
+    seed: 11,
+  },
+  {
+    company: "Adobe",
+    title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
+    palette: "monsoon",
+    seed: 23,
+  },
   {
     company: "Postman",
     title: "Reduced time taken by developers in discovering new content and finding team resources",
+    palette: "ghat",
+    seed: 8,
   },
 ];
 
-// `muted` mirrors the design: the first three titles are dimmed, the last two are not.
-const otherWork = [
+// Loose leaves: smaller work, kept as specimen tags with one test dab each.
+const otherWork: { title: string; swatch: WashColor }[] = [
   {
     title:
       "Design domain-based (accounting, marketing etc.) skill driven experiences for Excel and Powerpoint agent mode",
-    muted: true,
+    swatch: "text-wash-sky",
   },
-  { title: "Optimised image masking with a refined selection experience", muted: true },
-  { title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature", muted: true },
-  { title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature", muted: false },
+  {
+    title: "Optimised image masking with a refined selection experience",
+    swatch: "text-wash-sienna",
+  },
+  {
+    title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
+    swatch: "text-wash-sap",
+  },
+  {
+    title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
+    swatch: "text-wash-ochre",
+  },
   {
     title: "Reduced time taken by developers in discovering new content and finding team resources",
-    muted: false,
+    swatch: "text-wash-indigo",
   },
 ];
 
@@ -85,6 +104,14 @@ const writing: { date: string; title: string; href?: string }[] = [
   },
 ];
 
+// The flyleaf: who keeps this journal, the way a naturalist's notebook opens.
+const flyleaf = [
+  { term: "Observer", detail: "Yash Shenai" },
+  { term: "Station", detail: "Noida, India" },
+  { term: "Field", detail: "Agentic AI in Excel and PowerPoint" },
+  { term: "Trained", detail: "Industrial design, NID" },
+];
+
 // Built from parts so the month is always three letters ("Sep", not en-GB's "Sept").
 const dateParts = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
@@ -98,170 +125,230 @@ function formatDay(date: Date) {
   return `${part("day")} ${part("month")} ${part("year")}`;
 }
 
-const writingRow = "flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-12";
-
-function WritingRowContent({ date, title, linked }: { date: string; title: string; linked?: boolean }) {
-  return (
-    <>
-      <time dateTime={date} className="text-muted-foreground shrink-0 font-mono text-sm uppercase">
-        {formatDay(new Date(date))}
-      </time>
-      <p className={cn("sm:text-right", linked && "group-hover:text-muted-foreground transition-colors")}>
-        {title}
-      </p>
-    </>
-  );
-}
+const label = "text-muted-foreground font-mono text-xs tracking-wider uppercase";
+const writingRow =
+  "grid grid-cols-[3.25rem_1fr] gap-x-4 gap-y-1 py-3 sm:grid-cols-[3.25rem_7.5rem_1fr] sm:items-baseline";
+const quietLink = "hover:text-link transition-colors";
 
 export default function HomePage() {
   // The page is prerendered, so this is the deploy date.
   const lastUpdated = new Date();
+  const posts = writing.toSorted((a, b) => b.date.localeCompare(a.date));
 
   return (
     <div className="@container overflow-x-clip">
       <Oneko />
-      <Container size="home" className="flex flex-col gap-20 pt-14 pb-16 text-base leading-snug font-medium">
-        <Reveal as="header" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex flex-col gap-4">
-            {/* The paragraph keeps the Figma 436px measure; this row may run wider so
-                every pill label fits beside the headline. Below md there isn't room
-                for the longest one, so the pill always takes its own line there
-                rather than jumping between lines as it cycles. */}
-            <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
-              <h1 className="font-bold md:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
-              <ProfessionPill />
-            </div>
-            <div className="text-muted-foreground max-w-[436px] space-y-[1lh]">
-              <p>
-                Currently, I make agentic AI experiences feel oh yeah! at Microsoft. Previously,
-                I’ve worked at Adobe, Postman and Samsung.
-              </p>
-              <p>
-                I believe all software should be opinionated and delightful to use in order to be
-                called usable.
-              </p>
-            </div>
+      <Container size="wide" className="flex flex-col gap-24 pt-8 pb-16 font-serif text-base leading-snug">
+        <header className="flex flex-col gap-12">
+          {/* Running head, as at the top of every page of the journal. */}
+          <div className={cn(label, "border-foreground/40 flex justify-between gap-4 border-b pb-2")}>
+            <span>Field journal</span>
+            <span className="hidden sm:inline">Notes from product design, kept on paper first</span>
+            <span>28.54° N, 77.39° E</span>
           </div>
 
-          <nav aria-label="Main" className="flex flex-col items-start gap-0.5 sm:items-end">
-            <TextLink href={site.resume} icon={ArrowUpRightIcon}>
-              Open resumé
-            </TextLink>
-            <TextLink href="/about" icon={SmileyXEyesIcon}>
-              About
-            </TextLink>
-            <ThemeTextToggle />
-          </nav>
-        </Reveal>
+          <div className="grid gap-10 md:grid-cols-12">
+            <div className="flex flex-col gap-5 md:col-span-8">
+              <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
+                <h1 className="text-2xl font-medium lg:whitespace-nowrap">
+                  Hi! I’m Yash, your neighbourhood
+                </h1>
+                <span className="font-sans text-base font-medium">
+                  <ProfessionPill />
+                </span>
+              </div>
+              <div className="text-muted-foreground max-w-[34rem] space-y-[1lh] text-lg">
+                <p>
+                  Currently, I make agentic AI experiences feel <em className="text-foreground">oh yeah!</em>{" "}
+                  at Microsoft. Previously, I’ve worked at Adobe, Postman and Samsung.
+                </p>
+                <p>
+                  I believe all software should be opinionated and delightful to use in order to be called
+                  usable.
+                </p>
+              </div>
+            </div>
 
-        <section className="flex flex-col gap-8">
-          <WorkStrip
-            heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
-            name="Selected work"
-            dimOnHover
-            labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
-          >
-            {selectedWork.map((item, i) => (
-              <WorkCard key={i}>
-                <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
-                <p className="mt-1">{item.title}</p>
-              </WorkCard>
+            <nav
+              aria-label="Main"
+              className="flex flex-col items-start gap-1 md:col-span-3 md:col-start-10 md:items-end"
+            >
+              <span className={cn(label, "mb-1")}>Index</span>
+              <TextLink href={site.resume} icon={ArrowUpRightIcon}>
+                Open resumé
+              </TextLink>
+              <TextLink href="/about" icon={SmileyXEyesIcon}>
+                About
+              </TextLink>
+              <ThemeTextToggle />
+            </nav>
+          </div>
+
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-4">
+            {flyleaf.map((row) => (
+              <div key={row.term} className="border-border flex flex-col gap-1 border-t pt-2">
+                <dt className={label}>{row.term}</dt>
+                <dd>{row.detail}</dd>
+              </div>
             ))}
-          </WorkStrip>
+          </dl>
+        </header>
+
+        <section className="flex flex-col gap-10">
+          <JournalHeading numeral="I" aside={`${String(selectedWork.length).padStart(2, "0")} entries`}>
+            Selected work
+          </JournalHeading>
+          <EntrySpread label="Selected work">
+            {selectedWork.map((item, i) => (
+              <Entry
+                key={i}
+                index={i}
+                company={item.company}
+                title={item.title}
+                palette={item.palette}
+                seed={item.seed}
+              />
+            ))}
+          </EntrySpread>
         </section>
 
-        <section className="flex flex-col gap-8">
-          <Reveal className="flex items-start justify-between gap-4">
-            <SectionLabel icon={PenNibIcon}>Writing</SectionLabel>
-            <TextLink href="/blog" icon={ArrowUpRightIcon}>
-              Open blog
-            </TextLink>
-          </Reveal>
-          <RevealGroup as="ul">
-            {writing.toSorted((a, b) => b.date.localeCompare(a.date)).map((post) => (
-              <RevealItem as="li" key={post.title} className="border-foreground/50 border-b-[0.5px]">
-                {post.href ? (
-                  <Link
-                    href={post.href}
+        <section className="flex flex-col gap-4">
+          <JournalHeading
+            numeral="II"
+            aside={
+              <Link
+                href="/blog"
+                className="text-link group inline-flex items-center gap-1 transition-opacity hover:opacity-70"
+              >
+                Open blog
+                <ArrowRightIcon
+                  aria-hidden
+                  className="size-4 transition-transform duration-300 ease-out group-hover:translate-x-0.5 motion-reduce:transition-none"
+                />
+              </Link>
+            }
+          >
+            Writing
+          </JournalHeading>
+          <ol role="list">
+            {posts.map((post, i) => {
+              const content = (
+                <>
+                  <span className={cn(label, "pt-0.5")}>No. {String(posts.length - i).padStart(2, "0")}</span>
+                  <time
+                    dateTime={post.date}
+                    className={cn(label, "col-start-2 row-start-2 sm:row-start-1 pt-0.5")}
+                  >
+                    {formatDay(new Date(post.date))}
+                  </time>
+                  <span
                     className={cn(
-                      writingRow,
-                      "group focus-visible:ring-ring -mx-3 rounded-lg px-3 focus-visible:ring-2 focus-visible:outline-none",
+                      "col-start-2 row-start-1 text-lg sm:col-start-3",
+                      post.href && "group-hover:text-link transition-colors",
                     )}
                   >
-                    <WritingRowContent date={post.date} title={post.title} linked />
-                  </Link>
-                ) : (
-                  <div className={writingRow}>
-                    <WritingRowContent date={post.date} title={post.title} />
-                  </div>
-                )}
-              </RevealItem>
-            ))}
-          </RevealGroup>
+                    {post.title}
+                  </span>
+                </>
+              );
+              return (
+                <li key={post.title} className="border-border border-b">
+                  {post.href ? (
+                    <Link
+                      href={post.href}
+                      className={cn(
+                        writingRow,
+                        "group focus-visible:ring-ring -mx-2 rounded-sm px-2 focus-visible:ring-2 focus-visible:outline-none",
+                      )}
+                    >
+                      {content}
+                    </Link>
+                  ) : (
+                    <div className={writingRow}>{content}</div>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
         </section>
 
         <section className="flex flex-col gap-8">
-          <WorkStrip
-            heading={<SectionLabel icon={HandHeartIcon}>Other work</SectionLabel>}
-            name="Other work"
-            labels={otherWork.map((item) => item.title)}
-          >
+          <JournalHeading numeral="III" aside="Loose leaves">
+            Other work
+          </JournalHeading>
+          <ul role="list" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {otherWork.map((item, i) => (
-              <WorkCard key={i}>
-                <p className={cn(item.muted && "text-muted-foreground")}>{item.title}</p>
-              </WorkCard>
+              <li
+                key={i}
+                className="bg-paper text-paper-foreground shadow-paper relative flex gap-4 rounded-[3px] p-4 pl-5"
+              >
+                {/* The punched hole of a specimen tag. */}
+                <span
+                  aria-hidden
+                  className="border-paper-rule bg-background absolute top-3 right-3 size-2.5 rounded-full border"
+                />
+                <PlaceholderSwatch
+                  id={`leaf-${i}`}
+                  seed={i * 5 + 2}
+                  color={item.swatch}
+                  className="size-11 shrink-0"
+                />
+                <div className="flex flex-col gap-1">
+                  <span className="text-paper-muted font-mono text-xs tracking-wider uppercase">
+                    Specimen {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p>{item.title}</p>
+                </div>
+              </li>
             ))}
-          </WorkStrip>
+          </ul>
         </section>
 
-        <Reveal as="footer" className="grid gap-12 sm:grid-cols-[1fr_auto_1fr] sm:gap-6">
-          <div className="flex flex-col gap-8">
-            <SectionLabel icon={IdentificationCardIcon}>
-              Contact
-            </SectionLabel>
-            <ul role="list">
-              <li>
-                <CopyEmail />
-              </li>
-              <li>
-                {site.social.linkedin ? (
+        <footer className="flex flex-col gap-8">
+          <JournalHeading numeral="IV">Colophon</JournalHeading>
+          <div className="grid gap-10 sm:grid-cols-3">
+            <div className="flex flex-col gap-2">
+              <span className={label}>Contact</span>
+              <ul role="list">
+                <li>
+                  <CopyEmail />
+                </li>
+                <li>
                   <a
                     href={site.social.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-muted-foreground transition-colors"
+                    className={quietLink}
                   >
                     LinkedIn
                   </a>
-                ) : (
-                  "LinkedIn"
-                )}
-              </li>
-              <li>
-                <a
-                  href={site.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-muted-foreground transition-colors"
-                >
-                  Resumé
-                </a>
-              </li>
-            </ul>
+                </li>
+                <li>
+                  <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                    Resumé
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className={label}>Last entry</span>
+              <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
+            </div>
+            <div className="flex flex-col gap-2 sm:items-end sm:text-right">
+              <span className={label}>Currently</span>
+              <NoidaTime />
+            </div>
           </div>
-          <div className="flex flex-col gap-8">
-            <SectionLabel icon={WarningCircleIcon}>
-              Last updated
-            </SectionLabel>
-            <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
+          <div
+            className={cn(
+              label,
+              "border-border flex flex-col justify-between gap-2 border-t pt-3 sm:flex-row",
+            )}
+          >
+            <span>Fauna sighted on this page: one cat, wandering</span>
+            <span>Plates are placeholder washes until the scans are in</span>
           </div>
-          <div className="flex flex-col gap-8 sm:items-end sm:text-right">
-            <SectionLabel icon={ClockIcon}>
-              Currently
-            </SectionLabel>
-            <NoidaTime />
-          </div>
-        </Reveal>
+        </footer>
       </Container>
     </div>
   );

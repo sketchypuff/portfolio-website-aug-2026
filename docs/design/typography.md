@@ -1,5 +1,26 @@
 # Typography
 
+## Field journal (branch `world/field-journal`, Provisional)
+
+Adds **Newsreader** (`font-serif`, `--font-newsreader`, variable with optical
+sizing, normal + italic) in `app/layout.tsx`. Home sets `font-serif` on its
+`Container`: the journal is typeset notes plus mono labels. Geist Sans stays
+the default elsewhere (posts) and inside `ProfessionPill`.
+
+| Role | Classes |
+| --- | --- |
+| Headline | `text-2xl font-medium` serif (24px — modest, not display) |
+| Intro, writing titles, entry titles | `text-lg` serif; entry titles `font-medium` |
+| Body (flyleaf, tags, colophon) | inherited `text-base` serif |
+| Every label (running head, section, entry header, plate caption, dates) | `font-mono text-xs tracking-wider uppercase`, muted |
+
+`tracking-wider` is allowed on 12px mono uppercase labels only. The 12px
+floor holds. No handwriting fonts, ever.
+
+---
+
+*The rest of this file describes typography on `main`.*
+
 Fonts: Geist Sans (`font-sans`, default) and Geist Mono (`font-mono`), loaded
 in `app/layout.tsx` with `antialiased` on `<html>`. No other families.
 
