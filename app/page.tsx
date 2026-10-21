@@ -1,23 +1,15 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
-import {
-  ArrowUpRightIcon,
-  ClockIcon,
-  CrownIcon,
-  HandHeartIcon,
-  IdentificationCardIcon,
-  PenNibIcon,
-  SmileyXEyesIcon,
-  WarningCircleIcon,
-} from "@phosphor-icons/react/ssr";
+import { ArrowUpRightIcon, SmileyXEyesIcon } from "@phosphor-icons/react/ssr";
 import { CopyEmail } from "@/components/copy-email";
 import { NoidaTime } from "@/components/noida-time";
 import { Oneko } from "@/components/oneko";
 import { ProfessionPill } from "@/components/profession-pill";
 import { ThemeTextToggle } from "@/components/theme-toggle";
-import { SectionLabel } from "@/components/section-label";
 import { TextLink } from "@/components/text-link";
-import { WorkCard, WorkStrip } from "@/components/work-strip";
+import { ContentsSpread, Leader, type Chapter } from "@/components/book/contents-spread";
+import { PartHeading } from "@/components/book/part-heading";
+import type { Wash } from "@/components/book/plate";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -25,19 +17,36 @@ import { cn } from "@/lib/utils";
 // Hardcoded from the Figma "Home" frame until these have real entries in
 // content/. Cards are not linked yet for the same reason; a writing row links
 // once its post exists.
-const selectedWork = [
+// Each chapter's `wash` drives its PLACEHOLDER frontispiece until Yash paints it.
+const selectedWork: Chapter[] = [
   {
+    numeral: "I",
     company: "Microsoft",
     title:
       "Design domain-based (accounting, marketing etc.) skill driven experiences for Excel and Powerpoint agent mode",
+    wash: { sky: "cerulean", hills: "indigo", ground: "ochre", seed: 3 },
   },
-  { company: "Adobe", title: "Optimised image masking with a refined selection experience" },
-  { company: "Adobe", title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature" },
   {
+    numeral: "II",
+    company: "Adobe",
+    title: "Optimised image masking with a refined selection experience",
+    wash: { sky: "ochre", hills: "sienna", ground: "sepia", seed: 11 },
+  },
+  {
+    numeral: "III",
+    company: "Adobe",
+    title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature",
+    wash: { sky: "cerulean", hills: "sap", ground: "sienna", seed: 7 },
+  },
+  {
+    numeral: "IV",
     company: "Postman",
     title: "Reduced time taken by developers in discovering new content and finding team resources",
+    wash: { sky: "ochre", hills: "indigo", ground: "sap", seed: 19 },
   },
 ];
+
+const frontispiece: Wash = { sky: "cerulean", hills: "sap", ground: "ochre", seed: 5 };
 
 // `muted` mirrors the design: the first three titles are dimmed, the last two are not.
 const otherWork = [
@@ -98,52 +107,115 @@ function formatDay(date: Date) {
   return `${part("day")} ${part("month")} ${part("year")}`;
 }
 
-const writingRow = "flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-12";
-
-function WritingRowContent({ date, title, linked }: { date: string; title: string; linked?: boolean }) {
-  return (
-    <>
-      <time dateTime={date} className="text-muted-foreground shrink-0 font-mono text-sm uppercase">
-        {formatDay(new Date(date))}
-      </time>
-      <p className={cn("sm:text-right", linked && "group-hover:text-muted-foreground transition-colors")}>
-        {title}
-      </p>
-    </>
-  );
-}
+const quietLink = "hover:text-muted-foreground transition-colors";
 
 export default function HomePage() {
   // The page is prerendered, so this is the deploy date.
   const lastUpdated = new Date();
 
+  const titlePage = (
+    <Reveal as="header" className="flex flex-col gap-6">
+      <p className="text-muted-foreground font-mono text-xs uppercase">A portfolio in chapters</p>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <h1 className="font-serif text-[1.75rem] leading-tight font-normal">
+          Hi! I’m Yash, your neighbourhood
+        </h1>
+        <ProfessionPill />
+      </div>
+      <div className="max-w-[34rem] space-y-[1lh] font-serif text-lg leading-relaxed font-normal">
+        <p className="first-letter:text-rubric first-letter:float-left first-letter:mt-1.5 first-letter:mr-2 first-letter:text-[3.4rem] first-letter:leading-[0.8]">
+          Currently, I make agentic AI experiences feel <em>oh yeah!</em> at Microsoft. Previously,
+          I’ve worked at Adobe, Postman and Samsung.
+        </p>
+        <p className="text-muted-foreground">
+          I believe all software should be opinionated and delightful to use in order to be
+          called usable.
+        </p>
+      </div>
+    </Reveal>
+  );
+
+  const after = (
+    <>
+      <section aria-label="Other work" className="flex flex-col gap-4">
+        <PartHeading part="Part Two" title="Other work" />
+        <RevealGroup as="ul">
+          {otherWork.map((item, i) => (
+            <RevealItem
+              as="li"
+              key={i}
+              className={cn(
+                "border-border border-b py-3 font-serif text-base font-normal",
+                item.muted && "text-muted-foreground",
+              )}
+            >
+              {item.title}
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </section>
+
+      <section aria-label="Writing" className="flex flex-col gap-4">
+        <PartHeading part="Part Three" title="Writing" />
+        <RevealGroup as="ul">
+          {writing.toSorted((a, b) => b.date.localeCompare(a.date)).map((post) => {
+            const row = (
+              <>
+                <span className="font-serif text-base font-normal text-pretty">{post.title}</span>
+                <span className="hidden flex-1 self-stretch sm:flex sm:items-baseline">
+                  <Leader />
+                </span>
+                <time
+                  dateTime={post.date}
+                  className="text-muted-foreground shrink-0 font-mono text-xs uppercase"
+                >
+                  {formatDay(new Date(post.date))}
+                </time>
+              </>
+            );
+            const rowClass = "flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:gap-3";
+            return (
+              <RevealItem as="li" key={post.title} className="border-border border-b">
+                {post.href ? (
+                  <Link
+                    href={post.href}
+                    className={cn(
+                      rowClass,
+                      quietLink,
+                      "focus-visible:ring-ring -mx-3 rounded-sm px-3 focus-visible:ring-2 focus-visible:outline-none",
+                    )}
+                  >
+                    {row}
+                  </Link>
+                ) : (
+                  <div className={rowClass}>{row}</div>
+                )}
+              </RevealItem>
+            );
+          })}
+        </RevealGroup>
+        <div>
+          <TextLink href="/blog" icon={ArrowUpRightIcon}>
+            Open blog
+          </TextLink>
+        </div>
+      </section>
+    </>
+  );
+
   return (
     <div className="@container overflow-x-clip">
       <Oneko />
-      <Container size="home" className="flex flex-col gap-20 pt-14 pb-16 text-base leading-snug font-medium">
-        <Reveal as="header" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex flex-col gap-4">
-            {/* The paragraph keeps the Figma 436px measure; this row may run wider so
-                every pill label fits beside the headline. Below md there isn't room
-                for the longest one, so the pill always takes its own line there
-                rather than jumping between lines as it cycles. */}
-            <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
-              <h1 className="font-bold md:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
-              <ProfessionPill />
-            </div>
-            <div className="text-muted-foreground max-w-[436px] space-y-[1lh]">
-              <p>
-                Currently, I make agentic AI experiences feel oh yeah! at Microsoft. Previously,
-                I’ve worked at Adobe, Postman and Samsung.
-              </p>
-              <p>
-                I believe all software should be opinionated and delightful to use in order to be
-                called usable.
-              </p>
-            </div>
-          </div>
-
-          <nav aria-label="Main" className="flex flex-col items-start gap-0.5 sm:items-end">
+      <Container size="wide" className="flex flex-col gap-14 pt-8 pb-16 text-base leading-snug font-medium">
+        {/* Running head, as at the top of a printed page. */}
+        <Reveal
+          as="header"
+          className="border-border flex flex-col gap-3 border-b pb-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p className="font-mono text-xs uppercase">
+            Yash Shenai <span className="text-muted-foreground">· Product designer</span>
+          </p>
+          <nav aria-label="Main" className="flex flex-wrap items-center gap-x-5 gap-y-1">
             <TextLink href={site.resume} icon={ArrowUpRightIcon}>
               Open resumé
             </TextLink>
@@ -154,112 +226,55 @@ export default function HomePage() {
           </nav>
         </Reveal>
 
-        <section className="flex flex-col gap-8">
-          <WorkStrip
-            heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
-            name="Selected work"
-            dimOnHover
-            labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
-          >
-            {selectedWork.map((item, i) => (
-              <WorkCard key={i}>
-                <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
-                <p className="mt-1">{item.title}</p>
-              </WorkCard>
-            ))}
-          </WorkStrip>
-        </section>
+        <ContentsSpread
+          frontispiece={frontispiece}
+          chapters={selectedWork}
+          titlePage={titlePage}
+          after={after}
+        />
 
-        <section className="flex flex-col gap-8">
-          <Reveal className="flex items-start justify-between gap-4">
-            <SectionLabel icon={PenNibIcon}>Writing</SectionLabel>
-            <TextLink href="/blog" icon={ArrowUpRightIcon}>
-              Open blog
-            </TextLink>
-          </Reveal>
-          <RevealGroup as="ul">
-            {writing.toSorted((a, b) => b.date.localeCompare(a.date)).map((post) => (
-              <RevealItem as="li" key={post.title} className="border-foreground/50 border-b-[0.5px]">
-                {post.href ? (
-                  <Link
-                    href={post.href}
-                    className={cn(
-                      writingRow,
-                      "group focus-visible:ring-ring -mx-3 rounded-lg px-3 focus-visible:ring-2 focus-visible:outline-none",
-                    )}
-                  >
-                    <WritingRowContent date={post.date} title={post.title} linked />
-                  </Link>
-                ) : (
-                  <div className={writingRow}>
-                    <WritingRowContent date={post.date} title={post.title} />
-                  </div>
-                )}
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </section>
-
-        <section className="flex flex-col gap-8">
-          <WorkStrip
-            heading={<SectionLabel icon={HandHeartIcon}>Other work</SectionLabel>}
-            name="Other work"
-            labels={otherWork.map((item) => item.title)}
-          >
-            {otherWork.map((item, i) => (
-              <WorkCard key={i}>
-                <p className={cn(item.muted && "text-muted-foreground")}>{item.title}</p>
-              </WorkCard>
-            ))}
-          </WorkStrip>
-        </section>
-
-        <Reveal as="footer" className="grid gap-12 sm:grid-cols-[1fr_auto_1fr] sm:gap-6">
-          <div className="flex flex-col gap-8">
-            <SectionLabel icon={IdentificationCardIcon}>
-              Contact
-            </SectionLabel>
-            <ul role="list">
-              <li>
-                <CopyEmail />
-              </li>
-              <li>
-                {site.social.linkedin ? (
-                  <a
-                    href={site.social.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-muted-foreground transition-colors"
-                  >
-                    LinkedIn
+        {/* The colophon: how the book was made, then where to find its author. */}
+        <Reveal as="footer" className="border-border mx-auto flex w-full max-w-xl flex-col items-center gap-8 border-t pt-12 text-center">
+          <span aria-hidden className="text-rubric font-serif text-2xl">
+            ❦
+          </span>
+          <h2 className="font-serif text-sm uppercase tracking-[0.2em]">Colophon</h2>
+          <p className="text-muted-foreground font-serif text-base leading-relaxed font-normal italic text-pretty">
+            Set in Newsreader and Geist Mono. Designed on paper with a Pilot Metropolitan, then in
+            Figma, and built with Next.js. The frontispieces will be painted in watercolour by the
+            author; until then, each plate is marked as a placeholder.
+          </p>
+          <div className="grid w-full gap-8 text-left sm:grid-cols-3">
+            <div className="flex flex-col gap-2">
+              <p className="text-muted-foreground font-mono text-xs uppercase">Contact</p>
+              <ul role="list">
+                <li>
+                  <CopyEmail />
+                </li>
+                <li>
+                  {site.social.linkedin ? (
+                    <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                      LinkedIn
+                    </a>
+                  ) : (
+                    "LinkedIn"
+                  )}
+                </li>
+                <li>
+                  <a href={site.resume} target="_blank" rel="noopener noreferrer" className={quietLink}>
+                    Resumé
                   </a>
-                ) : (
-                  "LinkedIn"
-                )}
-              </li>
-              <li>
-                <a
-                  href={site.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-muted-foreground transition-colors"
-                >
-                  Resumé
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="flex flex-col gap-8">
-            <SectionLabel icon={WarningCircleIcon}>
-              Last updated
-            </SectionLabel>
-            <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
-          </div>
-          <div className="flex flex-col gap-8 sm:items-end sm:text-right">
-            <SectionLabel icon={ClockIcon}>
-              Currently
-            </SectionLabel>
-            <NoidaTime />
+                </li>
+              </ul>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-muted-foreground font-mono text-xs uppercase">This edition</p>
+              <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
+            </div>
+            <div className="flex flex-col gap-2 sm:items-end sm:text-right">
+              <p className="text-muted-foreground font-mono text-xs uppercase">Currently</p>
+              <NoidaTime />
+            </div>
           </div>
         </Reveal>
       </Container>

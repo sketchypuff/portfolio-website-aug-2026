@@ -1,7 +1,9 @@
 # Typography
 
 Fonts: Geist Sans (`font-sans`, default) and Geist Mono (`font-mono`), loaded
-in `app/layout.tsx` with `antialiased` on `<html>`. No other families.
+in `app/layout.tsx` with `antialiased` on `<html>`. On `world/book` a third,
+Newsreader (`font-serif`, with `opsz`), sets the home page's prose — see
+[book.md](book.md) for its scale.
 
 Mono means "metadata or label" — dates, company names, section labels, code.
 Never set prose or titles in mono.

@@ -6,6 +6,11 @@ from color. The only hue on the site is `link` blue, and it means "this takes
 you somewhere" — apart from `success` green, which only ever confirms an
 action (the "Copied" tooltip).
 
+> **Branch `world/book`:** this branch prototypes the "book" world and
+> deliberately overrides the achromatic rules above — warm paper grays,
+> rubric red, a serif. Read [book.md](docs/design/book.md) first; it wins
+> wherever it disagrees with the rest of these docs.
+
 `AGENTS.md` covers architecture. This file and `docs/design/` cover how the
 site looks and why. Read the root rules below before any visual change, then
 open only the topic file the task needs.
@@ -56,6 +61,7 @@ Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
 | [components.md](docs/design/components.md) | building UI — lists every shared component |
 | [motion.md](docs/design/motion.md) | anything that moves, hovers, or presses |
 | [decisions.md](docs/design/decisions.md) | the dated log of what was decided and why |
+| [book.md](docs/design/book.md) | anything on the home page of this branch — the book world |
 
 ## Keeping this current
 

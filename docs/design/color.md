@@ -4,6 +4,8 @@ Source: `app/globals.css`. Light values live on `:root`, dark values on
 `.dark`; the `@theme inline` block turns each `--token` into Tailwind classes
 (`--muted-foreground` → `text-muted-foreground`, `bg-muted-foreground`, …).
 
+> **`world/book`:** warmed grays, ink `link`, `rubric`, `paper`, `--pigment-*` — see [book.md](book.md).
+
 ## Where the colors come from
 
 | Origin | Tokens | Status |

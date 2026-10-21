@@ -12,7 +12,11 @@
   --color-success-foreground: var(--success-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-newsreader);
   --font-heading: var(--font-sans);
+  --color-rubric: var(--rubric);
+  --color-paper: var(--paper);
+  --color-paper-foreground: var(--paper-foreground);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -75,30 +79,51 @@
   --blue-950: oklch(0.22 0.06 266);
 }
 
+/*
+ * The book (world/book). Every gray is warmed slightly toward hue 70 so the
+ * page reads as uncoated book paper and ink rather than screen white and
+ * black. Flat colour only: no paper texture, no vignette.
+ */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --background: oklch(0.975 0.007 80);
+  --foreground: oklch(0.22 0.012 60);
+  --card: oklch(0.975 0.007 80);
+  --card-foreground: oklch(0.22 0.012 60);
+  --popover: oklch(0.985 0.005 80);
+  --popover-foreground: oklch(0.22 0.012 60);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.94 0.01 80);
+  --muted-foreground: oklch(0.5 0.016 60);
+  --accent: oklch(0.94 0.01 80);
+  --accent-foreground: oklch(0.22 0.012 60);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  /* The one accent on the site, reserved for links. #2148f9 from the Figma file. */
-  --link: var(--blue-600);
+  --border: oklch(0.88 0.012 75);
+  --input: oklch(0.88 0.012 75);
+  --ring: oklch(0.65 0.015 60);
+  /* Blue-black fountain-pen ink (the Pilot Metropolitan), reserved for links. 8.6:1 on the page. */
+  --link: oklch(0.4 0.11 262);
+  /* Rubrication: the red a printer uses for chapter numerals. Numerals and the drop cap only. */
+  --rubric: oklch(0.53 0.16 33);
+  /* The paper a frontispiece plate is printed on. Identical in both themes: a lit card. */
+  --paper: oklch(0.985 0.006 85);
+  --paper-foreground: oklch(0.3 0.012 60);
   /* Confirmation only (the "Copied" tooltip). 4.95:1 under its foreground. */
   --success: oklch(0.52 0.14 150);
   --success-foreground: oklch(0.985 0 0);
+  /*
+   * Watercolour pigments for the placeholder frontispieces, named after the
+   * tubes. Placeholders only — Yash's scans replace them. Same in both themes
+   * because they always sit on --paper.
+   */
+  --pigment-indigo: oklch(0.42 0.08 265);
+  --pigment-cerulean: oklch(0.68 0.09 230);
+  --pigment-sap: oklch(0.58 0.1 135);
+  --pigment-ochre: oklch(0.76 0.12 80);
+  --pigment-sienna: oklch(0.56 0.13 45);
+  --pigment-sepia: oklch(0.42 0.04 60);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -115,26 +140,28 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Dark is the cloth binding: warm near-black board, cream type. Plates stay lit paper. */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
+  --background: oklch(0.2 0.01 55);
+  --foreground: oklch(0.93 0.012 80);
+  --card: oklch(0.24 0.01 55);
+  --card-foreground: oklch(0.93 0.012 80);
+  --popover: oklch(0.24 0.01 55);
+  --popover-foreground: oklch(0.93 0.012 80);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.27 0.01 55);
+  --muted-foreground: oklch(0.72 0.014 70);
+  --accent: oklch(0.27 0.01 55);
+  --accent-foreground: oklch(0.93 0.012 80);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --link: var(--blue-300);
+  --border: oklch(0.93 0.012 80 / 14%);
+  --input: oklch(0.93 0.012 80 / 18%);
+  --ring: oklch(0.55 0.014 60);
+  --link: oklch(0.78 0.09 255);
+  --rubric: oklch(0.72 0.13 38);
   /* 11.2:1 under its foreground. */
   --success: oklch(0.8 0.15 150);
   --success-foreground: oklch(0.145 0 0);

@@ -9,6 +9,27 @@ Links (`TextLink`, `ThemeTextToggle`, and the other link treatments) are in [lin
 `Container` is in [layout.md](layout.md). Motion components are in
 [motion.md](motion.md).
 
+## Book components (Prototype, `world/book`)
+
+`components/book/`. Full rules in [book.md](book.md).
+
+- `Plate` — a frontispiece: sheet of `bg-paper`, 4:5 (`portrait`, verso) or
+  3:2 (`landscape`, inline), caption row of mono numeral + italic serif
+  title. Holds a labelled `PlaceholderWash` until a scan replaces it. `id`
+  must be unique on the page (it names the SVG filter).
+- `ContentsSpread` — the home spread: verso plate stack + list of plates,
+  recto title page + Part One chapters. Home only.
+- `PartHeading` — `PART ONE ——— SELECTED WORK`, an `h3` inside Contents.
+- `Leader` — dotted leader between a title and its folio/date.
+
+```tsx
+// Correct — the numeral and title as the contents page sets them
+<span className="text-rubric font-serif text-xl">IV</span>
+
+// Incorrect — rubric red on body text; it is for numbering only
+<p className="text-rubric">Reduced time taken by developers…</p>
+```
+
 ## SectionLabel (Decided)
 
 `components/section-label.tsx`. Heading for a home-page section: mono,

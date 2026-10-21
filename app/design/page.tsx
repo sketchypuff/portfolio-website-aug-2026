@@ -19,6 +19,9 @@ import { SectionLabel } from "@/components/section-label";
 import { TextLink } from "@/components/text-link";
 import { ThemeTextToggle } from "@/components/theme-toggle";
 import { WorkCard, WorkStrip } from "@/components/work-strip";
+import { Plate } from "@/components/book/plate";
+import { PartHeading } from "@/components/book/part-heading";
+import { Leader } from "@/components/book/contents-spread";
 
 // A living style guide: every specimen below is the real component or the real
 // class string, so this page can't drift from the site. Unlisted — not in the
@@ -39,6 +42,8 @@ const colors = [
   { token: "ring", swatch: "bg-ring", use: "Focus outline, at 50%", origin: "shadcn neutral" },
   { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle, pill icon", origin: "Figma · #2148f9" },
   { token: "destructive", swatch: "bg-destructive", use: "MdxError only", origin: "shadcn neutral" },
+  { token: "rubric", swatch: "bg-rubric", use: "Chapter numerals, drop cap, fleuron", origin: "world/book" },
+  { token: "paper", swatch: "bg-paper", use: "Plate sheet, lit in both themes", origin: "world/book" },
 ];
 
 // The blue scale is primitives-only (no utility classes), so swatches read the
@@ -198,6 +203,31 @@ export default function DesignPage() {
                 <p className="text-muted-foreground">An “Other work” card, title only and muted</p>
               </WorkCard>
             </WorkStrip>
+          </Specimen>
+        </div>
+      </Section>
+
+      <Section title="Book components" source="components/book/ · world/book prototype · docs/design/book.md">
+        <div className="space-y-10 text-base leading-snug font-medium">
+          <Specimen label="Plate · PLACEHOLDER wash until Yash's scans exist">
+            <Plate
+              id="specimen"
+              wash={{ sky: "cerulean", hills: "indigo", ground: "ochre", seed: 3 }}
+              numeral="Plate I"
+              caption="Specimen"
+              shape="landscape"
+              className="max-w-sm"
+            />
+          </Specimen>
+          <Specimen label="PartHeading + Leader">
+            <div className="flex max-w-md flex-col gap-4">
+              <PartHeading part="Part One" title="Selected work" />
+              <p className="text-muted-foreground flex items-baseline gap-2 font-mono text-xs uppercase">
+                <span>Company</span>
+                <Leader />
+                <span>In draft</span>
+              </p>
+            </div>
           </Specimen>
         </div>
       </Section>

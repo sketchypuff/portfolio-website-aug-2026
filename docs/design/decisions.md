@@ -6,6 +6,13 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-10-21** — `world/book` prototype: the home page becomes a book's
+  contents page (chapters I–IV, Parts Two and Three, colophon), with a
+  verso frontispiece that turns to each chapter's plate on hover. Adds
+  Newsreader, warm paper grays, `rubric`, `paper` and watercolour pigment
+  tokens; links become blue-black fountain-pen ink. Dark mode is a cloth
+  binding with plates kept as lit paper. Prototype only — see `book.md`.
+
 - **2026-09-28** — Reading columns carry `selection-root`. WebKit fills
   selection gaps to the nearest clipped/transformed ancestor, which was the
   full-width `@container overflow-x-clip` wrapper, so highlighting a post
