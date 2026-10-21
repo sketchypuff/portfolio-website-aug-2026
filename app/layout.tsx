@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
-import { DM_Mono } from "next/font/google";
+import { DM_Mono, Fraunces } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/lib/site";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "@/components/motion/page-transition";
 import "./globals.css";
 
-// The only face on the page. A light mono reads like pencil notes in a
-// sketchbook margin: even, quiet, and never competing with the paint. The
-// paintings are the typography here.
+// The painter's hand: a soft, old-style serif with optical sizes, so the
+// headline is warm and the running text stays crisp. Everything written on
+// the page is Fraunces.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz", "SOFT"],
+});
+
+// Pencil notes in the margins: plate numbers, dates, pigment names.
 const dmMono = DM_Mono({
   variable: "--font-dm-mono",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -42,8 +49,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${dmMono.variable} h-full antialiased`}>
-      <body className="bg-background text-foreground flex min-h-full flex-col">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${dmMono.variable} h-full antialiased`}
+    >
+      {/* The body is the desk; the painted sheet is laid on it by app/page.tsx. */}
+      <body className="bg-desk text-foreground flex min-h-full flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

@@ -217,3 +217,185 @@ export function SwatchStrip({ pigment, seed, className }: { pigment: Pigment; se
     </svg>
   );
 }
+
+/**
+ * A wash laid in from one edge of the sheet and left to dry: a broad, soft
+ * band that fades into bare paper, a ragged wet edge, a few drips where the
+ * board was tilted, and granulation in the paper's tooth. The page's own
+ * painting, behind the text. `palette` is [main wash, second pigment dropped
+ * in wet]. Placeholder, like every wash here.
+ */
+export function EdgeWash({
+  edge,
+  palette,
+  seed,
+  className,
+}: {
+  edge: "top" | "bottom";
+  palette: readonly [Pigment, Pigment];
+  seed: number;
+  className?: string;
+}) {
+  const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const rand = random(seed);
+  const [main, second] = palette.map((p) => pigments[p].color);
+  const w = 1440;
+  const h = 420;
+  // The wet edge: a soft ridge line across the sheet, a little over halfway down.
+  const depth = h * (0.5 + rand() * 0.1);
+  const line = ridge(rand, w, h, depth, h * 0.18, 9);
+  // Where the second pigment was dropped in while the sky was still wet.
+  const pools = Array.from({ length: 2 + Math.floor(rand() * 2) }, () => ({
+    cx: w * (0.1 + rand() * 0.8),
+    cy: depth * (0.15 + rand() * 0.4),
+    rx: w * (0.14 + rand() * 0.16),
+    ry: depth * (0.25 + rand() * 0.3),
+    o: 0.12 + rand() * 0.12,
+  }));
+  // Drips run from the wet edge, each a thin run with a bead at its end.
+  const drips = Array.from({ length: 3 + Math.floor(rand() * 3) }, () => ({
+    x: 80 + rand() * (w - 160),
+    len: 50 + rand() * 170,
+    wd: 3 + rand() * 3,
+  }));
+  const flip = edge === "bottom";
+  return (
+    <svg
+      viewBox={`0 0 ${w} ${h}`}
+      preserveAspectRatio="xMidYMin slice"
+      aria-hidden
+      className={cn("pointer-events-none block size-full", className)}
+      style={flip ? { transform: "scaleY(-1)" } : undefined}
+    >
+      <defs>
+        <filter id={`${id}-wet`} x="-10%" y="-30%" width="120%" height="160%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.003 0.007" numOctaves="2" seed={seed} />
+          <feDisplacementMap in="SourceGraphic" scale="110" />
+          <feGaussianBlur stdDeviation="16" />
+        </filter>
+        <filter id={`${id}-dry`} x="-10%" y="-30%" width="120%" height="160%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed={seed + 1} />
+          <feDisplacementMap in="SourceGraphic" scale="22" />
+          <feGaussianBlur stdDeviation="1.2" />
+        </filter>
+        <filter id={`${id}-grain`}>
+          <feTurbulence type="fractalNoise" baseFrequency="0.45" numOctaves="2" seed={seed + 2} />
+          <feColorMatrix values="0 0 0 0 0.22  0 0 0 0 0.2  0 0 0 0 0.16  0 0 0 0.45 -0.16" />
+        </filter>
+        <linearGradient id={`${id}-fade`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={main} stopOpacity="0.8" />
+          <stop offset="0.45" stopColor={main} stopOpacity="0.5" />
+          <stop offset="0.8" stopColor={main} stopOpacity="0.22" />
+          <stop offset="1" stopColor={main} stopOpacity="0" />
+        </linearGradient>
+        <mask id={`${id}-mask`}>
+          {/* The painted area ends on the wet edge; everything past it is bare paper. */}
+          <path d={line} fill="white" transform={`translate(0 ${h + 40}) scale(1 -1)`} filter={`url(#${id}-dry)`} />
+        </mask>
+      </defs>
+      <g style={{ mixBlendMode: "multiply" }}>
+        <g mask={`url(#${id}-mask)`}>
+          <rect x="-120" y="-120" width={w + 240} height={depth + 160} fill={`url(#${id}-fade)`} filter={`url(#${id}-wet)`} />
+          {pools.map((p, i) => (
+            <ellipse key={i} cx={p.cx} cy={p.cy} rx={p.rx} ry={p.ry} fill={second} opacity={p.o} filter={`url(#${id}-wet)`} />
+          ))}
+          {/* Pigment gathers along the wet edge as it dries. */}
+          <path
+            d={line}
+            transform={`translate(0 ${h + 40}) scale(1 -1)`}
+            fill="none"
+            stroke={main}
+            strokeOpacity="0.45"
+            strokeWidth="2.5"
+            filter={`url(#${id}-dry)`}
+          />
+          <rect width={w} height={h} filter={`url(#${id}-grain)`} />
+        </g>
+        <g filter={`url(#${id}-dry)`}>
+          {drips.map((d, i) => (
+            <g key={i}>
+              <rect x={d.x} y={depth - 40} width={d.wd} height={d.len} rx={d.wd / 2} fill={main} opacity="0.45" />
+              <circle cx={d.x + d.wd / 2} cy={depth - 40 + d.len} r={d.wd * 1.4} fill={main} opacity="0.5" />
+            </g>
+          ))}
+        </g>
+      </g>
+    </svg>
+  );
+}
+
+/**
+ * One stroke of a loaded brush under a heading: full at the start, drying
+ * out towards the end, with a wobble in the hand. Width follows the heading.
+ */
+export function BrushStroke({ pigment, seed, className }: { pigment: Pigment; seed: number; className?: string }) {
+  const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const rand = random(seed);
+  const color = pigments[pigment].color;
+  const y = 12 + (rand() - 0.5) * 4;
+  return (
+    <svg
+      viewBox="0 0 400 24"
+      preserveAspectRatio="none"
+      aria-hidden
+      className={cn("pointer-events-none block h-3.5 w-full", className)}
+    >
+      <defs>
+        <filter id={`${id}-f`} x="-5%" y="-40%" width="110%" height="180%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.3" numOctaves="2" seed={seed} />
+          <feDisplacementMap in="SourceGraphic" scale="6" />
+        </filter>
+        <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor={color} stopOpacity="0.95" />
+          <stop offset="0.7" stopColor={color} stopOpacity="0.7" />
+          <stop offset="1" stopColor={color} stopOpacity="0.25" />
+        </linearGradient>
+      </defs>
+      <g filter={`url(#${id}-f)`} style={{ mixBlendMode: "multiply" }}>
+        <path
+          d={`M 6 ${y} C 90 ${y - 3}, 200 ${y + 4}, 300 ${y - 1} S 380 ${y + 2}, 394 ${y}`}
+          fill="none"
+          stroke={`url(#${id}-g)`}
+          strokeWidth="13"
+          strokeLinecap="round"
+        />
+        <path
+          d={`M 10 ${y + 2} C 120 ${y}, 240 ${y + 5}, 360 ${y + 1}`}
+          fill="none"
+          stroke={color}
+          strokeOpacity="0.35"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+      </g>
+    </svg>
+  );
+}
+
+/** Flicked droplets off a loaded brush. A few, never a storm. */
+export function Splatter({ pigment, seed, className }: { pigment: Pigment; seed: number; className?: string }) {
+  const id = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const rand = random(seed);
+  const color = pigments[pigment].color;
+  const drops = Array.from({ length: 9 + Math.floor(rand() * 6) }, () => ({
+    cx: rand() * 200,
+    cy: rand() * 200,
+    r: 0.8 + rand() * rand() * 5,
+    o: 0.25 + rand() * 0.45,
+  }));
+  return (
+    <svg viewBox="0 0 200 200" aria-hidden className={cn("pointer-events-none block", className)}>
+      <defs>
+        <filter id={`${id}-f`} x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed={seed} />
+          <feDisplacementMap in="SourceGraphic" scale="4" />
+        </filter>
+      </defs>
+      <g filter={`url(#${id}-f)`} style={{ mixBlendMode: "multiply" }}>
+        {drops.map((d, i) => (
+          <circle key={i} cx={d.cx} cy={d.cy} r={d.r} fill={color} opacity={d.o} />
+        ))}
+      </g>
+    </svg>
+  );
+}

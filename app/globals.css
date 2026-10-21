@@ -5,18 +5,21 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * The sketchbook. The site is Yash's painting sketchbook: each project is a
- * landscape on its own sheet, and the writing around the sheets is pencil.
+ * The watercolour world. The home page is one large sheet of cold-press
+ * paper that has been painted on: washes bleed in from its edges, headings
+ * are underlined with a loaded brush, bullets are blooms of pigment, and the
+ * work sits on the paper as paintings with their own ragged edges.
  *
  * Material rules:
- *  - The page is cold-press paper with a tooth (`paper-grain`); at night it
- *    is the desk, blue-black, and the paint only ever sits on lit sheets.
- *  - One face, a light mono, for everything: notes, titles, labels. Loose
- *    paint against a strict frame is the whole idea.
- *  - Pigments are named after the tubes and are the same in both themes.
- *    Links are ultramarine in daylight, a lit blue at night.
+ *  - The sheet is paper and never changes with the theme. Dark mode is the
+ *    studio at night: the desk goes dark and the sheet stays lit, because
+ *    transparent watercolour takes its light from the paper.
+ *  - Pigments are named after the tubes and are the same by day and night.
+ *  - Paint is loose; everything else (rules, columns, pencil notes) is
+ *    straight. That contrast is the whole look.
  */
 @theme inline {
+  --color-desk: var(--desk);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
@@ -29,12 +32,12 @@
   --color-success-foreground: var(--success-foreground);
   --color-destructive: var(--destructive);
 
-  --color-plate: var(--plate);
-  --color-plate-foreground: var(--plate-foreground);
-  --color-plate-rule: var(--plate-rule);
-  --color-plate-ink: var(--plate-ink);
+  --color-plate: var(--background);
+  --color-plate-foreground: var(--muted-foreground);
+  --color-plate-ink: var(--foreground);
+  --color-plate-rule: var(--border);
   --shadow-sheet: var(--sheet-shadow);
-  --shadow-sheet-lifted: var(--sheet-shadow-lifted);
+  --shadow-sheet-lifted: var(--sheet-shadow);
 
   --color-pigment-ultramarine: var(--pigment-ultramarine);
   --color-pigment-cerulean: var(--pigment-cerulean);
@@ -44,22 +47,18 @@
   --color-pigment-sienna: var(--pigment-sienna);
   --color-pigment-rose: var(--pigment-rose);
 
-  --font-sans: var(--font-dm-mono);
+  --font-sans: var(--font-fraunces);
+  --font-serif: var(--font-fraunces);
+  --font-heading: var(--font-fraunces);
   --font-mono: var(--font-dm-mono);
-  --font-heading: var(--font-dm-mono);
 
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
 }
 
-/*
- * Pigments: the paints the placeholder washes are laid in, named after real
- * tube colours so a label like "Burnt sienna" means something. `plate` is the
- * sheet a wash is painted on. Both are fixed across themes, because
- * transparent watercolour takes its light from the paper.
- */
+/* The paints. Fixed across themes: they always sit on the lit sheet. */
 :root {
   --pigment-ultramarine: oklch(0.47 0.16 268);
   --pigment-cerulean: oklch(0.68 0.1 232);
@@ -68,52 +67,37 @@
   --pigment-ochre: oklch(0.79 0.12 80);
   --pigment-sienna: oklch(0.56 0.13 45);
   --pigment-rose: oklch(0.62 0.16 8);
-  --plate: oklch(0.992 0.004 85);
-  --plate-foreground: oklch(0.46 0.015 70);
-  /* Ink written on a sheet. Fixed across themes, like the sheet itself. */
-  --plate-ink: oklch(0.25 0.03 262);
-  --plate-rule: oklch(0.88 0.012 80);
 }
 
 :root {
-  /* Cold-press paper and blue-black fountain-pen ink. */
-  --background: oklch(0.97 0.009 85);
+  /* The desk under the sheet. */
+  --desk: oklch(0.8 0.016 72);
+  /* The sheet: warm cold-press paper. `background` is the sheet. */
+  --background: oklch(0.975 0.009 86);
+  /* Blue-black fountain-pen ink. */
   --foreground: oklch(0.25 0.03 262);
   --muted: oklch(0.935 0.012 80);
-  /* Pencil grey, 5:1 on the paper. */
+  /* Pencil, 5:1 on the paper. */
   --muted-foreground: oklch(0.49 0.018 70);
   /* A pencil rule. */
   --border: oklch(0.85 0.016 80);
   /* A ruled line in ink. */
-  --rule: oklch(0.25 0.03 262 / 45%);
+  --rule: oklch(0.25 0.03 262 / 40%);
   --ring: oklch(0.47 0.16 268);
-  /* Links are ultramarine, the pigment, not a screen blue. */
+  /* Links are ultramarine, the pigment. */
   --link: var(--pigment-ultramarine);
   --success: oklch(0.52 0.14 150);
   --success-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.577 0.245 27.325);
 
-  --sheet-shadow: 0 1px 1px oklch(0.25 0.03 262 / 0.05), 0 8px 18px -8px oklch(0.25 0.03 262 / 0.18);
-  --sheet-shadow-lifted: 0 2px 2px oklch(0.25 0.03 262 / 0.05), 0 22px 36px -14px oklch(0.25 0.03 262 / 0.3);
+  --sheet-shadow: 0 1px 0 oklch(0.25 0.03 262 / 0.08), 0 2px 4px oklch(0.25 0.03 262 / 0.06), 0 30px 60px -30px oklch(0.25 0.03 262 / 0.4);
 }
 
-/* The desk at night: ink as the page, paper-coloured text, lit sheets. */
+/* Night in the studio: the desk goes dark; the sheet is the same sheet. */
 .dark {
-  --background: oklch(0.2 0.018 262);
-  --foreground: oklch(0.94 0.01 85);
-  --muted: oklch(0.27 0.018 262);
-  --muted-foreground: oklch(0.72 0.015 80);
-  --border: oklch(1 0 0 / 12%);
-  --rule: oklch(0.94 0.01 85 / 45%);
-  --ring: oklch(0.74 0.11 266);
-  --link: oklch(0.76 0.11 266);
-  --success: oklch(0.8 0.15 150);
-  --success-foreground: oklch(0.145 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-
-  --plate: oklch(0.955 0.006 85);
-  --sheet-shadow: 0 1px 1px oklch(0 0 0 / 0.35), 0 10px 22px -8px oklch(0 0 0 / 0.55);
-  --sheet-shadow-lifted: 0 2px 2px oklch(0 0 0 / 0.35), 0 26px 40px -14px oklch(0 0 0 / 0.7);
+  --desk: oklch(0.17 0.014 262);
+  --background: oklch(0.95 0.01 86);
+  --sheet-shadow: 0 1px 0 oklch(0 0 0 / 0.3), 0 2px 4px oklch(0 0 0 / 0.3), 0 40px 80px -30px oklch(0 0 0 / 0.8);
 }
 
 @layer base {
@@ -121,16 +105,18 @@
     @apply border-border outline-ring/50;
   }
   html {
-    @apply font-mono;
-    font-weight: 300;
-    font-variant-numeric: tabular-nums;
+    @apply font-serif;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+    font-feature-settings: "kern", "liga", "calt";
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
-  strong,
-  b {
-    font-weight: 500;
+  .font-mono,
+  code,
+  kbd,
+  time {
+    font-variant-numeric: lining-nums tabular-nums;
   }
   ::selection {
     background: oklch(0.47 0.16 268 / 0.18);
@@ -150,18 +136,20 @@
 
 /* A pencil note in the margin: small, letterspaced, uppercase. */
 @utility note {
+  font-family: var(--font-mono);
   font-size: 0.6875rem;
   line-height: 1rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 400;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 /*
-  Paper tooth for the page: a generated fractal-noise speckle, multiplied
+  Paper tooth for the sheet: a generated fractal-noise speckle, multiplied
   over the paper colour. Provisional — a stand-in for a scan of Yash's own
   sheet, which replaces this url and nothing else.
 */
 @utility paper-grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
