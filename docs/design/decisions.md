@@ -6,6 +6,22 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-11-11** — No serif: the site stays Geist Sans + Geist Mono.
+  Prototyped Geist Serif (`geist@1.9.2`) on home in three placements and
+  kept the current type. Rejected: *Headline* (greeting line only, 40px) —
+  one serif moment reads as decoration; *Statement* (whole intro as a 32px
+  serif paragraph, pill inline) — most voice, but eats the first screen on
+  phones; *Editorial* (serif for headline, card and writing titles, 28/20/19px)
+  — busiest, and long titles wrap. Constraints worth remembering: Geist Serif
+  is a high-contrast display face with **one weight (400)** and no `wght`
+  axis, so it can't do body text or a bold; its `ELSH` axis only swaps dot
+  shapes (0 round, 25 square, 50 triangle, 100 heart). From Yash.
+- **2026-11-11** — Home footer replaced with `SiteFooter`, after emmiwu.com:
+  a full-bleed, always-dark band of mono uppercase columns (Noida clock, Say
+  hi, Page). From Yash. "Last updated" and the footer section-label icons
+  are gone. Dark comes from scoping the `.dark` tokens to the band, not new
+  colours. Emmi's ASCII flower garden was deliberately not copied — it's her
+  artwork.
 - **2026-09-28** — Reading columns carry `selection-root`. WebKit fills
   selection gaps to the nearest clipped/transformed ancestor, which was the
   full-width `@container overflow-x-clip` wrapper, so highlighting a post

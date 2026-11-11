@@ -149,7 +149,8 @@ Every motion component early-returns a static version under
   an event handler, or a hook — currently the theme toggle, motion
   components, `NoidaTime`, `ProfessionPill`, and `Oneko`.
 - There is no global header or footer. `app/layout.tsx` renders only the page
-  (inside `PageTransition`); home carries its own nav and footer row.
+  (inside `PageTransition`); home carries its own nav and renders
+  `SiteFooter` itself.
 - Icons come from Phosphor (`@phosphor-icons/react`; `/ssr` in Server
   Components). There is no custom icon set; don't add SVGs to `public/`
   for icons Phosphor already has.

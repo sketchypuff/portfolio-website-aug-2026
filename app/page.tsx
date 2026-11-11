@@ -2,17 +2,13 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import {
   ArrowUpRightIcon,
-  ClockIcon,
   CrownIcon,
   HandHeartIcon,
-  IdentificationCardIcon,
   PenNibIcon,
   SmileyXEyesIcon,
-  WarningCircleIcon,
 } from "@phosphor-icons/react/ssr";
-import { CopyEmail } from "@/components/copy-email";
-import { NoidaTime } from "@/components/noida-time";
 import { Oneko } from "@/components/oneko";
+import { SiteFooter } from "@/components/site-footer";
 import { ProfessionPill } from "@/components/profession-pill";
 import { ThemeTextToggle } from "@/components/theme-toggle";
 import { SectionLabel } from "@/components/section-label";
@@ -114,13 +110,10 @@ function WritingRowContent({ date, title, linked }: { date: string; title: strin
 }
 
 export default function HomePage() {
-  // The page is prerendered, so this is the deploy date.
-  const lastUpdated = new Date();
-
   return (
     <div className="@container overflow-x-clip">
       <Oneko />
-      <Container size="home" className="flex flex-col gap-20 pt-14 pb-16 text-base leading-snug font-medium">
+      <Container size="home" className="flex flex-col gap-20 pt-14 pb-20 text-base leading-snug font-medium">
         <Reveal as="header" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-4">
             {/* The paragraph keeps the Figma 436px measure; this row may run wider so
@@ -214,55 +207,8 @@ export default function HomePage() {
           </WorkStrip>
         </section>
 
-        <Reveal as="footer" className="grid gap-12 sm:grid-cols-[1fr_auto_1fr] sm:gap-6">
-          <div className="flex flex-col gap-8">
-            <SectionLabel icon={IdentificationCardIcon}>
-              Contact
-            </SectionLabel>
-            <ul role="list">
-              <li>
-                <CopyEmail />
-              </li>
-              <li>
-                {site.social.linkedin ? (
-                  <a
-                    href={site.social.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-muted-foreground transition-colors"
-                  >
-                    LinkedIn
-                  </a>
-                ) : (
-                  "LinkedIn"
-                )}
-              </li>
-              <li>
-                <a
-                  href={site.resume}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-muted-foreground transition-colors"
-                >
-                  Resumé
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="flex flex-col gap-8">
-            <SectionLabel icon={WarningCircleIcon}>
-              Last updated
-            </SectionLabel>
-            <time dateTime={lastUpdated.toISOString().slice(0, 10)}>{formatDay(lastUpdated)}</time>
-          </div>
-          <div className="flex flex-col gap-8 sm:items-end sm:text-right">
-            <SectionLabel icon={ClockIcon}>
-              Currently
-            </SectionLabel>
-            <NoidaTime />
-          </div>
-        </Reveal>
       </Container>
+      <SiteFooter />
     </div>
   );
 }

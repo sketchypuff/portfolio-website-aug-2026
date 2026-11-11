@@ -14,11 +14,11 @@ Links (`TextLink`, `ThemeTextToggle`, and the other link treatments) are in [lin
 `components/section-label.tsx`. Heading for a home-page section: mono,
 semibold, uppercase, with a trailing 24px Phosphor icon. Renders an `h2`.
 
-Use it for every home section heading, including footer columns.
+Use it for every home section heading. Footer columns don't use it: their
+labels are plain mono text with no icon (see `SiteFooter`).
 
 Icon picks so far: `CrownIcon` (Selected work), `PenNibIcon` (Writing),
-`HandHeartIcon` (Other work), `IdentificationCardIcon` (Contact),
-`WarningCircleIcon` (Last updated), `ClockIcon` (Currently). Pick icons with
+`HandHeartIcon` (Other work). Pick icons with
 character — these are chosen for personality, not literal meaning.
 
 ```tsx
@@ -124,7 +124,7 @@ exists. Use this row, not a new one, for any dated list on the home page.
 
 `components/noida-time.tsx`. Live Asia/Kolkata clock, `tabular-nums`,
 lowercase `10:25pm`, plus a muted guess at what Yash is doing, from the
-`weekday` / `weekend` schedules in the file. Home footer only.
+`weekday` / `weekend` schedules in the file. `SiteFooter` only.
 
 ## Oneko
 
@@ -143,21 +143,49 @@ events. Renders nothing under reduced motion. Shows on touch devices too,
 since it no longer needs a cursor. No position persistence; it starts in
 the top-left corner on every visit.
 
+## SiteFooter (Decided)
+
+`components/site-footer.tsx`. A full-bleed band after the home `Container`,
+modelled on emmiwu.com's footer: three columns at `sm` (one stacked column
+below) inside `Container size="home"` — `NoidaTime`, then "Say hi" (Email,
+LinkedIn, Resumé) and "Page" (Work, Writing, About) as labelled `nav`s. All
+mono `text-sm` uppercase. Labels are foreground; links are muted and go to
+foreground on hover (the quiet link, inverted — see
+[links.md](links.md#quiet-link-decided)).
+
+It is always dark: the `dark` class on the `<footer>` scopes the dark token
+palette to the band, so it uses `bg-background` / `text-foreground` with no
+raw colour. In dark mode the page is already that colour, so a 0.5px
+`border-border` top edge appears only then. Home only for now; when inner
+pages get a footer, use this one.
+
+```tsx
+// Correct — app/page.tsx, after the Container
+</Container>
+<SiteFooter />
+
+// Incorrect — a second footer, or the band rebuilt with raw colours
+<footer className="bg-neutral-950 text-white">…</footer>
+```
+
 ## CopyEmail + Tooltip
 
-`components/copy-email.tsx`. Home Contact "Email": a quiet-link button, not
+`components/copy-email.tsx`. The footer's "Email": a quiet-link button, not
 `mailto:`. Hover: "Click to copy"; click copies `site.social.email` and the
 same bubble morphs (the `ProfessionPill` label swap, 200ms colour fade) into a
 green `bg-success` "✓ Copied" until the pointer leaves (1.5s on touch).
 Falls back to the mail app if copying fails. Bubble: shadcn
 `components/ui/tooltip.tsx` plus an `arrowClassName` prop; wrap each use in a
 `TooltipProvider` and add `motion-reduce:animate-none` to `TooltipContent`.
+`className` replaces the default hover treatment (the footer passes the
+inverted quiet link plus `uppercase`, since Preflight resets
+`text-transform` on buttons).
 
 ## Lists
 
 Every `ul`/`ol` without bullets gets `role="list"` — Tailwind removes
 `list-style`, and Safari then stops announcing it as a list. `RevealGroup`
-adds it automatically; hand-written lists (the home Contact list) set it
+adds it automatically; hand-written lists (the `SiteFooter` columns) set it
 explicitly. Prose lists keep their bullets and don't need it.
 
 ```tsx

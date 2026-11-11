@@ -93,7 +93,7 @@ function MorphLabel({ copied }: { copied: boolean }) {
 }
 
 /**
- * The home Contact list's "Email". Hover shows "Click to copy"; a click
+ * The footer's "Email". `className` replaces the default quiet-link hover. Hover shows "Click to copy"; a click
  * copies the address and the same tooltip morphs into a green "Copied" until
  * the pointer leaves. On touch there's no hover, so a tap shows "Copied" and
  * it closes itself after a moment.
@@ -105,7 +105,7 @@ function MorphLabel({ copied }: { copied: boolean }) {
  * refuses (an insecure context, a denied permission) it tries the legacy
  * copy, and only if that fails too does it open the mail app instead.
  */
-export function CopyEmail() {
+export function CopyEmail({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const touch = useRef(false);
@@ -153,7 +153,7 @@ export function CopyEmail() {
             e.preventDefault();
             copy();
           }}
-          className="hover:text-muted-foreground cursor-pointer transition-colors"
+          className={cn("cursor-pointer transition-colors", className ?? "hover:text-muted-foreground")}
         >
           Email
         </TooltipTrigger>

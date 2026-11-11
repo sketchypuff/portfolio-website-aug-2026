@@ -49,9 +49,12 @@ paint is already correct.
 ## Quiet link (Decided)
 
 `hover:text-muted-foreground transition-colors` on foreground text. Used for
-the Contact list in the home footer row and the `PostNav` titles (as
-`group-hover:`, the whole side is one link). The Contact list's "Email" is a
-copy button (`CopyEmail`) wearing the same treatment, not a `mailto:` link.
+the `PostNav` titles (as `group-hover:`, the whole side is one link).
+
+**Inverted quiet link** — `text-muted-foreground hover:text-foreground
+transition-colors`, for a list of links under a foreground label, where the
+links must read quieter than the label. Used in `SiteFooter`. Its "Email" is
+a copy button (`CopyEmail`) wearing the same treatment, not a `mailto:` link.
 
 **Icon-only circles** (the post page back link): an `IconCircle` inside a
 `Link` with an `aria-label`, dimming to `opacity-70` on hover.
