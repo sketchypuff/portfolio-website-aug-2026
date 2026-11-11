@@ -6,6 +6,15 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-11-11** — No skeuomorphic buttons: the header keeps its text links
+  and the bordered profession pill. Prototyped a glossy button (gradient body
+  lifted toward white at the top, 1px inner top highlight, crisp darker ring,
+  soft drop shadow, label text shadow; built from `foreground`/`background` so
+  it inverts in dark mode) in three placements and kept the current header.
+  Rejected: *Chip* (only the profession pill) — the loudest thing in the
+  header; *Primary* ("Open resumé" as a 44px button) — reads as a sales CTA;
+  *Everywhere* (pill, Resumé, About, theme as a button row) — loses the quiet,
+  text-led tone and blue-means-link. From Yash.
 - **2026-11-11** — The footer band inverts with the theme: dark on a light
   page, light on a dark one (`.inverted` in `globals.css`). It was dark in
   both, so in dark mode it barely separated from the page. From Yash.
