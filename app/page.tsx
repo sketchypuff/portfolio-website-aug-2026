@@ -6,10 +6,18 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-// Hardcoded until these have real entries in content/. The work lists repeat
-// the real entries to fill the grid at its intended volume (11 and 8); swap in
-// real projects as they're written up. Cards are not linked yet.
-const selectedWorkEntries = [
+// Hardcoded until these have real entries in content/. Other work repeats its
+// entries to fill the grid at its intended volume (8); swap in real projects
+// as they're written up. Cards are not linked yet.
+const selectedWork = [
+  {
+    company: "Microsoft",
+    title: "Made Copilot’s memory visible on mobile, with control over what it keeps and forgets",
+  },
+  {
+    company: "Microsoft",
+    title: "Helped users ground Copilot prompts on mobile with files, skills, people and meeting recordings",
+  },
   {
     company: "Microsoft",
     title:
@@ -17,10 +25,14 @@ const selectedWorkEntries = [
   },
   { company: "Adobe", title: "Optimised image masking with a refined selection experience" },
   { company: "Adobe", title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature" },
+  { company: "Adobe", title: "Redesigned the Adobe Learning Manager homepage to improve content discovery" },
+  { company: "Adobe", title: "Improved course enrollment on Adobe Learning Manager" },
+  { company: "Adobe", title: "Improved peer-to-peer engagement on Adobe Learning Manager" },
   {
     company: "Postman",
     title: "Reduced time taken by developers in discovering new content and finding team resources",
   },
+  { company: "Samsung", title: "Designed video editing experiences for Samsung Camera" },
 ];
 
 const otherWorkEntries = [
@@ -31,7 +43,6 @@ const otherWorkEntries = [
   "Reduced time taken by developers in discovering new content and finding team resources",
 ];
 
-const selectedWork = Array.from({ length: 11 }, (_, i) => selectedWorkEntries[i % selectedWorkEntries.length]);
 const otherWork = Array.from({ length: 8 }, (_, i) => otherWorkEntries[i % otherWorkEntries.length]);
 
 // Rendered newest first, whatever order they're listed in.
@@ -186,8 +197,17 @@ export default function HomePage() {
           </section>
 
           <section aria-labelledby="blog" className="flex flex-col gap-5">
-            <Reveal>
+            <Reveal className="flex items-baseline justify-between gap-4">
               <SectionHeading id="blog" label="Blog" count={writing.length} />
+              <Link
+                href="/blog"
+                className={cn(
+                  mono,
+                  "group text-muted-foreground hover:text-foreground focus-visible:ring-ring inline-flex items-center gap-2 rounded-sm transition-colors focus-visible:ring-2 focus-visible:outline-none",
+                )}
+              >
+                More posts <Marker />
+              </Link>
             </Reveal>
             <RevealGroup as="ul" className="border-foreground/50 border-t-[0.5px]">
               {writing
@@ -197,15 +217,12 @@ export default function HomePage() {
                     <Link
                       href={post.href}
                       data-cursor-text="Read"
-                      className="group focus-visible:ring-ring -mx-3 grid gap-1 rounded-lg px-3 py-3 focus-visible:ring-2 focus-visible:outline-none sm:grid-cols-[9rem_1fr_auto] sm:items-baseline sm:gap-6"
+                      className="group focus-visible:ring-ring -mx-3 grid gap-1 rounded-lg px-3 py-3 focus-visible:ring-2 focus-visible:outline-none sm:grid-cols-[9rem_1fr] sm:items-baseline sm:gap-6"
                     >
                       <time dateTime={post.date} className={cn(mono, "text-muted-foreground")}>
                         {formatDay(post.date)}
                       </time>
                       <p className="group-hover:text-muted-foreground transition-colors">{post.title}</p>
-                      <span className={cn(mono, "text-muted-foreground hidden items-center gap-1.5 sm:flex")}>
-                        Read <Marker />
-                      </span>
                     </Link>
                   </RevealItem>
                 ))}
@@ -220,10 +237,7 @@ export default function HomePage() {
               {otherWork.map((title, i) => (
                 <RevealItem as="li" key={i} className="flex flex-col gap-3">
                   <div className={imageSlot} />
-                  <div className="flex flex-col gap-1">
-                    <h3 className="text-sm leading-snug">{title}</h3>
-                    <p className={cn(mono, "text-muted-foreground")}>Coming soon</p>
-                  </div>
+                  <h3 className="text-sm leading-snug">{title}</h3>
                 </RevealItem>
               ))}
             </RevealGroup>

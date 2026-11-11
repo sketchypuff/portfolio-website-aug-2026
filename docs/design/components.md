@@ -45,14 +45,15 @@ character — these are chosen for personality, not literal meaning.
   muted brackets, zero-padded (`SELECTED WORK [11]`).
 - **Card grid** (Selected work, Other work): 2 across, 4 across once the
   content column is ≥ 48rem (`@3xl`), `gap-x-3`. Image slot `bg-muted`,
-  square corners, Emmi's 268.75:264 ratio. Title `text-sm`; under it a mono
-  meta line — the company (Selected work) or `COMING SOON` (Other work).
-  Selected work adds `VIEW [ ]` at the right below `lg` (phones, tablets);
-  at `lg` and up it's hidden and the cursor's "Open case study" label does
-  that job.
-- **Blog rows**: date | title | `READ [ ]`, hairlines as before, cursor "Read".
-- Counts: 11 Selected work, 8 Other work — the entries repeat until real
-  projects replace them.
+  square corners, Emmi's 268.75:264 ratio. Title `text-sm`. Selected work
+  adds a mono meta line under it: the company, plus `VIEW [ ]` at the right
+  below `lg` (phones, tablets); at `lg` and up that's hidden and the cursor's
+  "Open case study" label does that job. Other work is the title alone.
+- **Blog rows**: date | title, hairlines as before. No in-row "Read"; the
+  cursor's "Read" label is the only cue. A mono `MORE POSTS [ ]` link to
+  `/blog` sits at the right end of the section heading row.
+- Counts: 10 Selected work (the real project titles), 8 Other work — those
+  entries repeat until real projects replace them.
 
 `Marker` and `SectionHeading` are page-local. `WorkStrip`, `SectionLabel`,
 `TextLink` and `ThemeTextToggle` are no longer on home; `/design` still

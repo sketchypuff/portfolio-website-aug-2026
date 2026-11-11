@@ -6,6 +6,10 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-11-11** — Home blog rows drop `READ [ ]` (the cursor label says
+  it); a `MORE POSTS [ ]` link to `/blog` sits opposite the section
+  heading. Other work
+  cards drop `COMING SOON`. From Yash.
 - **2026-11-11** — Braun palette (`braun` branch): the DR09 "Dieter Rams
   Palette" replaces the neutral ramp and link blue. Warm off-white ground,
   brown text, beige borders; links red in light, orange in dark (red is
