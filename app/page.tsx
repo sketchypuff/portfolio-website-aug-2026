@@ -7,7 +7,6 @@ import {
   PenNibIcon,
   SmileyXEyesIcon,
 } from "@phosphor-icons/react/ssr";
-import { Oneko } from "@/components/oneko";
 import { SiteFooter } from "@/components/site-footer";
 import { ProfessionPill } from "@/components/profession-pill";
 import { ThemeTextToggle } from "@/components/theme-toggle";
@@ -112,7 +111,6 @@ function WritingRowContent({ date, title, linked }: { date: string; title: strin
 export default function HomePage() {
   return (
     <div className="@container overflow-x-clip">
-      <Oneko />
       <Container size="home" className="flex flex-col gap-20 pt-14 pb-20 text-base leading-snug font-medium">
         <Reveal as="header" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex flex-col gap-4">
@@ -155,7 +153,7 @@ export default function HomePage() {
             labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
           >
             {selectedWork.map((item, i) => (
-              <WorkCard key={i}>
+              <WorkCard key={i} cursorText="Open case study">
                 <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
                 <p className="mt-1">{item.title}</p>
               </WorkCard>
@@ -176,6 +174,7 @@ export default function HomePage() {
                 {post.href ? (
                   <Link
                     href={post.href}
+                    data-cursor-text="Read"
                     className={cn(
                       writingRow,
                       "group focus-visible:ring-ring -mx-3 rounded-lg px-3 focus-visible:ring-2 focus-visible:outline-none",

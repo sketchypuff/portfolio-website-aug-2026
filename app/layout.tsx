@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/lib/site";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "@/components/motion/page-transition";
+import { CustomCursor } from "@/components/custom-cursor";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main id="content" className="flex-1">
             <PageTransition>{children}</PageTransition>
           </main>
+          <CustomCursor />
         </ThemeProvider>
         <Analytics />
       </body>

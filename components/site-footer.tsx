@@ -26,13 +26,13 @@ function Column({ label, children }: { label: string; children: React.ReactNode 
 
 /**
  * Full-bleed footer band, after emmiwu.com: a clock column, then "Say hi" and
- * "Page" link columns, all mono uppercase. The `dark` class scopes the dark
- * token palette to the band, so it stays dark in both themes without a single
- * raw color; in dark mode a hairline top border separates it from the page.
+ * "Page" link columns, all mono uppercase. `inverted` gives the band the other
+ * theme's tokens, so it is dark on a light page and light on a dark one,
+ * without a single raw color.
  */
 export function SiteFooter() {
   return (
-    <footer className="dark bg-background text-foreground border-t-[0.5px] border-transparent font-mono text-sm uppercase dark:border-border">
+    <footer className="inverted bg-background text-foreground font-mono text-sm uppercase">
       <Container size="home">
         <Reveal className="grid gap-10 pt-8 pb-24 sm:grid-cols-3 sm:gap-6 sm:pb-32">
           <NoidaTime />

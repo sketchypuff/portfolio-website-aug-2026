@@ -119,29 +119,38 @@ Inline in `app/page.tsx`: date left (home metadata style), title right,
 row. A row with an `href` is one `Link` (the linked-row pattern in
 [links.md](links.md)); rows without one stay plain text until their post
 exists. Use this row, not a new one, for any dated list on the home page.
+Linked rows carry `data-cursor-text="Read"` for the `CustomCursor` label.
+"Selected work" cards pass `cursorText="Open case study"` to `WorkCard`.
+
+## CustomCursor (Decided)
+
+`components/custom-cursor.tsx`, mounted once in `app/layout.tsx`, after
+rachelchen.tech. A sharp `bg-link` square replaces the system cursor
+(`html.has-custom-cursor` in `globals.css` sets `cursor: none` everywhere):
+
+- Resting: 14×14, centred on the pointer.
+- Over anything clickable (`a[href]`, `button`, `[role=button]`, form
+  controls, `[data-cursor-text]`): 8×8. Size changes ease over 120ms.
+- Over selectable text or a text field: a 3×20 caret, snapping in. Leaving
+  text waits 90ms so the gaps between words don't flicker it.
+- Pressed: `scale(0.75)` over 100ms, unless a label is showing.
+- `data-cursor-text="…"` on an element types that label out beside the square
+  (`text-link`, mono, uppercase, `text-sm`, 10px gap) on an ease-out over at most 160ms,
+  and deletes it the same way on exit. Keep labels to one short verb.
+- Over an `.inverted` band (the footer) it inverts too: the dark-mode blue
+  on a light page, the light-mode blue on a dark one.
+
+Only for `(hover: hover) and (pointer: fine)` wider than 768px. On touch,
+narrow screens, or reduced motion it renders nothing and the system cursor
+stays. Rachel's link-preview cards (OG images on external links) were not
+ported. It is link blue — one of the two non-link uses (see
+[color.md](color.md)).
 
 ## NoidaTime
 
 `components/noida-time.tsx`. Live Asia/Kolkata clock, `tabular-nums`,
 lowercase `10:25pm`, plus a muted guess at what Yash is doing, from the
 `weekday` / `weekend` schedules in the file. `SiteFooter` only.
-
-## Oneko
-
-`components/oneko.tsx`. A 32px pixel cat that wanders the viewport on its
-own: it walks to a random spot on screen at least 300px away, rests 1–3 seconds (sometimes
-scratching, or a ~6s nap, which it never cuts short), then sets off again.
-Mostly moving, rarely sitting. Ported from
-[oneko.js](https://github.com/adryd325/oneko.js) (MIT) into a client
-component so it mounts and unmounts with the page. Sprite sheet at
-`public/oneko.png`: the `silversky` skin from
-[onekocord](https://github.com/onekocord/onekocord), which has no licence
-file. Any 256×128 oneko sheet drops in without code changes. Rendered
-`image-rendering: pixelated`. Home only — mounted once at the top of
-`app/page.tsx`. Decorative: `aria-hidden`, no pointer
-events. Renders nothing under reduced motion. Shows on touch devices too,
-since it no longer needs a cursor. No position persistence; it starts in
-the top-left corner on every visit.
 
 ## SiteFooter (Decided)
 
@@ -153,10 +162,10 @@ mono `text-sm` uppercase. Labels are foreground; links are muted and go to
 foreground on hover (the quiet link, inverted — see
 [links.md](links.md#quiet-link-decided)).
 
-It is always dark: the `dark` class on the `<footer>` scopes the dark token
-palette to the band, so it uses `bg-background` / `text-foreground` with no
-raw colour. In dark mode the page is already that colour, so a 0.5px
-`border-border` top edge appears only then. Home only for now; when inner
+It is always the opposite of the page: the `inverted` class on the `<footer>`
+gives the band the other theme's tokens (dark on a light page, light on a
+dark one), so it uses `bg-background` / `text-foreground` with no raw colour
+and needs no border in either theme. Home only for now; when inner
 pages get a footer, use this one.
 
 ```tsx

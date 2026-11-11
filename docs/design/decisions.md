@@ -6,6 +6,23 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-11-11** — The footer band inverts with the theme: dark on a light
+  page, light on a dark one (`.inverted` in `globals.css`). It was dark in
+  both, so in dark mode it barely separated from the page. From Yash.
+- **2026-11-11** — Hovering a "Selected work" card labels the cursor "Open
+  case study" (`WorkCard cursorText`). From Yash.
+- **2026-11-11** — `CustomCursor` is link blue (`bg-link`, `text-link`), not
+  foreground. From Yash. A second exception to blue-is-for-links, after the
+  `ProfessionPill` icon.
+- **2026-11-11** — `CustomCursor` replaces the system pointer on desktop,
+  after rachelchen.tech: a sharp square that shrinks to 8px on links, turns
+  into a caret over text, scales to 0.75 on press, and types a label
+  (`data-cursor-text`) beside itself — "Read" on home writing rows. From Yash.
+  Kept in `foreground` rather than her orange (blue stays link-only); her
+  external-link preview cards were not ported.
+- **2026-11-11** — The oneko pixel cat is removed from home, along with
+  `components/oneko.tsx` and its sprite. From Yash. The entries below about
+  the cat are history.
 - **2026-11-11** — No serif: the site stays Geist Sans + Geist Mono.
   Prototyped Geist Serif (`geist@1.9.2`) on home in three placements and
   kept the current type. Rejected: *Headline* (greeting line only, 40px) —

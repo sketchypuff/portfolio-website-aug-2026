@@ -1,7 +1,8 @@
 # Color
 
 Source: `app/globals.css`. Light values live on `:root`, dark values on
-`.dark`; the `@theme inline` block turns each `--token` into Tailwind classes
+`.dark`. `.inverted` flips a region to the other theme's set (light inside
+`.dark`, dark otherwise) — used only by `SiteFooter`; the `@theme inline` block turns each `--token` into Tailwind classes
 (`--muted-foreground` → `text-muted-foreground`, `bg-muted-foreground`, …).
 
 ## Where the colors come from
@@ -59,7 +60,7 @@ only one, so it breaks in the other theme.
 | `bg-muted` | `0.97` | `0.269` | empty image slots (`WorkCard`), image placeholders (`Figure`, `Gallery`), `IconCircle`, inline `code`, `pre` |
 | `border-border` | `0.922` | white 10% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
 | `ring` (via `outline-ring/50`) | `0.708` | `0.556` | the focus outline on every element (set on `*` in `globals.css`) |
-| `text-link` | `var(--blue-600)` = `#2148f9` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon |
+| `text-link` | `var(--blue-600)` = `#2148f9` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon, `CustomCursor` |
 | `bg-success` / `text-success-foreground` | `0.52 0.14 150` / `0.985` (4.95:1) | `0.8 0.15 150` / `0.145` (11.2:1) | the `CopyEmail` tooltip once copied — nothing else |
 | `text-destructive` / `border-destructive` | red, `0.577 0.245 27` | red, `0.704 0.191 22` | `MdxError` in `components/content/mdx.tsx` only |
 
@@ -144,5 +145,6 @@ size or case, not a lighter gray.
 <p className="text-neutral-500 font-mono text-sm uppercase">{item.company}</p>
 ```
 
-The one non-link use of blue is the `ProfessionPill` icon, taken from Figma.
-It is an exception, not a precedent.
+The non-link uses of blue are the `ProfessionPill` icon, taken from Figma,
+and `CustomCursor` (`bg-link` square, `text-link` label), from Yash. They are
+exceptions, not precedents.

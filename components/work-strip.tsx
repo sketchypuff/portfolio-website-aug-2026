@@ -176,10 +176,14 @@ export function WorkStrip({
  * what `WorkStrip dimOnHover` fades — the <li> can't be, because its reveal
  * animation sets opacity inline.
  */
-export function WorkCard({ children }: { children: React.ReactNode }) {
+/** `cursorText` is the `CustomCursor` label shown while hovering the card. */
+export function WorkCard({ children, cursorText }: { children: React.ReactNode; cursorText?: string }) {
   return (
     <RevealItem as="li" className="group/card w-[570px] max-w-[85vw] shrink-0 snap-start">
-      <div className="transition-opacity delay-100 duration-200 ease-out group-hover/card:delay-0 motion-reduce:transition-none">
+      <div
+        data-cursor-text={cursorText}
+        className="transition-opacity delay-100 duration-200 ease-out group-hover/card:delay-0 motion-reduce:transition-none"
+      >
         <div className="bg-muted aspect-[4/3] rounded-xl" />
         <div className="mt-5">{children}</div>
       </div>

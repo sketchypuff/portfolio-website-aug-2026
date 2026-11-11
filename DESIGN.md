@@ -33,7 +33,7 @@ Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
    `text-link`). Never a hex, `oklch()`, or Tailwind palette color
    (`text-neutral-500`, `bg-blue-600`). Raw values break dark mode.
 2. **Blue is for links.** `text-link` goes on `TextLink` and the home nav's
-   `ThemeTextToggle`, nothing else new. See [links.md](docs/design/links.md).
+   `ThemeTextToggle`, plus `bg-link` on `CustomCursor`; nothing else new. See [links.md](docs/design/links.md).
 3. **Widths come from `<Container size>`.** `prose` | `default` | `wide` |
    `home`. Never hand-roll `max-w-*` on a page wrapper.
 4. **Icons are Phosphor**, `*Icon` names, `/ssr` in Server Components. No
