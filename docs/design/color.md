@@ -9,39 +9,33 @@ Source: `app/globals.css`. Light values live on `:root`, dark values on
 
 | Origin | Tokens | Status |
 | --- | --- | --- |
-| **shadcn `neutral` preset**, verbatim (`components.json` → `"baseColor": "neutral"`) | every gray: `background`, `foreground`, `muted`, `muted-foreground`, `border`, `ring`, plus `destructive` and all the unused ones | **Default** — generated, never compared against Figma |
-| **Project-defined, from Figma** | `link` — `#2148f9` in light (`--blue-600`); `--blue-300` in dark for contrast | **Decided** |
-| **Project-defined, derived** | the `--blue-50…950` scale, built from the link blue | **Decided** — primitives, see below |
+| **Braun palette** — DR09 "Dieter Rams Palette" (Matus Hatala): red `#C5441F`, orange `#F07032`, brown `#40341F`, gray `#8B8178`, beige `#D9CAB8` | `--braun-*` primitives; every surface, text, border, and link token points at one or at a step derived from its hue | **Decided** (`braun` branch) — from Yash |
 | **Project-defined** | `success` / `success-foreground` — green, hue 150 | **Decided** — confirmation only |
+| **shadcn preset**, verbatim | `destructive` | **Default** |
 | **Tailwind default, not a token** | the shadow color inside `shadow-xs` (black at 5% opacity) | **Default** — the one color on the site outside the token system |
 | **Browser default** | text selection, caret, scrollbars | Unstyled |
 
-The whole ramp has zero chroma — pure gray — so the only hues on the site are
-`link` and, for a confirmed action only, `success`. Replacing the grays with Figma values is a change to `globals.css`
-only; nothing else hardcodes them.
+The neutrals are warm, not gray: every surface and text token sits on the
+palette's brown/beige hues (65–100). The one saturated hue is `link` — red in
+light, orange in dark — and, for a confirmed action only, `success`.
 
-## Blue scale (primitives)
+## Braun palette (primitives)
 
-`--blue-50` … `--blue-950` on `:root` in `globals.css`, built from the link
-blue: hue fixed at 266, lightness evenly spaced from 0.97 (50) to 0.22 (950),
-chroma a fraction of the sRGB ceiling at each step — so every step renders
-faithfully and none drifts toward violet. Step **600 is the link blue
-exactly**; `--link` is `var(--blue-600)` in light and `var(--blue-300)` in
-dark.
+`--braun-red`, `--braun-orange`, `--braun-brown`, `--braun-gray`,
+`--braun-beige` on `:root` in `globals.css` — the five swatches verbatim.
+Where a swatch fails contrast in its role, the token uses a step of the same
+hue instead, never a new hue:
 
-| Step | 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| L | 0.97 | 0.894 | 0.817 | 0.741 | 0.665 | 0.588 | 0.512 | 0.439 | 0.366 | 0.293 | 0.22 |
-| C | 0.008 | 0.033 | 0.065 | 0.106 | 0.159 | 0.215 | 0.262 | 0.263 | 0.179 | 0.11 | 0.06 |
+| Token | Light | Dark | Why |
+| --- | --- | --- | --- |
+| `background` | `#F6F5F0` | `#1E1912` | poster ground, lifted so red holds 4.56:1 / brown taken down to a deep ground |
+| `muted-foreground` | `#6E655C` (5.2:1) | `--braun-gray` (4.58:1) | `#8B8178` is only 3.4:1 on the light ground |
+| `muted` | `#E9E4DA` | `--braun-brown` | beige toward the ground, so placeholders stay quiet |
 
-Text on white passes WCAG AA (4.5:1) from **600** down; text on the dark
-background (`0.145`) passes from **500** up.
-
-The scale sits outside `@theme` on purpose, so it produces no `bg-blue-500`
-classes. Components never reference a step. To use one, add a semantic token
-in `globals.css` that points at it (`--link-subtle: var(--blue-100)`), give
-it a dark value (the mirrored step: 100 ↔ 900, 200 ↔ 800), and document it
-here. Tailwind's own `blue-*` palette stays banned.
+The primitives sit outside `@theme`, so they produce no `bg-braun-red`
+classes. Components never reference one. To use one in a new role, add a
+semantic token in `globals.css` that points at it, give it a dark value, and
+document it here. Tailwind's palette colors stay banned.
 
 ## The layer rule
 
@@ -54,20 +48,19 @@ only one, so it breaks in the other theme.
 
 | Class | Light | Dark | Used for |
 | --- | --- | --- | --- |
-| `bg-background` | `oklch(1 0 0)` white | `0.145` | page (`body`, set in `globals.css` and `app/layout.tsx`); `ProfessionPill` surface |
-| `text-foreground` | `0.145` | `0.985` | all default text (inherited from `body`); prose `strong` |
-| `text-muted-foreground` | `0.556` | `0.708` | secondary text: intro paragraph, metadata, company names, dimmed titles, post subtitle, prose list numbers and bullets, figure captions, blockquotes; quiet-link hover |
-| `bg-muted` | `0.97` | `0.269` | empty image slots (`WorkCard`), image placeholders (`Figure`, `Gallery`), `IconCircle`, inline `code`, `pre` |
-| `border-border` | `0.922` | white 10% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
-| `ring` (via `outline-ring/50`) | `0.708` | `0.556` | the focus outline on every element (set on `*` in `globals.css`) |
-| `text-link` | `var(--blue-600)` = `#2148f9` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon, `CustomCursor` |
+| `bg-background` | `#F6F5F0` | `#1E1912` | page (`body`, set in `globals.css` and `app/layout.tsx`); `ProfessionPill` surface |
+| `text-foreground` | `--braun-brown` (10.9:1) | `#F6F5F0` (15.6:1) | all default text (inherited from `body`); prose `strong` |
+| `text-muted-foreground` | `#6E655C` | `--braun-gray` | secondary text: intro paragraph, metadata, company names, dimmed titles, post subtitle, prose list numbers and bullets, figure captions, blockquotes; quiet-link hover |
+| `bg-muted` | `#E9E4DA` | `--braun-brown` | empty image slots (`WorkCard`), image placeholders (`Figure`, `Gallery`), `IconCircle`, inline `code`, `pre` |
+| `border-border` | `--braun-beige` | ground white 12% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
+| `ring` (via `outline-ring/50`) | `--braun-gray` | `--braun-gray` | the focus outline on every element (set on `*` in `globals.css`) |
+| `text-link` | `--braun-red` (4.56:1) | `--braun-orange` (5.88:1) | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon, `CustomCursor` |
 | `bg-success` / `text-success-foreground` | `0.52 0.14 150` / `0.985` (4.95:1) | `0.8 0.15 150` / `0.145` (11.2:1) | the `CopyEmail` tooltip once copied — nothing else |
 | `text-destructive` / `border-destructive` | red, `0.577 0.245 27` | red, `0.704 0.191 22` | `MdxError` in `components/content/mdx.tsx` only |
 
-Grays are listed by OKLCH lightness (`0.145` = `oklch(0.145 0 0)`). Dark
-`link` is a lighter step of the same scale (300, not an inversion of 600) so
-it holds 8.5:1 contrast on the dark background. Dark `border` is translucent
-white so it reads on any dark surface.
+Contrast ratios are against that theme's `background`. Dark `link` is the
+palette's orange rather than the red, which drops to 3.2:1 on the dark ground.
+Dark `border` is the light ground at 12% so it reads on any dark surface.
 
 ## Usage map by file
 
@@ -93,9 +86,8 @@ usage. When a file starts or stops using a token, update this table.
 `primary`, `secondary`, `accent`, `popover`, `card`, `input`, `chart-1…5`,
 `sidebar-*`. They ship with shadcn and are consumed inside shadcn primitives if
 any get added to `components/ui/`. Do not use them in hand-written components —
-they are neutral grays that duplicate `muted`/`foreground`, and using them
-creates a second name for the same color. (`sidebar-primary` in dark mode is
-shadcn's stock blue, unrelated to `link`.)
+they duplicate `muted`/`foreground`, and using them creates a second name for
+the same color. `chart-1…5` are the five palette swatches.
 
 ## Opacity modifiers
 
@@ -145,6 +137,6 @@ size or case, not a lighter gray.
 <p className="text-neutral-500 font-mono text-sm uppercase">{item.company}</p>
 ```
 
-The non-link uses of blue are the `ProfessionPill` icon, taken from Figma,
-and `CustomCursor` (`bg-link` square, `text-link` label), from Yash. They are
-exceptions, not precedents.
+The non-link uses of the link color are the `ProfessionPill` icon and
+`CustomCursor` (`bg-link` square, `text-link` label). They are exceptions,
+not precedents.

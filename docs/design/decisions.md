@@ -6,6 +6,11 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-11-11** — Braun palette (`braun` branch): the DR09 "Dieter Rams
+  Palette" replaces the neutral ramp and link blue. Warm off-white ground,
+  brown text, beige borders; links red in light, orange in dark (red is
+  3.2:1 there). Swatches that fail contrast in a role use a step of the same
+  hue. From Yash.
 - **2026-11-11** — Selected work cards show `VIEW [ ]` only below `lg`
   (phones, tablets). On large screens the meta line is just the company and
   the cursor's "Open case study" label signals the card. From Yash.

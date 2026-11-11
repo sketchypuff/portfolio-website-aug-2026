@@ -52,111 +52,110 @@
 }
 
 /*
- * Blue scale built from the link blue (#2148f9, step 600). One hue (266),
- * lightness evenly spaced from 0.97 to 0.22, chroma a fraction of the sRGB
- * ceiling at each step so every value renders faithfully.
- *
- * Primitives only: deliberately outside @theme so they generate no utility
- * classes. Components use semantic tokens (`text-link`); a new use of a step
- * gets a semantic token that points here. The scale is the same in both
- * themes — dark mode picks different steps, it doesn't redefine them.
+ * Braun palette — DR09 "Dieter Rams Palette" (Matus Hatala). The five swatches,
+ * verbatim. Primitives only: outside @theme so they generate no utility
+ * classes. Components use the semantic tokens below, which point here or at a
+ * step derived from these hues.
  */
 :root {
-  --blue-50: oklch(0.97 0.008 266);
-  --blue-100: oklch(0.894 0.033 266);
-  --blue-200: oklch(0.817 0.065 266);
-  --blue-300: oklch(0.741 0.106 266);
-  --blue-400: oklch(0.665 0.159 266);
-  --blue-500: oklch(0.588 0.215 266);
-  --blue-600: oklch(0.512 0.262 266);
-  --blue-700: oklch(0.439 0.263 266);
-  --blue-800: oklch(0.366 0.179 266);
-  --blue-900: oklch(0.293 0.11 266);
-  --blue-950: oklch(0.22 0.06 266);
+  --braun-red: oklch(0.563 0.172 36); /* #C5441F */
+  --braun-orange: oklch(0.689 0.174 43.7); /* #F07032 */
+  --braun-brown: oklch(0.332 0.038 80.9); /* #40341F */
+  --braun-gray: oklch(0.609 0.018 64.5); /* #8B8178 */
+  --braun-beige: oklch(0.846 0.03 72.4); /* #D9CAB8 */
 }
 
 /*
   `.inverted` flips a region to the other theme's tokens: dark on a light page,
   light on a dark one (the footer band). `.dark .inverted` outranks `.inverted`.
+
+  Light: the poster's warm off-white, lifted to #F6F5F0 so red links hold
+  4.56:1. Brown text, red links. #8B8178 is 3.4:1 on it — too light for text —
+  so muted-foreground is the same hue darkened to #6E655C (5.2:1).
 */
 :root,
 .dark .inverted {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --background: oklch(0.97 0.007 97.4); /* #F6F5F0 */
+  --foreground: var(--braun-brown);
+  --card: oklch(0.97 0.007 97.4);
+  --card-foreground: var(--braun-brown);
+  --popover: oklch(0.97 0.007 97.4);
+  --popover-foreground: var(--braun-brown);
+  --primary: var(--braun-brown);
+  --primary-foreground: oklch(0.97 0.007 97.4);
+  --secondary: oklch(0.92 0.014 84.6);
+  --secondary-foreground: var(--braun-brown);
+  --muted: oklch(0.92 0.014 84.6); /* #E9E4DA, beige toward the ground */
+  --muted-foreground: oklch(0.512 0.018 67.4); /* #6E655C, darkened gray */
+  --accent: oklch(0.92 0.014 84.6);
+  --accent-foreground: var(--braun-brown);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  /* The one accent on the site, reserved for links. #2148f9 from the Figma file. */
-  --link: var(--blue-600);
+  --border: var(--braun-beige);
+  --input: var(--braun-beige);
+  --ring: var(--braun-gray);
+  /* The one accent on the site, reserved for links. Braun red. */
+  --link: var(--braun-red);
   /* Confirmation only (the "Copied" tooltip). 4.95:1 under its foreground. */
   --success: oklch(0.52 0.14 150);
   --success-foreground: oklch(0.985 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --chart-1: var(--braun-red);
+  --chart-2: var(--braun-orange);
+  --chart-3: var(--braun-brown);
+  --chart-4: var(--braun-gray);
+  --chart-5: var(--braun-beige);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: oklch(0.97 0.007 97.4);
+  --sidebar-foreground: var(--braun-brown);
+  --sidebar-primary: var(--braun-brown);
+  --sidebar-primary-foreground: oklch(0.97 0.007 97.4);
+  --sidebar-accent: oklch(0.92 0.014 84.6);
+  --sidebar-accent-foreground: var(--braun-brown);
+  --sidebar-border: var(--braun-beige);
+  --sidebar-ring: var(--braun-gray);
 }
 
+/*
+  Dark: a deep brown (#1E1912, the brown's hue taken down) with the brown
+  itself as the raised surface. Gray passes as text here (4.58:1), orange
+  carries links (5.88:1).
+*/
 .dark,
 .inverted {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.217 0.015 76.1); /* #1E1912 */
+  --foreground: oklch(0.97 0.007 97.4);
+  --card: oklch(0.261 0.019 73.8); /* #2A231A */
+  --card-foreground: oklch(0.97 0.007 97.4);
+  --popover: oklch(0.261 0.019 73.8);
+  --popover-foreground: oklch(0.97 0.007 97.4);
+  --primary: var(--braun-beige);
+  --primary-foreground: oklch(0.217 0.015 76.1);
+  --secondary: var(--braun-brown);
+  --secondary-foreground: oklch(0.97 0.007 97.4);
+  --muted: var(--braun-brown);
+  --muted-foreground: var(--braun-gray);
+  --accent: var(--braun-brown);
+  --accent-foreground: oklch(0.97 0.007 97.4);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --link: var(--blue-300);
+  --border: oklch(0.97 0.007 97.4 / 12%);
+  --input: oklch(0.97 0.007 97.4 / 15%);
+  --ring: var(--braun-gray);
+  --link: var(--braun-orange);
   /* 11.2:1 under its foreground. */
   --success: oklch(0.8 0.15 150);
   --success-foreground: oklch(0.145 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --chart-1: var(--braun-red);
+  --chart-2: var(--braun-orange);
+  --chart-3: var(--braun-beige);
+  --chart-4: var(--braun-gray);
+  --chart-5: var(--braun-brown);
+  --sidebar: oklch(0.261 0.019 73.8);
+  --sidebar-foreground: oklch(0.97 0.007 97.4);
+  --sidebar-primary: var(--braun-orange);
+  --sidebar-primary-foreground: oklch(0.217 0.015 76.1);
+  --sidebar-accent: var(--braun-brown);
+  --sidebar-accent-foreground: oklch(0.97 0.007 97.4);
+  --sidebar-border: oklch(0.97 0.007 97.4 / 12%);
+  --sidebar-ring: var(--braun-gray);
 }
 
 @layer base {

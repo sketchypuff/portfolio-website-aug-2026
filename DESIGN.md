@@ -1,9 +1,10 @@
 # Design
 
-A quiet, achromatic portfolio where the work and the writing carry the page.
-Hierarchy comes from weight, size, and the one gray (`muted-foreground`), never
-from color. The only hue on the site is `link` blue, and it means "this takes
-you somewhere" — apart from `success` green, which only ever confirms an
+A quiet portfolio in a Dieter Rams palette (warm off-white, brown, beige)
+where the work and the writing carry the page. Hierarchy comes from weight,
+size, and the one secondary tone (`muted-foreground`), never from color. The
+only saturated hue is `link` — Braun red, orange in dark — and it means "this
+takes you somewhere" — apart from `success` green, which only ever confirms an
 action (the "Copied" tooltip).
 
 `AGENTS.md` covers architecture. This file and `docs/design/` cover how the
@@ -34,7 +35,7 @@ sidebar-and-grid layout after emmiwu.com, see
    [color.md](docs/design/color.md) (`text-muted-foreground`, `bg-muted`,
    `text-link`). Never a hex, `oklch()`, or Tailwind palette color
    (`text-neutral-500`, `bg-blue-600`). Raw values break dark mode.
-2. **Blue is for links.** `text-link` goes on `TextLink` and the home nav's
+2. **The link color is for links.** `text-link` goes on `TextLink` and the home nav's
    `ThemeTextToggle`, plus `bg-link` on `CustomCursor`; nothing else new. See [links.md](docs/design/links.md).
 3. **Widths come from `<Container size>`.** `prose` | `default` | `wide` |
    `home`. Never hand-roll `max-w-*` on a page wrapper.
@@ -81,9 +82,8 @@ from the real code — the visual counterpart to these files.
 - **New pages.** About, blog index, projects index, case study, and 404 need
   designs. Until they exist, the home page's `/about` and `/blog` links go to
   Next's default 404, and the post back link goes to `/`.
-- **Grays.** Every gray is the stock shadcn `neutral` preset, never compared
-  with Figma. Swap in the Figma values (one file: `app/globals.css`) or
-  confirm the defaults. See [color.md](docs/design/color.md).
+- **Braun palette vs. `main`.** The `braun` branch replaces the neutral ramp
+  and link blue with the DR09 palette. Merge it, or keep it as an experiment.
 - **Shared chrome.** Does every page carry its own nav and footer like home,
   or do inner pages get a shared header?
 - **Date format.** Home shows `14 Aug 2025` (`formatDay`, `app/page.tsx`);

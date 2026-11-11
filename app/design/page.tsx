@@ -31,19 +31,25 @@ export const metadata: Metadata = {
 // Tailwind needs literal class names, so each swatch spells its class out.
 // `origin` mirrors the table in docs/design/color.md.
 const colors = [
-  { token: "background", swatch: "bg-background", use: "Page, pill surface", origin: "shadcn neutral" },
-  { token: "foreground", swatch: "bg-foreground", use: "Default text", origin: "shadcn neutral" },
-  { token: "muted-foreground", swatch: "bg-muted-foreground", use: "Secondary text, metadata", origin: "shadcn neutral" },
-  { token: "muted", swatch: "bg-muted", use: "Image slots, placeholders, code", origin: "shadcn neutral" },
-  { token: "border", swatch: "bg-border", use: "Default borders", origin: "shadcn neutral" },
-  { token: "ring", swatch: "bg-ring", use: "Focus outline, at 50%", origin: "shadcn neutral" },
-  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle, pill icon", origin: "Figma · #2148f9" },
+  { token: "background", swatch: "bg-background", use: "Page, pill surface", origin: "Braun · #F6F5F0" },
+  { token: "foreground", swatch: "bg-foreground", use: "Default text", origin: "Braun brown" },
+  { token: "muted-foreground", swatch: "bg-muted-foreground", use: "Secondary text, metadata", origin: "Braun gray, darkened" },
+  { token: "muted", swatch: "bg-muted", use: "Image slots, placeholders, code", origin: "Braun beige, lightened" },
+  { token: "border", swatch: "bg-border", use: "Default borders", origin: "Braun beige" },
+  { token: "ring", swatch: "bg-ring", use: "Focus outline, at 50%", origin: "Braun gray" },
+  { token: "link", swatch: "bg-link", use: "TextLink, ThemeTextToggle, pill icon", origin: "Braun red · orange in dark" },
   { token: "destructive", swatch: "bg-destructive", use: "MdxError only", origin: "shadcn neutral" },
 ];
 
-// The blue scale is primitives-only (no utility classes), so swatches read the
-// variables directly. Step 600 is the light-mode link.
-const blueSteps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+// The Braun palette is primitives-only (no utility classes), so swatches read
+// the variables directly.
+const braun = [
+  { name: "red", hex: "C5441F" },
+  { name: "orange", hex: "F07032" },
+  { name: "brown", hex: "40341F" },
+  { name: "gray", hex: "8B8178" },
+  { name: "beige", hex: "D9CAB8" },
+];
 
 const containers = [
   { size: "prose", note: "max-w-2xl · reading column" },
@@ -103,19 +109,18 @@ export default function DesignPage() {
         </ul>
 
         <p className="text-muted-foreground mt-12 mb-4 text-sm">
-          Blue scale — primitives in <Code>globals.css</Code>, built from the link blue (600).
-          Not used by components directly.
+          Braun palette — primitives in <Code>globals.css</Code>, from DR09. Not used by
+          components directly.
         </p>
-        <ul role="list" className="grid grid-cols-11 gap-1 sm:gap-2">
-          {blueSteps.map((step) => (
-            <li key={step}>
+        <ul role="list" className="grid grid-cols-5 gap-2 sm:gap-4">
+          {braun.map((c) => (
+            <li key={c.name}>
               <div
-                className="border-border aspect-square rounded-md border sm:aspect-[3/4]"
-                style={{ backgroundColor: `var(--blue-${step})` }}
+                className="border-border aspect-square rounded-full border"
+                style={{ backgroundColor: `var(--braun-${c.name})` }}
               />
-              <p className={`mt-2 font-mono text-xs ${step === 600 ? "font-semibold" : "text-muted-foreground"}`}>
-                {step}
-              </p>
+              <p className="mt-2 font-mono text-xs">{c.name}</p>
+              <p className="text-muted-foreground font-mono text-xs">{c.hex}</p>
             </li>
           ))}
         </ul>

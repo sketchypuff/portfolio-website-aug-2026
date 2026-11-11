@@ -37,7 +37,7 @@ character — these are chosen for personality, not literal meaning.
 
 - **Sidebar** (`md:sticky md:top-14`): `h1` + `ProfessionPill`, the intro
   paragraph, then "`ThemeInlineToggle`, say hello on LinkedIn or open my
-  resumé." (blue links), then the page nav.
+  resumé." (links), then the page nav.
 - **Page nav**: mono uppercase Work / Writing / About, each with a `[ ]`
   marker. The current page is foreground with a dot in its brackets; the rest
   are muted, going foreground with a dot on hover.
@@ -166,13 +166,13 @@ rachelchen.tech. A sharp `bg-link` square replaces the system cursor
 - `data-cursor-text="…"` on an element types that label out beside the square
   (`text-link`, mono, uppercase, `text-sm`, 10px gap) on an ease-out over at most 160ms,
   and deletes it the same way on exit. Keep labels to one short verb.
-- Over an `.inverted` band (the footer) it inverts too: the dark-mode blue
-  on a light page, the light-mode blue on a dark one.
+- Over an `.inverted` band (the footer) it inverts too: the dark-mode
+  orange on a light page, the light-mode red on a dark one.
 
 Only for `(hover: hover) and (pointer: fine)` wider than 768px. On touch,
 narrow screens, or reduced motion it renders nothing and the system cursor
 stays. Rachel's link-preview cards (OG images on external links) were not
-ported. It is link blue — one of the two non-link uses (see
+ported. It is the link color — one of the two non-link uses (see
 [color.md](color.md)).
 
 ## NoidaTime

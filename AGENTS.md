@@ -163,7 +163,7 @@ Every motion component early-returns a static version under
   Do not hand-roll `max-w-*` on page wrappers.
 - Site-wide constants (name, URL, resume, social) live in `lib/site.ts`.
 - Colors are shadcn CSS variables in `app/globals.css` — a deliberately
-  pure-neutral OKLCH ramp. Use `bg-background`, `text-muted-foreground`, etc.
+  warm OKLCH set built on a Dieter Rams palette (`--braun-*` primitives). Use `bg-background`, `text-muted-foreground`, etc.
   Never hardcode a hex value.
 - Git: never commit or push unless Yash explicitly asks — finishing a task
   is not permission. When asked, commit and push to the branch that is
