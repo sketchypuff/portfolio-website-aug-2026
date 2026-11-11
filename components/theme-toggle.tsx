@@ -37,3 +37,22 @@ export function ThemeTextToggle() {
     </button>
   );
 }
+
+/**
+ * The same switch as inline prose: "Switch to dark mode" inside the home
+ * intro's sentence, in link blue with no icon.
+ */
+export function ThemeInlineToggle() {
+  const toggle = useToggleTheme();
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      className="text-link cursor-pointer transition-opacity hover:opacity-70"
+    >
+      <span className="dark:hidden">Switch to dark mode</span>
+      <span className="hidden dark:inline">Switch to light mode</span>
+    </button>
+  );
+}

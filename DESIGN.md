@@ -12,8 +12,10 @@ open only the topic file the task needs.
 
 ## Status
 
-Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
-`1167:49`) and the blog post (`app/blog/[slug]/page.tsx`, Figma "Blog", node
+Two pages are **Decided**: home (`app/page.tsx` — on the `home-v2` branch a
+sidebar-and-grid layout after emmiwu.com, see
+[components.md](docs/design/components.md#home-v2-layout); on `main`, Figma
+"Home", node `1167:49`) and the blog post (`app/blog/[slug]/page.tsx`, Figma "Blog", node
 `1132:2209`). The old inner pages, global header, and footer were deleted on
 2026-09-27 to be rebuilt from scratch; don't look for them.
 

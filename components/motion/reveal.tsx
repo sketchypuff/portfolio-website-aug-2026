@@ -6,7 +6,7 @@ import { motion, useReducedMotion, type HTMLMotionProps } from "motion/react";
 const EASE = [0.22, 1, 0.36, 1] as const;
 const VIEWPORT = { once: true, margin: "0px 0px -10% 0px" } as const;
 
-type Tag = "div" | "section" | "article" | "ul" | "ol" | "li" | "header" | "footer";
+type Tag = "div" | "section" | "article" | "aside" | "ul" | "ol" | "li" | "header" | "footer";
 
 /**
  * `motion` types props per element, so a polymorphic `as` can't be expressed

@@ -184,7 +184,9 @@ directory.
 
 ## Design status
 
-The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its
+The home page (`app/page.tsx`) is built from the Figma "Home" frame on
+`main`; on the `home-v2` branch it is a sidebar-and-grid layout after
+emmiwu.com (see `docs/design/components.md`, "Home v2 layout"). Its
 project cards and writing rows are hardcoded arrays for now. A writing row
 links to its post once the post exists in `content/posts/` (set `href`); the
 rest, and the project cards, are not linked yet. Its `/about` and `/blog`

@@ -29,7 +29,34 @@ character — these are chosen for personality, not literal meaning.
 <p className="font-mono text-sm uppercase">Writing</p>
 ```
 
-## WorkStrip + WorkCard (Decided, home only)
+## Home v2 layout
+
+`app/page.tsx` on `home-v2`, after emmiwu.com. Full-bleed (see
+[layout.md](layout.md)): a sticky sidebar left, three stacked sections right,
+`gap-28` between them, then `SiteFooter`.
+
+- **Sidebar** (`md:sticky md:top-14`): `h1` + `ProfessionPill`, the intro
+  paragraph, then "`ThemeInlineToggle`, say hello on LinkedIn or open my
+  resumé." (blue links), then the page nav.
+- **Page nav**: mono uppercase Work / Writing / About, each with a `[ ]`
+  marker. The current page is foreground with a dot in its brackets; the rest
+  are muted, going foreground with a dot on hover.
+- **Section heading**: mono uppercase label in foreground, then the count in
+  muted brackets, zero-padded (`SELECTED WORK [11]`).
+- **Card grid** (Selected work, Other work): 2 across, 4 across once the
+  content column is ≥ 48rem (`@3xl`), `gap-x-3`. Image slot `bg-muted`,
+  square corners, Emmi's 268.75:264 ratio. Title `text-sm`; under it a mono
+  meta row — company left, `VIEW [ ]` right (Selected work, hover fills the
+  dot, cursor "Open case study"), or `COMING SOON` (Other work).
+- **Blog rows**: date | title | `READ [ ]`, hairlines as before, cursor "Read".
+- Counts: 11 Selected work, 8 Other work — the entries repeat until real
+  projects replace them.
+
+`Marker` and `SectionHeading` are page-local. `WorkStrip`, `SectionLabel`,
+`TextLink` and `ThemeTextToggle` are no longer on home; `/design` still
+renders them.
+
+## WorkStrip + WorkCard (Decided, `/design` only on home-v2)
 
 `components/work-strip.tsx`. Horizontal snap-scrolling row of 570px cards with a
 4:3 `bg-muted rounded-xl` image slot and text `mt-5` below, under a row
@@ -112,7 +139,7 @@ older on the left with `ArrowLeftIcon`, newer on the right with
 Feed it `getAdjacentPosts(slug)` from `lib/content.ts`; a missing side is left
 empty, and it renders nothing when both are missing.
 
-## Home writing rows
+## Home writing rows (main's home)
 
 Inline in `app/page.tsx`: date left (home metadata style), title right,
 `border-b-[0.5px] border-foreground/50` hairline on the `li`, `py-3` on the

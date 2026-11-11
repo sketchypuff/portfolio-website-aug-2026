@@ -27,6 +27,12 @@ Anything else
 <div className="mx-auto max-w-[939px] px-6 pt-14">
 ```
 
+**Exception — home v2.** The home page is full-bleed, not a `Container`: a
+`px-6 sm:px-8` grid with a 260px (`md`) / 300px (`lg`) sticky sidebar and a
+fluid content column, after emmiwu.com. Card grids inside it size by a
+container query on that column. See
+[components.md](components.md#home-v2-layout).
+
 Inside a page, `max-w-*` on a text block to hold a measure is fine
 (`max-w-[436px]` on the home intro).
 

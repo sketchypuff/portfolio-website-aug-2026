@@ -37,10 +37,17 @@ Absolute URLs open in a new tab automatically; site paths use `next/link`.
 <Link href="/blog" className="text-link hover:underline">Open blog</Link>
 ```
 
+## ThemeInlineToggle (Decided, home v2)
+
+`components/theme-toggle.tsx`. The home intro's theme switch, written into the
+sentence "Switch to dark mode, say hello on LinkedIn or open my resumé." Link
+blue, no icon, 70% on hover; names the theme it switches *to*, swapped with
+`dark:` classes like `ThemeTextToggle`.
+
 ## ThemeTextToggle (Decided)
 
-`components/theme-toggle.tsx`. The home nav's theme switch, under About, and
-the only theme control on the site. A button, not a link, but styled exactly
+`components/theme-toggle.tsx`. The old home nav's theme switch, under About
+(now only on `/design`). A button, not a link, but styled exactly
 like `TextLink` (blue, 24px trailing icon, 70% on hover) so the nav reads as
 one set of controls. The label names the theme it switches *to* ("Dark mode"
 / "Light mode"), and label and icon swap with `dark:` classes so the first

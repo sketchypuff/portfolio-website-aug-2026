@@ -6,6 +6,13 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-11-11** — Home v2 (`home-v2` branch), after emmiwu.com: full-bleed
+  sticky sidebar (intro, inline theme switch, Work/Writing/About bracket nav)
+  beside stacked Selected work (11), Blog and Other work (8); card grids four
+  across. Prototyped with a top name bar (removed: nav moved under the
+  intro), a scroll-tracking section index (replaced by the page nav), and
+  tabs (rejected: hid two of the three sections). `main` keeps the Figma
+  home. From Yash.
 - **2026-11-11** — No skeuomorphic buttons: the header keeps its text links
   and the bordered profession pill. Prototyped a glossy button (gradient body
   lifted toward white at the top, 1px inner top highlight, crisp darker ring,
