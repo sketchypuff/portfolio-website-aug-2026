@@ -6,6 +6,13 @@ in `DESIGN.md` to here.
 
 Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
+- **2026-11-11** — Selected work cards show `VIEW [ ]` only below `lg`
+  (phones, tablets). On large screens the meta line is just the company and
+  the cursor's "Open case study" label signals the card. From Yash.
+- **2026-11-11** — `SiteFooter` uses the home v2 frame, placed as on
+  emmiwu.com: clock under the sidebar, "Say hi" and "Page" on the card grid's
+  second and third columns. It was still in
+  the old 875px `Container`, inset from the full-bleed page. From Yash.
 - **2026-11-11** — Home v2 (`home-v2` branch), after emmiwu.com: full-bleed
   sticky sidebar (intro, inline theme switch, Work/Writing/About bracket nav)
   beside stacked Selected work (11), Blog and Other work (8); card grids four

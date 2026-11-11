@@ -166,13 +166,15 @@ export default function HomePage() {
             <RevealGroup as="ul" className={cn(cardGrid, "gap-y-10")}>
               {selectedWork.map((item, i) => (
                 <RevealItem as="li" key={i}>
-                  <div data-cursor-text="Open case study" className="group flex flex-col gap-3">
+                  <div data-cursor-text="Open case study" className="flex flex-col gap-3">
                     <div className={imageSlot} />
                     <div className="flex flex-col gap-1">
                       <h3 className="text-sm leading-snug">{item.title}</h3>
+                      {/* Below lg (phones, tablets) there's no cursor label, so the card
+                          says "View" itself; on large screens the cursor does. */}
                       <div className={cn(mono, "text-muted-foreground flex items-baseline justify-between gap-4")}>
                         <p>{item.company}</p>
-                        <p className="group-hover:text-foreground flex shrink-0 items-center gap-1.5 transition-colors">
+                        <p className="flex shrink-0 items-center gap-1.5 lg:hidden">
                           View <Marker />
                         </p>
                       </div>

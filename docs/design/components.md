@@ -46,8 +46,10 @@ character — these are chosen for personality, not literal meaning.
 - **Card grid** (Selected work, Other work): 2 across, 4 across once the
   content column is ≥ 48rem (`@3xl`), `gap-x-3`. Image slot `bg-muted`,
   square corners, Emmi's 268.75:264 ratio. Title `text-sm`; under it a mono
-  meta row — company left, `VIEW [ ]` right (Selected work, hover fills the
-  dot, cursor "Open case study"), or `COMING SOON` (Other work).
+  meta line — the company (Selected work) or `COMING SOON` (Other work).
+  Selected work adds `VIEW [ ]` at the right below `lg` (phones, tablets);
+  at `lg` and up it's hidden and the cursor's "Open case study" label does
+  that job.
 - **Blog rows**: date | title | `READ [ ]`, hairlines as before, cursor "Read".
 - Counts: 11 Selected work, 8 Other work — the entries repeat until real
   projects replace them.
@@ -181,10 +183,14 @@ lowercase `10:25pm`, plus a muted guess at what Yash is doing, from the
 
 ## SiteFooter (Decided)
 
-`components/site-footer.tsx`. A full-bleed band after the home `Container`,
-modelled on emmiwu.com's footer: three columns at `sm` (one stacked column
-below) inside `Container size="home"` — `NoidaTime`, then "Say hi" (Email,
-LinkedIn, Resumé) and "Page" (Work, Writing, About) as labelled `nav`s. All
+`components/site-footer.tsx`. A full-bleed band after the home page,
+modelled on emmiwu.com's footer. It uses the home v2 frame (`px-6 sm:px-8`,
+260px / 300px first column at `md` / `lg`): `NoidaTime` under the sidebar,
+then "Say hi" (Email, LinkedIn, Resumé) and "Page" (Work, Writing, About) as
+labelled `nav`s on the card grid's second and third columns, as on
+emmiwu.com, so their left edges line up with the cards above. Where the grid
+is two across, they take its two columns; on phones the clock stacks above
+them. All
 mono `text-sm` uppercase. Labels are foreground; links are muted and go to
 foreground on hover (the quiet link, inverted — see
 [links.md](links.md#quiet-link-decided)).
