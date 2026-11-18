@@ -93,7 +93,7 @@ function MorphLabel({ copied }: { copied: boolean }) {
 }
 
 /**
- * The footer's "Email". `className` replaces the default quiet-link hover. Hover shows "Click to copy"; a click
+ * The footer's "Email" (`children` swaps the label). `className` replaces the default quiet-link hover. Hover shows "Click to copy"; a click
  * copies the address and the same tooltip morphs into a green "Copied" until
  * the pointer leaves. On touch there's no hover, so a tap shows "Copied" and
  * it closes itself after a moment.
@@ -105,7 +105,13 @@ function MorphLabel({ copied }: { copied: boolean }) {
  * refuses (an insecure context, a denied permission) it tries the legacy
  * copy, and only if that fails too does it open the mail app instead.
  */
-export function CopyEmail({ className }: { className?: string }) {
+export function CopyEmail({
+  className,
+  children = "Email",
+}: {
+  className?: string;
+  children?: React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const touch = useRef(false);
@@ -155,7 +161,7 @@ export function CopyEmail({ className }: { className?: string }) {
           }}
           className={cn("cursor-pointer transition-colors", className ?? "hover:text-muted-foreground")}
         >
-          Email
+          {children}
         </TooltipTrigger>
         <TooltipContent
           className={cn(

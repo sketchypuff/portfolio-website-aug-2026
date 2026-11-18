@@ -55,6 +55,7 @@ Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
 | [links.md](docs/design/links.md) | adding any link or clickable text |
 | [components.md](docs/design/components.md) | building UI — lists every shared component |
 | [motion.md](docs/design/motion.md) | anything that moves, hovers, or presses |
+| [brutalist-home.md](docs/design/brutalist-home.md) | the home page on the `brutalist-style` branch (overrides home specs elsewhere) |
 | [decisions.md](docs/design/decisions.md) | the dated log of what was decided and why |
 
 ## Keeping this current

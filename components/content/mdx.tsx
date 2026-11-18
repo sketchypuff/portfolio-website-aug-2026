@@ -85,6 +85,8 @@ type MdxProps = {
   source: string;
   collection: Collection;
   slug: string;
+  /** Overrides for the blog prose styles, e.g. the case study's 14px set. */
+  components?: MDXComponents;
 };
 
 /**
@@ -93,9 +95,10 @@ type MdxProps = {
  * `Figure` and `Gallery` are bound to the entry here, so authors write
  * `<Figure src="hero.jpg" />` and never repeat the collection or slug.
  */
-export function Mdx({ source, collection, slug }: MdxProps) {
+export function Mdx({ source, collection, slug, components: overrides }: MdxProps) {
   const components: MDXComponents = {
     ...prose,
+    ...overrides,
     Figure: (props: Omit<FigureProps, "collection" | "slug">) => (
       <Figure collection={collection} slug={slug} {...props} />
     ),

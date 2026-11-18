@@ -88,7 +88,7 @@ one function with a dynamic collection segment.
 
 Frontmatter is validated in `parseMeta` in `lib/content.ts` — that function is
 the schema. Posts need `title`, `summary`, `date`. Projects add optional
-`year`, `role`, `external`, `featured`, `order`.
+`year`, `role`, `client`, `agency`, `external`, `featured`, `order`.
 
 A project with an `external` URL is a link-out with **no** detail page.
 `getRenderableSlugs` already filters those out; when the project detail route
@@ -98,8 +98,14 @@ entries, and skip them in `sitemap.ts`. Keep those three in sync.
 `app/blog/[slug]/page.tsx` renders posts: `generateStaticParams` from
 `getRenderableSlugs`, `dynamicParams = false`, and `sitemap.ts` lists every
 post. Reading time (`readingTime`) and the older/newer links
-(`getAdjacentPosts`) come from `lib/content.ts`. No route renders projects
-yet.
+(`getAdjacentPosts`) come from `lib/content.ts`.
+
+`app/projects/[slug]/page.tsx` renders case studies the same way
+(`getRenderableSlugs`, `dynamicParams = false`, `notFound()` for external
+entries, listed in `sitemap.ts`). It splits the MDX body itself: text before
+the first `##` is the sidebar intro, each `##` is a section, and a section's
+`<Figure>`s render full width under its text. See
+`docs/design/brutalist-home.md`.
 
 In MDX, `<Figure>` and `<Gallery>` are pre-bound to the current entry in
 `components/content/mdx.tsx`, so authors write `<Figure src="hero.jpg" />` with
@@ -147,7 +153,8 @@ Every motion component early-returns a static version under
 
 - Server Components by default. `"use client"` only where there is state,
   an event handler, or a hook — currently the theme toggle, motion
-  components, `NoidaTime`, `ProfessionPill`, and `CustomCursor`.
+  components, `NoidaTime`, `ProfessionPill`, `CustomCursor`, and the
+  brutalist pages' `MonoToggle`, `DotCursor`, `Grain`, and `CaseToc`.
 - There is no global header or footer. `app/layout.tsx` renders only the page
   (inside `PageTransition`); home carries its own nav and renders
   `SiteFooter` itself.
@@ -183,6 +190,14 @@ them later means dropping an `opengraph-image.tsx` into each `[slug]`
 directory.
 
 ## Design status
+
+On the `brutalist-style` branch the home page (`app/page.tsx`) follows the
+layout of the Plyń Framer portfolio template (see
+`docs/design/brutalist-home.md`); its work cards are a hardcoded array with
+placeholder images; Adobe image masking links to `/projects/adobe-masks`
+(ported from the Framer "Yash's Portfolio v2" site) and the rest to the
+placeholder `/projects/example` case study for now. The rest of this section describes the
+Figma home on `main`.
 
 The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its
 project cards and writing rows are hardcoded arrays for now. A writing row

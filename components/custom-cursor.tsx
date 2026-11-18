@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +19,8 @@ import { cn } from "@/lib/utils";
  * Fine pointers wider than 768px only. Under reduced motion, or on touch, it
  * renders nothing and the system cursor stays. Over an `.inverted` band (the
  * footer) it inverts too, so it never disappears into the surface.
+ *
+ * Not on `/` or `/projects/*`: the brutalist pages draw their own `DotCursor`.
  */
 
 type Mode = "rest" | "link" | "text";
@@ -86,7 +89,8 @@ function useFinePointer() {
 export function CustomCursor() {
   const reduced = useReducedMotion();
   const fine = useFinePointer();
-  const enabled = fine && !reduced;
+  const pathname = usePathname();
+  const enabled = fine && !reduced && pathname !== "/" && !pathname.startsWith("/projects/");
 
   const rootRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);

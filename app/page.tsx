@@ -1,213 +1,110 @@
 import Link from "next/link";
-import { Container } from "@/components/container";
-import {
-  ArrowUpRightIcon,
-  CrownIcon,
-  HandHeartIcon,
-  PenNibIcon,
-  SmileyXEyesIcon,
-} from "@phosphor-icons/react/ssr";
-import { SiteFooter } from "@/components/site-footer";
-import { ProfessionPill } from "@/components/profession-pill";
-import { ThemeTextToggle } from "@/components/theme-toggle";
-import { SectionLabel } from "@/components/section-label";
-import { TextLink } from "@/components/text-link";
-import { WorkCard, WorkStrip } from "@/components/work-strip";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { CopyEmail } from "@/components/copy-email";
+import { DotCursor } from "@/components/brutalist/dot-cursor";
+import { Grain } from "@/components/brutalist/grain";
+import { MonoToggle } from "@/components/brutalist/mono-toggle";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-// Hardcoded from the Figma "Home" frame until these have real entries in
-// content/. Cards are not linked yet for the same reason; a writing row links
-// once its post exists.
-const selectedWork = [
-  {
-    company: "Microsoft",
-    title:
-      "Design domain-based (accounting, marketing etc.) skill driven experiences for Excel and Powerpoint agent mode",
-  },
-  { company: "Adobe", title: "Optimised image masking with a refined selection experience" },
-  { company: "Adobe", title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature" },
-  {
-    company: "Postman",
-    title: "Reduced time taken by developers in discovering new content and finding team resources",
-  },
+// Hardcoded until these have real entries in content/. Cards without a case
+// study yet point at the placeholder one; give each its own href once its
+// project exists. The images are placeholders until there are project images to show.
+const EXAMPLE = "/projects/example";
+const work = [
+  { title: "Microsoft", subtitle: "Excel & PowerPoint agent mode", href: EXAMPLE },
+  { title: "Adobe", subtitle: "Image masking", href: "/projects/adobe-masks" },
+  { title: "Adobe", subtitle: "Heal tool, Gen-AI", href: EXAMPLE },
+  { title: "Postman", subtitle: "Content discovery", href: EXAMPLE },
 ];
 
-// `muted` mirrors the design: the first three titles are dimmed, the last two are not.
-const otherWork = [
-  {
-    title:
-      "Design domain-based (accounting, marketing etc.) skill driven experiences for Excel and Powerpoint agent mode",
-    muted: true,
-  },
-  { title: "Optimised image masking with a refined selection experience", muted: true },
-  { title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature", muted: true },
-  { title: "Increased engagement of the Heal tool by 15% through a Gen-AI feature", muted: false },
-  {
-    title: "Reduced time taken by developers in discovering new content and finding team resources",
-    muted: false,
-  },
+// The grid cycles portrait, square, landscape, square, so every row of three
+// mixes heights and the columns never line up into a plain table.
+const ASPECTS = ["aspect-[4/5]", "aspect-square", "aspect-[4/3]", "aspect-square"];
+
+const UPDATED = "18.11.2026";
+
+const links = [
+  { label: "LinkedIn", href: site.social.linkedin },
+  { label: "GitHub", href: site.social.github },
+  { label: "Resumé", href: site.resume },
 ];
 
-// `href` is set once a post exists in content/posts; unlinked rows stay plain text.
-// Rendered newest first, whatever order they're listed in.
-const writing: { date: string; title: string; href?: string }[] = [
-  {
-    date: "2025-07-20",
-    title: "How to use storytelling in UX case studies to land more interviews",
-    href: "/blog/storytelling-in-ux-case-studies",
-  },
-  {
-    date: "2024-11-28",
-    title: "22 things about industrial design they didn’t teach me in design school",
-    href: "/blog/22-things-about-industrial-design",
-  },
-  {
-    date: "2024-05-04",
-    title: "Preparing for undergraduate design entrance exams in India",
-    href: "/blog/design-entrance-exams-in-india",
-  },
-  {
-    date: "2024-02-24",
-    title: "An actionable guide on taking the first step towards learning UX design today",
-    href: "/blog/first-step-learning-ux-design",
-  },
-  {
-    date: "2024-01-27",
-    title: "Thoughts on making UX portfolio websites for fresh graduates seeking a job in the industry",
-    href: "/blog/ux-portfolio-websites-for-fresh-graduates",
-  },
-];
-
-// Built from parts so the month is always three letters ("Sep", not en-GB's "Sept").
-const dateParts = new Intl.DateTimeFormat("en-US", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-  timeZone: "UTC",
-});
-
-function formatDay(date: Date) {
-  const part = (type: string) => dateParts.formatToParts(date).find((p) => p.type === type)?.value;
-  return `${part("day")} ${part("month")} ${part("year")}`;
-}
-
-const writingRow = "flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-12";
-
-function WritingRowContent({ date, title, linked }: { date: string; title: string; linked?: boolean }) {
-  return (
-    <>
-      <time dateTime={date} className="text-muted-foreground shrink-0 font-mono text-sm uppercase">
-        {formatDay(new Date(date))}
-      </time>
-      <p className={cn("sm:text-right", linked && "group-hover:text-muted-foreground transition-colors")}>
-        {title}
-      </p>
-    </>
-  );
-}
+const link = "underline focus-visible:ring-ring rounded-xs focus-visible:ring-2 focus-visible:outline-none";
 
 export default function HomePage() {
   return (
-    <div className="@container overflow-x-clip">
-      <Container size="home" className="flex flex-col gap-20 pt-14 pb-20 text-base leading-snug font-medium">
-        <Reveal as="header" className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex flex-col gap-4">
-            {/* The paragraph keeps the Figma 436px measure; this row may run wider so
-                every pill label fits beside the headline. Below md there isn't room
-                for the longest one, so the pill always takes its own line there
-                rather than jumping between lines as it cycles. */}
-            <div className="flex flex-col items-start gap-2 md:flex-row md:items-center">
-              <h1 className="font-bold md:whitespace-nowrap">Hi! I’m Yash, your neighbourhood</h1>
-              <ProfessionPill />
-            </div>
-            <div className="text-muted-foreground max-w-[436px] space-y-[1lh]">
-              <p>
-                Currently, I make agentic AI experiences feel oh yeah! at Microsoft. Previously,
-                I’ve worked at Adobe, Postman and Samsung.
-              </p>
-              <p>
-                I believe all software should be opinionated and delightful to use in order to be
-                called usable.
-              </p>
-            </div>
+    <div
+      className="brutalist group/page bg-background text-foreground min-h-dvh font-sans text-sm leading-5 min-[1200px]:flex"
+    >
+      <section className="flex min-h-[565px] shrink-0 flex-col p-[14px] min-[1200px]:sticky min-[1200px]:top-0 min-[1200px]:h-dvh min-[1200px]:min-h-0 min-[1200px]:w-[360px]">
+        <div className="flex max-w-[560px] flex-col gap-[14px] min-[1200px]:max-w-none">
+          <div className="flex flex-col items-start gap-[13px] min-[1200px]:flex-row min-[1200px]:items-center min-[1200px]:gap-3">
+            <MonoToggle />
+            <h1>Hi, I’m {site.name}!</h1>
           </div>
-
-          <nav aria-label="Main" className="flex flex-col items-start gap-0.5 sm:items-end">
-            <TextLink href={site.resume} icon={ArrowUpRightIcon}>
-              Open resumé
-            </TextLink>
-            <TextLink href="/about" icon={SmileyXEyesIcon}>
-              About
-            </TextLink>
-            <ThemeTextToggle />
-          </nav>
-        </Reveal>
-
-        <section className="flex flex-col gap-8">
-          <WorkStrip
-            heading={<SectionLabel icon={CrownIcon}>Selected work</SectionLabel>}
-            name="Selected work"
-            dimOnHover
-            labels={selectedWork.map((item) => `${item.company} – ${item.title}`)}
-          >
-            {selectedWork.map((item, i) => (
-              <WorkCard key={i} cursorText="Open case study">
-                <p className="text-muted-foreground font-mono text-sm uppercase">{item.company}</p>
-                <p className="mt-1">{item.title}</p>
-              </WorkCard>
+          <div className="flex flex-col gap-[7px]">
+            <p>
+              I’m a product designer. Currently, I make agentic AI experiences feel oh yeah! at
+              Microsoft.
+            </p>
+            <p>
+              I believe all software should be opinionated and delightful to use in order to be
+              called usable.
+            </p>
+            <p>Previously, I’ve worked at Adobe, Postman, and Samsung.</p>
+          </div>
+          <ul className="flex flex-col items-start gap-1">
+            <li>
+              <CopyEmail className={link}>{site.social.email}</CopyEmail>
+            </li>
+            {links.map((l) => (
+              <li key={l.label}>
+                <a href={l.href} target="_blank" rel="noreferrer" className={link}>
+                  {l.label}
+                </a>
+              </li>
             ))}
-          </WorkStrip>
-        </section>
+          </ul>
+        </div>
+      </section>
 
-        <section className="flex flex-col gap-8">
-          <Reveal className="flex items-start justify-between gap-4">
-            <SectionLabel icon={PenNibIcon}>Writing</SectionLabel>
-            <TextLink href="/blog" icon={ArrowUpRightIcon}>
-              Open blog
-            </TextLink>
-          </Reveal>
-          <RevealGroup as="ul">
-            {writing.toSorted((a, b) => b.date.localeCompare(a.date)).map((post) => (
-              <RevealItem as="li" key={post.title} className="border-foreground/50 border-b-[0.5px]">
-                {post.href ? (
-                  <Link
-                    href={post.href}
-                    data-cursor-text="Read"
-                    className={cn(
-                      writingRow,
-                      "group focus-visible:ring-ring -mx-3 rounded-lg px-3 focus-visible:ring-2 focus-visible:outline-none",
-                    )}
-                  >
-                    <WritingRowContent date={post.date} title={post.title} linked />
-                  </Link>
-                ) : (
-                  <div className={writingRow}>
-                    <WritingRowContent date={post.date} title={post.title} />
-                  </div>
-                )}
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </section>
+      <section aria-labelledby="work-heading" className="min-w-0 flex-1 px-[14px] pb-[14px] min-[1200px]:pt-[14px]">
+        <div className="text-muted-foreground border-border mb-[13px] flex justify-between border-b min-[1200px]:sr-only">
+          <h2 id="work-heading">Selected Works</h2>
+          <p>Updated: {UPDATED}</p>
+        </div>
 
-        <section className="flex flex-col gap-8">
-          <WorkStrip
-            heading={<SectionLabel icon={HandHeartIcon}>Other work</SectionLabel>}
-            name="Other work"
-            labels={otherWork.map((item) => item.title)}
-          >
-            {otherWork.map((item, i) => (
-              <WorkCard key={i}>
-                <p className={cn(item.muted && "text-muted-foreground")}>{item.title}</p>
-              </WorkCard>
-            ))}
-          </WorkStrip>
-        </section>
+        <ul className="group/grid grid grid-cols-1 items-start gap-x-[14px] gap-y-[28px] min-[810px]:grid-cols-2 min-[1200px]:grid-cols-3">
+          {work.map((item, i) => (
+            <li
+              key={i}
+              className="transition-opacity duration-300 ease-out group-has-[li:hover]/grid:opacity-50 hover:opacity-100!"
+            >
+              <Link
+                href={item.href}
+                data-cursor-text="View case study"
+                className="focus-visible:ring-ring block focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-background focus-visible:outline-none"
+              >
+                <div
+                  className={cn(
+                    "bg-muted w-full transition-[filter] duration-300 group-data-mono/page:grayscale",
+                    ASPECTS[i % ASPECTS.length],
+                  )}
+                />
+                <p className="mt-[7px]">{item.title}</p>
+                <p className="text-muted-foreground">{item.subtitle}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      </Container>
-      <SiteFooter />
+      <p className="text-muted-foreground fixed right-[14px] bottom-[14px] min-[1200px]:right-auto min-[1200px]:left-[14px]">
+        © {site.name}, 2026
+      </p>
+
+      <Grain />
+      <DotCursor />
     </div>
   );
 }

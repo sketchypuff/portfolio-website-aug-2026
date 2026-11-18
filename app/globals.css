@@ -159,6 +159,22 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/*
+  The brutalist home page: one fixed dark palette, whatever the site theme.
+  Scoped to its `.brutalist` wrapper, and to the root while that page is
+  mounted so the body (and overscroll) match. :root:has() outranks `.dark`.
+  #121212 page, #f0f0f0 text, #f4f4f4 at 50% for secondary text.
+*/
+:root:has(.brutalist),
+.brutalist {
+  --background: oklch(0.1822 0 0);
+  --foreground: oklch(0.9551 0 0);
+  --muted: oklch(0.235 0 0);
+  --muted-foreground: oklch(0.9672 0 0 / 50%);
+  --border: oklch(0.9672 0 0 / 10%);
+  --ring: oklch(0.9672 0 0 / 50%);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

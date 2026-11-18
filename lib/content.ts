@@ -39,6 +39,9 @@ export type ProjectMeta = {
   year?: string;
   /** Your role, e.g. "Product Design, Prototyping". */
   role?: string;
+  /** Case study details column, e.g. "Microsoft". */
+  client?: string;
+  agency?: string;
   /**
    * When set, the card links straight out to this URL and no case study
    * page is generated. Leave unset for a full case study.
@@ -115,6 +118,8 @@ function parseMeta<C extends Collection>(
     ...base,
     year: optionalString(data.year, "year", collection, slug),
     role: optionalString(data.role, "role", collection, slug),
+    client: optionalString(data.client, "client", collection, slug),
+    agency: optionalString(data.agency, "agency", collection, slug),
     external: optionalString(data.external, "external", collection, slug),
     featured: data.featured === true,
     order: typeof data.order === "number" ? data.order : undefined,

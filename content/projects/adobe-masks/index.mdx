@@ -1,0 +1,141 @@
+---
+title: Adobe Photoshop Express
+summary: Scaling image masking to 20+ preset masks
+date: 2024-06-01
+year: "2024"
+role: Conceptualization, design, usability testing, dev handoff
+client: Adobe
+cover: cover.png
+coverAlt: Photoshop Express masking screens on a phone
+featured: true
+order: 2
+---
+
+Photoshop Express offered 3 preset masks. A new masking engine could detect
+15–20 more from the image itself, and the existing masking flow couldn’t hold
+them without discoverability and usability problems. It needed rethinking.
+
+Two months, with a design manager, a product manager, and two engineers.
+
+## Impact
+
+The new masks widened what people could do with an image and drove
+significant free-to-premium conversions.
+
+- **5%** increase in free users converting to premium
+- **40%** throughput of selecting objects in the image
+- **27%** throughput of selecting skin in the image
+
+## Photoshop Express
+
+Photoshop Express is a mobile-only photo and video editing app that helps
+social media enthusiasts express their creativity without complex workflows.
+
+<Figure src="what-is-psx.png" alt="Overview of the Photoshop Express app" />
+
+## Before
+
+Users masked areas of an image with preset mask pills. Three of them. So smol,
+right? I know.
+
+<Figure src="mask-pills.png" alt="The original strip of three preset mask pills" />
+
+## The problem
+
+Adding more masks to the strip meant excessive scrolling. Masks toward the end
+of the strip suffered for it, because, let’s face it, who’s going to scroll
+that much?
+
+<Figure src="long-scroll.png" alt="A long horizontal strip of 20+ mask pills" />
+
+## Market audit
+
+Surprisingly, no other app offered as many masks. Of the 10 studied, only 2
+offered masking at all.
+
+<Figure src="market-audit.png" alt="Audit of masking features across ten editing apps" />
+
+## Iteration 1: the strip
+
+I started with what we had: the same strip, holding 20+ masks, grouped into
+categories with their contents nested inside.
+
+- The strip overlaps key areas of the image, making refining and brushing a
+  mask difficult.
+- Small previews make it hard to decide between masks.
+- Selecting several masks gets tricky in a small, cramped space.
+
+<Figure src="exp1-strip.png" alt="Mask categories nested inside the existing strip" />
+
+## Iteration 2: e-commerce filters
+
+Aren’t masks just filters on an image? E-commerce apps have well-worn patterns
+for filtering, so I borrowed them.
+
+<Figure src="ecommerce-inspiration.png" alt="Filtering patterns from e-commerce apps" />
+
+They organized the masks well, but without previews users had to guess which
+part of the image a label like “Object 1” referred to.
+
+- Better organization of masks.
+- Users select masks blindly, by trial and error.
+
+<Figure src="exp2-ecommerce.png" alt="Masks selected through an e-commerce style filter sheet" />
+
+## Iteration 3: previews
+
+Showing a preview of each mask let users see exactly which area of the image
+it covers.
+
+- Bigger previews make selection accurate.
+- Laying out every category leads to a long vertical scroll that hampers
+  search and discovery.
+
+<Figure src="exp3-bottom-sheet.png" alt="A bottom sheet of masks with image previews" />
+
+## Iteration 4: navigation
+
+Category pills above the list. Tapping one scrolls the list to the first mask
+in that category.
+
+- Browsing gets faster.
+- The bottom sheet takes up about half the screen, shrinking the image too much.
+
+<Figure src="exp4-navigation.png" alt="Category pills above the mask preview list" />
+
+## Final design
+
+Two levels of navigation was already the pattern for most tools in the editor,
+and reusing it fixed the pitfalls of the earlier iterations.
+
+- Category navigation stays, so browsing is still fast.
+- A shorter bottom sheet leaves a larger image preview.
+- An existing pattern makes it easier to learn.
+
+<Figure src="final-design.png" alt="Final masking design with two levels of navigation" />
+
+## Custom masks
+
+Add Selection lets users brush a mask of their own. Custom masks are saved in
+their own category.
+
+<Figure src="custom-selection.png" alt="Brushing a custom mask with Add Selection" />
+
+## Refining a mask
+
+With a mask selected, Add Selection becomes Refine Selection, letting users add
+or subtract areas to refine it.
+
+<Figure src="refine-selection.png" alt="Refining a preset mask with Refine Selection" />
+
+## Takeaways
+
+This project was packed with work, exploration, and discussion with
+stakeholders. Boiled down:
+
+**Looking outside the box.** Reducing the requirement to its core user need and
+drawing metaphors let me take inspiration from apps outside the domain, which
+brought a fresh perspective even though that concept was rejected.
+
+**The challenges of scale.** I learned how scale changes interaction in so
+little screen space, and how patterns can guide what users do.

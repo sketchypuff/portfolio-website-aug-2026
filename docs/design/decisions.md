@@ -172,3 +172,27 @@ Dates before 2026-09-27 are backfilled from git history and earlier notes.
 - **No layout shift from images** — bundler-loaded content images with
   intrinsic size and blur placeholder. A hard requirement: a minimal layout
   has no noise to hide a shift behind.
+
+## 2026-11-18
+
+- **Brutalist home (branch `brutalist-style`, Provisional)** — home rebuilt to
+  the Plyń Framer template's layout at Yash's request: sticky sidebar, 3-col
+  mixed-ratio grid, Manrope 14/20, fixed #121212 palette, hover dim, dot
+  cursor, grain. Own copy, placeholder images. See `brutalist-home.md`.
+- **Brutalist home typeface: Geist** — decided from `/proto/home-type`, all
+  set at 14/20, weight 400. Geist keeps the home page on the same typeface as
+  the rest of the site and adds no font file or license. Rejected:
+  Manrope (the reference's font; read as a template), Switzer (crisp but
+  generic at 14px; Fontshare license bars public-server uploads), Favorit
+  (most character, but quirky at small sizes and a paid Dinamo license),
+  Archivo (wide, so the sidebar wraps sooner), Timeless Sans / Grotesk /
+  Serif (Sans and Grotesk near-identical at 14px; Serif too far from the
+  reference; license forbids public repos), Diatype (too close to Switzer
+  and Geist to justify a paid license).
+- **Brutalist case study page (Provisional)** — `/projects/[slug]` rebuilt
+  after the Plyń template's project page: sticky sidebar with a scroll-progress
+  section index, 4:3 media column, dashed section rows. The template's white
+  frame and Close / Prev / Next bar are left out at Yash's request.
+- **Case study media keeps its aspect ratio** — images render at their
+  intrinsic ratio instead of the template's 4:3 `object-cover` crop. The real
+  project images are 16:9 annotated screenshots, and cropping cut them off.
