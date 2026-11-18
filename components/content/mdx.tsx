@@ -3,7 +3,7 @@ import { MDXRemote } from "next-mdx-remote-client/rsc";
 import type { MDXComponents } from "mdx/types";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
-import { Figure, Gallery, type FigureProps, type GalleryProps } from "./figure";
+import { Figure, Gallery, type FigureProps, type FigureVariant, type GalleryProps } from "./figure";
 import type { Collection } from "@/lib/content";
 
 /**
@@ -87,6 +87,8 @@ type MdxProps = {
   slug: string;
   /** Overrides for the blog prose styles, e.g. the case study's 14px set. */
   components?: MDXComponents;
+  /** How `<Figure>` and `<Gallery>` render; the brutalist post page passes `brutalist`. */
+  figureVariant?: FigureVariant;
 };
 
 /**
@@ -95,15 +97,15 @@ type MdxProps = {
  * `Figure` and `Gallery` are bound to the entry here, so authors write
  * `<Figure src="hero.jpg" />` and never repeat the collection or slug.
  */
-export function Mdx({ source, collection, slug, components: overrides }: MdxProps) {
+export function Mdx({ source, collection, slug, components: overrides, figureVariant }: MdxProps) {
   const components: MDXComponents = {
     ...prose,
     ...overrides,
     Figure: (props: Omit<FigureProps, "collection" | "slug">) => (
-      <Figure collection={collection} slug={slug} {...props} />
+      <Figure collection={collection} slug={slug} variant={figureVariant} {...props} />
     ),
     Gallery: (props: Omit<GalleryProps, "collection" | "slug">) => (
-      <Gallery collection={collection} slug={slug} {...props} />
+      <Gallery collection={collection} slug={slug} variant={figureVariant} {...props} />
     ),
   };
 

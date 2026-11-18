@@ -50,6 +50,31 @@ function imageSizes(bleed: Bleed, columns = 1): string {
   ].join(", ");
 }
 
+/**
+ * `brutalist`: the blog post page's figures. They span the section row (both
+ * halves), with square corners, no vertical margin (the row's gap spaces
+ * them), a left-aligned muted 14/20 caption 7px below, and the image as a
+ * `CaseLightbox` trigger.
+ */
+export type FigureVariant = "default" | "brutalist";
+
+/** Matches the brutalist post's section row: three of four columns at 1200px+. */
+const BRUTALIST_SIZES = "(min-width: 1200px) calc(75vw - 14px), calc(100vw - 28px)";
+
+function LightboxTrigger({ alt, children }: { alt: string; children: React.ReactNode }) {
+  return (
+    <button
+      type="button"
+      data-lightbox
+      data-cursor-text="Enlarge"
+      aria-label={alt ? `Enlarge image: ${alt}` : "Enlarge image"}
+      className="focus-visible:ring-ring block w-full focus-visible:ring-2 focus-visible:outline-none data-focus-returned:ring-0"
+    >
+      {children}
+    </button>
+  );
+}
+
 export type FigureProps = {
   collection: Collection;
   slug: string;
@@ -62,6 +87,7 @@ export type FigureProps = {
   /** Set on the first above-the-fold image only. */
   priority?: boolean;
   className?: string;
+  variant?: FigureVariant;
 };
 
 /**
@@ -78,14 +104,36 @@ export async function Figure({
   bleed = "prose",
   priority = false,
   className,
+  variant = "default",
 }: FigureProps) {
   const image = await loadContentImage(collection, slug, src);
+  const altText = alt ?? (typeof caption === "string" ? caption : "");
+
+  if (variant === "brutalist") {
+    return (
+      <figure className={cn("col-span-full", className)}>
+        <LightboxTrigger alt={altText}>
+          <Image
+            src={image}
+            alt={altText}
+            placeholder="blur"
+            priority={priority}
+            sizes={BRUTALIST_SIZES}
+            className="bg-muted h-auto w-full"
+          />
+        </LightboxTrigger>
+        {caption ? (
+          <figcaption className="text-muted-foreground mt-[7px] max-w-[480px] text-pretty">{caption}</figcaption>
+        ) : null}
+      </figure>
+    );
+  }
 
   return (
     <figure className={cn("my-20", BLEED[bleed], className)}>
       <Image
         src={image}
-        alt={alt ?? (typeof caption === "string" ? caption : "")}
+        alt={altText}
         placeholder="blur"
         priority={priority}
         sizes={imageSizes(bleed)}
@@ -109,6 +157,7 @@ export type GalleryProps = {
   caption?: string;
   columns?: 2 | 3;
   bleed?: Bleed;
+  variant?: FigureVariant;
 };
 
 export async function Gallery({
@@ -119,10 +168,37 @@ export async function Gallery({
   caption,
   columns = 2,
   bleed = "wide",
+  variant = "default",
 }: GalleryProps) {
   const resolved = await Promise.all(
     images.map((file) => loadContentImage(collection, slug, file)),
   );
+
+  if (variant === "brutalist") {
+    return (
+      <figure className="col-span-full">
+        <div className={cn("grid gap-px", columns === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2")}>
+          {resolved.map((image, i) => {
+            const label = alt ? `${alt} (${i + 1} of ${resolved.length})` : "";
+            return (
+              <LightboxTrigger key={images[i]} alt={label}>
+                <Image
+                  src={image}
+                  alt={label}
+                  placeholder="blur"
+                  sizes={`(min-width: 640px) calc((100vw - 28px) / ${columns}), ${BRUTALIST_SIZES}`}
+                  className="bg-muted h-auto w-full"
+                />
+              </LightboxTrigger>
+            );
+          })}
+        </div>
+        {caption ? (
+          <figcaption className="text-muted-foreground mt-[7px] max-w-[480px] text-pretty">{caption}</figcaption>
+        ) : null}
+      </figure>
+    );
+  }
 
   return (
     <figure className={cn("my-20", BLEED[bleed])}>

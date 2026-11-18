@@ -80,6 +80,12 @@ doubles as alt when `alt` is absent. Decorative images pass `alt=""`
 deliberately. Images are always `rounded-xl` on `bg-muted` with a blur
 placeholder — never override with `className`.
 
+`variant="brutalist"` (set for a whole entry with `Mdx figureVariant`, as
+the brutalist blog post page does): square corners, full section-row width
+(`col-span-full`), no margin, the image wrapped in a `CaseLightbox` trigger,
+caption muted, left-aligned, 7px below. `bleed` is ignored. See
+`brutalist-home.md`, "Blog post".
+
 ```mdx
 <!-- Correct -->
 <Figure src="flow.png" alt="Old vs new checkout flow" bleed="wide" />
@@ -189,6 +195,13 @@ Falls back to the mail app if copying fails. Bubble: shadcn
 `className` replaces the default hover treatment (the footer passes the
 inverted quiet link plus `uppercase`, since Preflight resets
 `text-transform` on buttons).
+
+`variant="brutalist"` (home and case study pages): the same morph in a
+square, light bubble — `bg-foreground` / `text-background` from the brutalist
+tokens, Geist 14/20, 7px side padding, 7px above the trigger, no arrow — and
+"Copied" stays monochrome (no `bg-success`). The bubble is portaled to
+`<body>`, outside the page's `font-sans` wrapper, so the variant sets the font
+itself.
 
 ## Lists
 

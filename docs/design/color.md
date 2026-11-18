@@ -61,7 +61,7 @@ only one, so it breaks in the other theme.
 | `border-border` | `0.922` | white 10% | default for every border (set on `*` in `globals.css`); `ProfessionPill`, prose `blockquote`, `hr`, table cells |
 | `ring` (via `outline-ring/50`) | `0.708` | `0.556` | the focus outline on every element (set on `*` in `globals.css`) |
 | `text-link` | `var(--blue-600)` = `#2148f9` | `var(--blue-300)` = `#8ca9ef` | `TextLink`, `ThemeTextToggle`, the `ProfessionPill` icon, `CustomCursor` |
-| `bg-success` / `text-success-foreground` | `0.52 0.14 150` / `0.985` (4.95:1) | `0.8 0.15 150` / `0.145` (11.2:1) | the `CopyEmail` tooltip once copied — nothing else |
+| `bg-success` / `text-success-foreground` | `0.52 0.14 150` / `0.985` (4.95:1) | `0.8 0.15 150` / `0.145` (11.2:1) | the `CopyEmail` tooltip once copied (not its brutalist variant) — nothing else |
 | `text-destructive` / `border-destructive` | red, `0.577 0.245 27` | red, `0.704 0.191 22` | `MdxError` in `components/content/mdx.tsx` only |
 
 Grays are listed by OKLCH lightness (`0.145` = `oklch(0.145 0 0)`). Dark

@@ -160,13 +160,25 @@
 }
 
 /*
-  The brutalist home page: one fixed dark palette, whatever the site theme.
-  Scoped to its `.brutalist` wrapper, and to the root while that page is
-  mounted so the body (and overscroll) match. :root:has() outranks `.dark`.
-  #121212 page, #f0f0f0 text, #f4f4f4 at 50% for secondary text.
+  The brutalist pages' palette, light and dark, following the site theme
+  (next-themes' `.dark` on <html>; the sun on home switches it). Scoped to the
+  `.brutalist` wrapper, and to the root while such a page is mounted so the
+  body (and overscroll) match. :root:has() outranks the base `:root`/`.dark`.
+  Light: #f0f0f0 page, #121212 text, #121212 at 50% for secondary text.
+  Dark (the original): the same pair inverted, #f4f4f4 at 50% for secondary.
 */
 :root:has(.brutalist),
 .brutalist {
+  --background: oklch(0.9551 0 0);
+  --foreground: oklch(0.1822 0 0);
+  --muted: oklch(0.9 0 0);
+  --muted-foreground: oklch(0.1822 0 0 / 50%);
+  --border: oklch(0.1822 0 0 / 10%);
+  --ring: oklch(0.1822 0 0 / 50%);
+}
+
+:root.dark:has(.brutalist),
+.dark .brutalist {
   --background: oklch(0.1822 0 0);
   --foreground: oklch(0.9551 0 0);
   --muted: oklch(0.235 0 0);

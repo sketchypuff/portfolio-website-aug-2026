@@ -6,8 +6,10 @@ import { notFound } from "next/navigation";
 import type { MDXComponents } from "mdx/types";
 import { CopyEmail } from "@/components/copy-email";
 import { Mdx } from "@/components/content/mdx";
+import { CaseLightbox } from "@/components/brutalist/case-lightbox";
 import { CaseToc } from "@/components/brutalist/case-toc";
-import { DotCursor } from "@/components/brutalist/dot-cursor";
+import { ClickSound } from "@/components/brutalist/click-sound";
+import { SquareCursor } from "@/components/brutalist/square-cursor";
 import { Grain } from "@/components/brutalist/grain";
 import { getEntry, getRenderableSlugs, type ProjectMeta } from "@/lib/content";
 import { loadContentImage } from "@/lib/images";
@@ -83,14 +85,22 @@ const SIZES = "(min-width: 1200px) calc(75vw - 14px), calc(100vw - 28px)";
 async function CaseMedia({ slug, media, priority }: { slug: string; media: Media; priority?: boolean }) {
   const image = await loadContentImage("projects", slug, media.src);
   return (
-    <Image
-      src={image}
-      alt={media.alt}
-      sizes={SIZES}
-      placeholder="blur"
-      priority={priority}
-      className="bg-muted h-auto w-full"
-    />
+    <button
+      type="button"
+      data-lightbox
+      data-cursor-text="Enlarge"
+      aria-label={media.alt ? `Enlarge image: ${media.alt}` : "Enlarge image"}
+      className="focus-visible:ring-ring block w-full focus-visible:ring-2 focus-visible:outline-none data-focus-returned:ring-0"
+    >
+      <Image
+        src={image}
+        alt={media.alt}
+        sizes={SIZES}
+        placeholder="blur"
+        priority={priority}
+        className="bg-muted h-auto w-full"
+      />
+    </button>
   );
 }
 
@@ -148,39 +158,42 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
         <CaseToc sections={toc} />
       </aside>
 
-      <div className="flex flex-col gap-px px-[14px] pb-[14px] min-[1200px]:col-span-3 min-[1200px]:pt-[14px] min-[1200px]:pl-0">
-        <div id="context">
-          {meta.cover && (
-            <CaseMedia slug={slug} media={{ src: meta.cover, alt: meta.coverAlt ?? "" }} priority />
-          )}
-        </div>
+      <CaseLightbox>
+        <div className="flex flex-col gap-px px-[14px] pb-[14px] min-[1200px]:col-span-3 min-[1200px]:pt-[14px] min-[1200px]:pl-0">
+          <div id="context">
+            {meta.cover && (
+              <CaseMedia slug={slug} media={{ src: meta.cover, alt: meta.coverAlt ?? "" }} priority />
+            )}
+          </div>
 
-        {sections.map((section) => (
-          <section key={section.id} id={section.id} aria-labelledby={`${section.id}-heading`} className="flex flex-col gap-px">
-            <div className="pt-[14px]">
-              <div className="border-border grid gap-[14px] border-t border-dashed py-[14px] min-[810px]:grid-cols-2 min-[810px]:gap-0">
-                <h2 id={`${section.id}-heading`} className="text-muted-foreground">
-                  {section.label}
-                </h2>
-                <div className="max-w-[480px]">
-                  <Mdx source={section.body} collection="projects" slug={slug} components={sectionText} />
+          {sections.map((section) => (
+            <section key={section.id} id={section.id} aria-labelledby={`${section.id}-heading`} className="flex flex-col gap-px">
+              <div className="pt-[14px]">
+                <div className="border-border grid gap-[14px] border-t border-dashed py-[14px] min-[810px]:grid-cols-2 min-[810px]:gap-0">
+                  <h2 id={`${section.id}-heading`} className="text-muted-foreground">
+                    {section.label}
+                  </h2>
+                  <div className="max-w-[480px]">
+                    <Mdx source={section.body} collection="projects" slug={slug} components={sectionText} />
+                  </div>
                 </div>
               </div>
-            </div>
-            {section.media.map((m) => (
-              <CaseMedia key={m.src} slug={slug} media={m} />
-            ))}
-          </section>
-        ))}
-      </div>
+              {section.media.map((m) => (
+                <CaseMedia key={m.src} slug={slug} media={m} />
+              ))}
+            </section>
+          ))}
+        </div>
+      </CaseLightbox>
 
       <footer className="flex flex-col items-center px-[14px] pt-[14px] pb-[90px] text-center min-[1200px]:col-span-4 min-[1200px]:pb-[14px]">
         <p className="text-muted-foreground">Have an idea in mind? Drop me a line!</p>
-        <CopyEmail className="underline">{site.social.email}</CopyEmail>
+        <CopyEmail className="underline" variant="brutalist">{site.social.email}</CopyEmail>
       </footer>
 
       <Grain />
-      <DotCursor />
+      <SquareCursor />
+      <ClickSound />
     </div>
   );
 }

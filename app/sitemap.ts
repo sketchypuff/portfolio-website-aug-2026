@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 1,
     },
+    { url: `${site.url}/about`, lastModified: new Date(), changeFrequency: "yearly" },
     ...posts.flatMap((post) =>
       post
         ? [{ url: `${site.url}${post.href}`, lastModified: new Date(post.meta.date) }]

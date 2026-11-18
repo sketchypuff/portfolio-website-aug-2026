@@ -11,9 +11,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # yashshenai.com
 
 Personal portfolio for Yash Shenai, a product designer. Right now the site is
-the home page, blog post pages (`/blog/[slug]`), and an unlisted `/design`
-style guide; the about, projects, and blog index pages are being rebuilt from
-scratch. The resume is a PDF on Google Drive
+the home page, `/about`, case studies (`/projects/[slug]`), blog post pages
+(`/blog/[slug]`), and an unlisted `/design` style guide; the projects and
+blog index pages are being rebuilt from scratch. On the `brutalist-style`
+branch every public page uses the brutalist style
+(`docs/design/brutalist-home.md`). The resume is a PDF on Google Drive
 (`site.resume` in `lib/site.ts`), not a page — every resume link opens it in a
 new tab. Deployed on Vercel.
 
@@ -98,7 +100,10 @@ entries, and skip them in `sitemap.ts`. Keep those three in sync.
 `app/blog/[slug]/page.tsx` renders posts: `generateStaticParams` from
 `getRenderableSlugs`, `dynamicParams = false`, and `sitemap.ts` lists every
 post. Reading time (`readingTime`) and the older/newer links
-(`getAdjacentPosts`) come from `lib/content.ts`.
+(`getAdjacentPosts`) come from `lib/content.ts`. It uses the brutalist case study shell (see
+`docs/design/brutalist-home.md`, "Blog post"): `##` headings become
+sections and `CaseToc` entries, and figures render with
+`figureVariant="brutalist"`.
 
 `app/projects/[slug]/page.tsx` renders case studies the same way
 (`getRenderableSlugs`, `dynamicParams = false`, `notFound()` for external
@@ -154,7 +159,7 @@ Every motion component early-returns a static version under
 - Server Components by default. `"use client"` only where there is state,
   an event handler, or a hook — currently the theme toggle, motion
   components, `NoidaTime`, `ProfessionPill`, `CustomCursor`, and the
-  brutalist pages' `MonoToggle`, `DotCursor`, `Grain`, and `CaseToc`.
+  brutalist pages' `ThemeSunToggle`, `SquareCursor`, `Grain`, `CaseToc`, `CaseLightbox`, and `ClickSound`.
 - There is no global header or footer. `app/layout.tsx` renders only the page
   (inside `PageTransition`); home carries its own nav and renders
   `SiteFooter` itself.
@@ -196,7 +201,8 @@ layout of the Plyń Framer portfolio template (see
 `docs/design/brutalist-home.md`); its work cards are a hardcoded array with
 placeholder images; Adobe image masking links to `/projects/adobe-masks`
 (ported from the Framer "Yash's Portfolio v2" site) and the rest to the
-placeholder `/projects/example` case study for now. The rest of this section describes the
+placeholder `/projects/example` case study for now. `/about` (`app/about/page.tsx`)
+is linked from the home sidebar. The rest of this section describes the
 Figma home on `main`.
 
 The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its

@@ -68,7 +68,7 @@ function useJump() {
 const percent = (p: number) => `${Math.round(p * 100)}%`;
 
 /**
- * The case study's section index. On wide screens it sits at the bottom of
+ * The section index for case studies and blog posts. On wide screens it sits at the bottom of
  * the sticky sidebar: every section listed, the current one marked with a
  * 7px dot, full opacity, and its progress. Below 1200px it becomes a light
  * bar pinned to the bottom of the screen showing the current section, which
@@ -121,7 +121,7 @@ export function CaseToc({ sections }: { sections: Section[] }) {
         className="bg-foreground text-background fixed inset-x-[14px] bottom-[14px] z-20 min-[1200px]:hidden"
       >
         {open && (
-          <ol id="case-toc-list" className="flex flex-col gap-1 px-[14px] pt-[14px]">
+          <ol id="case-toc-list" className="flex max-h-[60dvh] flex-col gap-1 overflow-y-auto px-[14px] pt-[14px]">
             {sections.map((s, i) => (
               <li key={s.id}>
                 <button

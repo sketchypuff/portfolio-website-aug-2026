@@ -196,3 +196,10 @@ Dates before 2026-09-27 are backfilled from git history and earlier notes.
 - **Case study media keeps its aspect ratio** — images render at their
   intrinsic ratio instead of the template's 4:3 `object-cover` crop. The real
   project images are 16:9 annotated screenshots, and cropping cut them off.
+- **Brutalist cursor is a square** — `SquareCursor` replaces the trailing
+  32px dot with the `braun` branch's square cursor behaviour (14px, 8px on
+  links, 0.75 pressed), kept white with an exclusion blend for this palette.
+- **Brutalist pages get a light mode** — the sun beside the name now switches
+  light / dark instead of turning the work images grayscale. Light is the
+  dark palette inverted (#f0f0f0 page, #121212 text); both follow the site
+  theme.

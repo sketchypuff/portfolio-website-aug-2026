@@ -247,3 +247,10 @@ export function formatDate(date: string): string {
   const part = (type: string) => parts.find((p) => p.type === type)?.value;
   return `${part("day")} ${part("month")}, ${part("year")}`;
 }
+
+/** `20 Jul 2025`: the brutalist pages' date format. */
+export function formatShortDate(date: string): string {
+  const parts = dateParts.formatToParts(new Date(date));
+  const part = (type: string) => parts.find((p) => p.type === type)?.value;
+  return `${part("day")} ${part("month")} ${part("year")}`;
+}

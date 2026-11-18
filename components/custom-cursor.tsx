@@ -20,7 +20,8 @@ import { cn } from "@/lib/utils";
  * renders nothing and the system cursor stays. Over an `.inverted` band (the
  * footer) it inverts too, so it never disappears into the surface.
  *
- * Not on `/` or `/projects/*`: the brutalist pages draw their own `DotCursor`.
+ * Not on `/`, `/about`, `/projects/*` or `/blog/*`: the brutalist pages draw
+ * their own `SquareCursor`.
  */
 
 type Mode = "rest" | "link" | "text";
@@ -90,7 +91,12 @@ export function CustomCursor() {
   const reduced = useReducedMotion();
   const fine = useFinePointer();
   const pathname = usePathname();
-  const enabled = fine && !reduced && pathname !== "/" && !pathname.startsWith("/projects/");
+  const brutalist =
+    pathname === "/" ||
+    pathname === "/about" ||
+    pathname.startsWith("/projects/") ||
+    pathname.startsWith("/blog/");
+  const enabled = fine && !reduced && !brutalist;
 
   const rootRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);

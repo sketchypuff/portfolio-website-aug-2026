@@ -40,7 +40,7 @@ function legacyCopy(text: string) {
  * `getBoundingClientRect`) ignores that zoom's scale and isn't rounded like
  * `offsetWidth`, so the measured width matches the natural one exactly.
  */
-function MorphLabel({ copied }: { copied: boolean }) {
+function MorphLabel({ copied, brutalist }: { copied: boolean; brutalist?: boolean }) {
   const [size, setSize] = useState<{ width: number; animate: boolean } | null>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
@@ -83,7 +83,9 @@ function MorphLabel({ copied }: { copied: boolean }) {
                 : { opacity: 0, y: -8, filter: "blur(3px)", transition: { duration: 0.15, ease: "easeIn" } }
             }
           >
-            {copied && <CheckIcon aria-hidden weight="bold" className="size-3 shrink-0" />}
+            {copied && (
+              <CheckIcon aria-hidden weight="bold" className={cn("shrink-0", brutalist ? "size-3.5" : "size-3")} />
+            )}
             {copied ? "Copied" : "Click to copy"}
           </motion.span>
         </AnimatePresence>
@@ -108,10 +110,19 @@ function MorphLabel({ copied }: { copied: boolean }) {
 export function CopyEmail({
   className,
   children = "Email",
+  variant = "default",
 }: {
   className?: string;
   children?: React.ReactNode;
+  /**
+   * `brutalist` matches the brutalist pages: a square, light Geist 14/20
+   * bubble with no arrow that stays monochrome when copied. The bubble is
+   * portaled to `<body>`, outside the page's `font-sans` wrapper, so the
+   * font has to be set here.
+   */
+  variant?: "default" | "brutalist";
 }) {
+  const brutalist = variant === "brutalist";
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const touch = useRef(false);
@@ -164,16 +175,23 @@ export function CopyEmail({
           {children}
         </TooltipTrigger>
         <TooltipContent
+          sideOffset={brutalist ? 7 : 0}
           className={cn(
             "transition-colors duration-200 motion-reduce:animate-none",
-            copied && "bg-success text-success-foreground",
+            brutalist
+              ? "rounded-none px-[7px] py-0 font-sans text-sm leading-5 data-[side=top]:slide-in-from-bottom-1"
+              : copied && "bg-success text-success-foreground",
           )}
-          arrowClassName={cn("transition-colors duration-200", copied && "bg-success fill-success")}
+          arrowClassName={cn(
+            "transition-colors duration-200",
+            // Radix sets an inline `display: block` on the arrow.
+            brutalist ? "hidden!" : copied && "bg-success fill-success",
+          )}
           onPointerDownOutside={(e) => {
             if (triggerRef.current?.contains(e.target as Node)) e.preventDefault();
           }}
         >
-          <MorphLabel copied={copied} />
+          <MorphLabel copied={copied} brutalist={brutalist} />
         </TooltipContent>
       </Tooltip>
       <span aria-live="polite" className="sr-only">

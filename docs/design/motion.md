@@ -81,6 +81,15 @@ stays silent so it doesn't tick twice. Call `play()` where the sound belongs;
 don't call the global `bind()`. Sound is feedback for something the user
 did — never for hover, page scroll, or page load.
 
+On the brutalist pages (home, `/about`, case studies, blog posts),
+`ClickSound` (`components/brutalist/click-sound.tsx`, mounted beside
+`SquareCursor`) plays `press` when any link, button, or lightbox image is
+pressed: on pointer down (primary button), or on keyboard activation (a
+`click` with `detail === 0`). Disabled controls stay silent. An element picks
+another sound with `data-sound="<cuelume name>"` — the theme toggle uses
+`toggle` — or opts out with `data-sound="none"`. It is one delegated
+listener rather than cuelume's `bind()`, so the rules above still hold.
+
 ## Reduced motion (non-negotiable)
 
 Every component in `components/motion/` early-returns a static version under
