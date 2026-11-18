@@ -12,10 +12,15 @@ open only the topic file the task needs.
 
 ## Status
 
-Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
-`1167:49`) and the blog post (`app/blog/[slug]/page.tsx`, Figma "Blog", node
-`1132:2209`). The old inner pages, global header, and footer were deleted on
-2026-09-27 to be rebuilt from scratch; don't look for them.
+Every public page (home, `/about`, case studies, blog posts) uses the
+**brutalist** style, **Provisional**: [brutalist-home.md](docs/design/brutalist-home.md)
+is its spec and overrides the rest of these docs wherever they disagree
+(palette, type, cursor, links, footer). The rest of this file and the topic
+files describe the earlier Figma-based design (home from Figma "Home", node
+`1167:49`; blog post from Figma "Blog", node `1132:2209`), which moved to
+the `figma-home` branch on 2026-11-18; they still hold for `/design` and for
+anything brutalist-home.md doesn't cover. The old inner pages, global
+header, and footer were deleted on 2026-09-27; don't look for them.
 
 - **Building a new page** → build it from the Decided tokens and components in
   these docs. Where a page needs something the home page doesn't have (a page
@@ -55,7 +60,7 @@ Two pages are **Decided**: home (`app/page.tsx`, Figma "Home", node
 | [links.md](docs/design/links.md) | adding any link or clickable text |
 | [components.md](docs/design/components.md) | building UI — lists every shared component |
 | [motion.md](docs/design/motion.md) | anything that moves, hovers, or presses |
-| [brutalist-home.md](docs/design/brutalist-home.md) | the home page on the `brutalist-style` branch (overrides home specs elsewhere) |
+| [brutalist-home.md](docs/design/brutalist-home.md) | any public page: the brutalist spec, which overrides the other files |
 | [decisions.md](docs/design/decisions.md) | the dated log of what was decided and why |
 
 ## Keeping this current

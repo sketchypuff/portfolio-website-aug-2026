@@ -13,9 +13,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 Personal portfolio for Yash Shenai, a product designer. Right now the site is
 the home page, `/about`, case studies (`/projects/[slug]`), blog post pages
 (`/blog/[slug]`), and an unlisted `/design` style guide; the projects and
-blog index pages are being rebuilt from scratch. On the `brutalist-style`
-branch every public page uses the brutalist style
-(`docs/design/brutalist-home.md`). The resume is a PDF on Google Drive
+blog index pages are being rebuilt from scratch. Every public page uses the
+brutalist style (`docs/design/brutalist-home.md`). The earlier Figma-based
+design is kept on the `figma-home` branch, not merged back. The resume is a PDF on Google Drive
 (`site.resume` in `lib/site.ts`), not a page — every resume link opens it in a
 new tab. Deployed on Vercel.
 
@@ -197,22 +197,16 @@ directory.
 
 ## Design status
 
-On the `brutalist-style` branch the home page (`app/page.tsx`) follows the
-layout of the Plyń Framer portfolio template (see
-`docs/design/brutalist-home.md`); its work cards are a hardcoded array with
-placeholder images; Adobe image masking links to `/projects/adobe-masks`
-(ported from the Framer "Yash's Portfolio v2" site) and the rest to the
-placeholder `/projects/example` case study for now. `/about` (`app/about/page.tsx`)
-is linked from the home sidebar. The rest of this section describes the
-Figma home on `main`.
-
-The home page (`app/page.tsx`) is built from the Figma "Home" frame. Its
-project cards and writing rows are hardcoded arrays for now. A writing row
-links to its post once the post exists in `content/posts/` (set `href`); the
-rest, and the project cards, are not linked yet. Its `/about` and `/blog`
-links point at pages that don't exist yet, so they hit Next's default 404
-until those pages are rebuilt. The infrastructure below the pages is real
-and tested.
+`main` is the brutalist site (it replaced the Figma home on 2026-11-18;
+that version lives on the `figma-home` branch). The home page
+(`app/page.tsx`) follows the layout of the Plyń Framer portfolio template
+(see `docs/design/brutalist-home.md`); its work cards are a hardcoded array
+with placeholder images; Adobe image masking links to
+`/projects/adobe-masks` (ported from the Framer "Yash's Portfolio v2" site)
+and the rest to the placeholder `/projects/example` case study for now. The
+Blog section lists every post; More Work is a page-local array. `/about`
+(`app/about/page.tsx`) is linked from the home sidebar. There is no blog
+index page yet. The infrastructure below the pages is real and tested.
 
 `content/projects/example/` is a throwaway reference entry documenting the
 project frontmatter. Delete it once a real project exists. Each collection

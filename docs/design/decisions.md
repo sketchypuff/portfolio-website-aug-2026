@@ -175,6 +175,10 @@ Dates before 2026-09-27 are backfilled from git history and earlier notes.
 
 ## 2026-11-18
 
+- **Brutalist becomes `main`** — `main` fast-forwarded to `brutalist-style`
+  (`51f6a57`); the Figma-based site that was on `main` (`9025615`) is kept on
+  the `figma-home` branch. `brutalist-home.md` is now the spec for every
+  public page.
 - **Brutalist home (branch `brutalist-style`, Provisional)** — home rebuilt to
   the Plyń Framer template's layout at Yash's request: sticky sidebar, 3-col
   mixed-ratio grid, Manrope 14/20, fixed #121212 palette, hover dim, dot

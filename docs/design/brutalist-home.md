@@ -1,10 +1,11 @@
-# Brutalist home (`brutalist-style` branch)
+# Brutalist home
 
-**Provisional.** On this branch the home page (`app/page.tsx`) is rebuilt
-to match the layout of the Plyń Framer portfolio template
+**Provisional.** The live design on `main` (it replaced the Figma home on
+2026-11-18; that one is on the `figma-home` branch). The home page
+(`app/page.tsx`) is rebuilt to match the layout of the Plyń Framer portfolio template
 (plyn-chacviorty.framer.website), measured from the live page on
 2026-11-18. The copy is Yash's own; none of the template's text or photos are used.
-The blog post page (`/blog/[slug]`) uses the same style; see "Blog post".
+Case studies, blog posts, and `/about` use the same style; see their sections below.
 
 ## Tokens
 
