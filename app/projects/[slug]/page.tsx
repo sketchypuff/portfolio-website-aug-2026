@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "@phosphor-icons/react/ssr";
 import { notFound } from "next/navigation";
 import type { MDXComponents } from "mdx/types";
-import { CopyEmail } from "@/components/copy-email";
 import { Mdx } from "@/components/content/mdx";
 import { CaseLightbox } from "@/components/brutalist/case-lightbox";
 import { CaseToc } from "@/components/brutalist/case-toc";
@@ -13,7 +12,6 @@ import { SquareCursor } from "@/components/brutalist/square-cursor";
 import { Grain } from "@/components/brutalist/grain";
 import { getEntry, getRenderableSlugs, type ProjectMeta } from "@/lib/content";
 import { loadContentImage } from "@/lib/images";
-import { site } from "@/lib/site";
 
 // Case study page, after the Plyń Framer template's project page (see
 // docs/design/brutalist-home.md, "Case study"). The template's white frame and
@@ -186,10 +184,8 @@ export default async function ProjectPage(props: PageProps<"/projects/[slug]">) 
         </div>
       </CaseLightbox>
 
-      <footer className="flex flex-col items-center px-[14px] pt-[14px] pb-[90px] text-center min-[1200px]:col-span-4 min-[1200px]:pb-[14px]">
-        <p className="text-muted-foreground">Have an idea in mind? Drop me a line!</p>
-        <CopyEmail className="underline" variant="brutalist">{site.social.email}</CopyEmail>
-      </footer>
+      {/* Clears the fixed contents bar below 1200px. */}
+      <div aria-hidden className="h-[90px] min-[1200px]:hidden" />
 
       <Grain />
       <SquareCursor />

@@ -187,6 +187,50 @@
   --ring: oklch(0.9672 0 0 / 50%);
 }
 
+/*
+  "oh yeah!" in the home intro: italic, filled with a looping gradient.
+  Blues: hues 225 (cyan-blue) → 266 (the link blue) → 285 (indigo) → 245,
+  at one lightness per theme so no stop drops in
+  contrast: 0.6 on the light page, 0.78 on the dark one. The first stop
+  repeats at the end so the 200%-wide loop has no seam. Static under reduced
+  motion.
+*/
+.oh-yeah {
+  --oh-yeah-l: 0.6;
+  background-image: linear-gradient(
+    90deg in oklch,
+    oklch(var(--oh-yeah-l) 0.13 225),
+    oklch(var(--oh-yeah-l) 0.17 266),
+    oklch(var(--oh-yeah-l) 0.15 285),
+    oklch(var(--oh-yeah-l) 0.14 245),
+    oklch(var(--oh-yeah-l) 0.13 225)
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  /* Room for the italic overhang, which background-clip would cut off. */
+  padding-inline-end: 0.1em;
+  margin-inline-end: -0.1em;
+  animation: oh-yeah 4s linear infinite;
+}
+
+.dark .oh-yeah {
+  --oh-yeah-l: 0.78;
+}
+
+@keyframes oh-yeah {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oh-yeah {
+    animation: none;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

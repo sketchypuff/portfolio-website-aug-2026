@@ -93,8 +93,8 @@ export default async function HomePage() {
           </div>
           <div className="flex flex-col gap-[7px]">
             <p>
-              I’m a product designer. Currently, I make agentic AI experiences feel oh yeah! at
-              Microsoft.
+              I’m a product designer. Currently, I make agentic AI experiences feel{" "}
+              <em className="oh-yeah whitespace-nowrap">oh yeah!</em> at Microsoft.
             </p>
             <p>
               I believe all software should be opinionated and delightful to use in order to be
@@ -206,12 +206,9 @@ export default async function HomePage() {
 
         <section aria-labelledby="more-work-heading" className="mt-[56px] pb-[34px] min-[1200px]:pb-0">
           <ListHeader id="more-work-heading" label="More Work" meta={`${moreWork.length} projects`} />
-          <ul className="group/more mt-[13px] grid grid-cols-1 items-start gap-x-[14px] gap-y-[28px] min-[810px]:grid-cols-2 min-[1200px]:grid-cols-3">
+          <ul className="mt-[13px] grid grid-cols-1 items-start gap-x-[14px] gap-y-[28px] min-[810px]:grid-cols-2 min-[1200px]:grid-cols-3">
             {moreWork.map((item) => (
-              <li
-                key={item.title}
-                className="transition-opacity duration-300 ease-out group-has-[li:hover]/more:opacity-50 hover:opacity-100!"
-              >
+              <li key={item.title}>
                 <Image
                   src={item.image}
                   alt=""

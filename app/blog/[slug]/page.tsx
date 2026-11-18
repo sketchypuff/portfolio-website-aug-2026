@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import type { MDXComponents } from "mdx/types";
 import GithubSlugger from "github-slugger";
 import { ArrowLeftIcon } from "@phosphor-icons/react/ssr";
-import { CopyEmail } from "@/components/copy-email";
 import { Mdx } from "@/components/content/mdx";
 import { CaseLightbox } from "@/components/brutalist/case-lightbox";
 import { CaseToc } from "@/components/brutalist/case-toc";
@@ -18,7 +17,6 @@ import {
   getRenderableSlugs,
   readingTime,
 } from "@/lib/content";
-import { site } from "@/lib/site";
 
 // Blog post page in the brutalist style: the case study page's shell (see
 // docs/design/brutalist-home.md, "Blog post"), with figures kept inline.
@@ -200,12 +198,8 @@ export default async function PostPage(props: PageProps<"/blog/[slug]">) {
         </article>
       </CaseLightbox>
 
-      <footer className="flex flex-col items-center px-[14px] pt-[14px] pb-[90px] text-center min-[1200px]:col-span-4 min-[1200px]:pb-[14px]">
-        <p className="text-muted-foreground">Have an idea in mind? Drop me a line!</p>
-        <CopyEmail className="underline" variant="brutalist">
-          {site.social.email}
-        </CopyEmail>
-      </footer>
+      {/* Clears the fixed contents bar below 1200px. */}
+      <div aria-hidden className="h-[90px] min-[1200px]:hidden" />
 
       <Grain />
       <SquareCursor />

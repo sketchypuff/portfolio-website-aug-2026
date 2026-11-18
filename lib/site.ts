@@ -17,7 +17,7 @@ export const site = {
   resume: RESUME_URL,
   social: {
     email: "yashshenai@gmail.com",
-    github: "https://github.com/yashshenai",
+    github: "https://github.com/sketchypuff",
     linkedin: "https://www.linkedin.com/in/yashshenai",
     x: "",
   },

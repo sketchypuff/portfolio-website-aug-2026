@@ -203,3 +203,19 @@ Dates before 2026-09-27 are backfilled from git history and earlier notes.
   light / dark instead of turning the work images grayscale. Light is the
   dark palette inverted (#f0f0f0 page, #121212 text); both follow the site
   theme.
+- **Home ↔ page transition: Columns** — decided from a dev-only picker
+  (`/proto/page-transitions`, deleted). Four `bg-foreground` strips, one per
+  grid column, cover the screen, the route changes under them, and they lift
+  away. Forward (home → page): rise from the bottom, left to right, then lift
+  off the top. Back (page → home, by link or browser back): the mirror —
+  fall from the top, right to left, then drop off the bottom. Each strip
+  220ms (0.55 × a 400ms base), 40ms stagger, `cubic-bezier(0.22, 1, 0.36, 1)`.
+  Browser back/forward can't be delayed, so the strips snap shut in the same
+  frame and only the reveal animates.
+  - Rejected: **Push** (lateral slide) — reads as an app navigation stack; a
+    blog or About page isn't "deeper" than home. **Expand** (clip reveal from
+    the clicked element) — weak from a thin text link. **Focus** (blur and
+    scale crossfade) — familiar, and blur is the heaviest on slow devices.
+    **Cascade** (staggered block entrance, kept to the last round) — no
+    continuity: the outgoing page vanishes in a hard cut.
+

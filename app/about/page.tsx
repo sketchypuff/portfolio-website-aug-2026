@@ -244,12 +244,6 @@ export default function AboutPage() {
         </main>
       </CaseLightbox>
 
-      <footer className="flex flex-col items-center px-[14px] pt-[14px] pb-[14px] text-center min-[1200px]:col-span-4">
-        <p className="text-muted-foreground">Have an idea in mind? Drop me a line!</p>
-        <CopyEmail className="underline" variant="brutalist">
-          {site.social.email}
-        </CopyEmail>
-      </footer>
 
       <Grain />
       <SquareCursor />

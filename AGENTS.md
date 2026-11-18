@@ -145,7 +145,8 @@ designed.
 
 `components/motion/` holds the vocabulary. `Reveal` for single elements,
 `RevealGroup` + `RevealItem` for staggered lists, `PageTransition` for route
-changes.
+changes (a column wipe to and from home via `ColumnsTransition`, a fade
+otherwise; see `docs/design/motion.md`).
 
 House defaults: 12px of travel, 500ms, `cubic-bezier(0.22, 1, 0.36, 1)`, once
 only. The route transition is enter-only on purpose — animating the outgoing

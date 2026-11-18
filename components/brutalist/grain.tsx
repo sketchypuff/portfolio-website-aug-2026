@@ -27,7 +27,9 @@ export function Grain() {
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      image = ctx.createImageData(canvas.width, canvas.height);
+      // A zero-size viewport (a hidden pane, a collapsed iframe) makes
+      // createImageData throw; skip until there's something to draw.
+      image = canvas.width && canvas.height ? ctx.createImageData(canvas.width, canvas.height) : null;
       draw();
     };
     const draw = () => {

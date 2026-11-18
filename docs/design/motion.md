@@ -15,7 +15,7 @@ Alive, but the content stays the star. Motion confirms; it never performs.
 
 ```
 Is it a route change?
- └── PageTransition — already in app/layout.tsx; never add another
+ └── PageTransition — already in app/layout.tsx (it mounts ColumnsTransition); never add another
 Is it content scrolling into view?
  ├── A list or grid of siblings → RevealGroup + RevealItem (0.06s stagger)
  └── A single block → Reveal (as="header" | "section" | "footer" | …)
@@ -45,8 +45,26 @@ Don't raise `distance` above 12 or add delays beyond `0.05` to a `Reveal`.
 
 ## Route transitions
 
-`PageTransition`: opacity only, 250ms, `easeOut`, enter-only. Animating the
-outgoing page holds stale content on screen and reads as lag.
+`PageTransition` (in `app/layout.tsx`) owns every route change:
+
+- **To or from home: `ColumnsTransition`**
+  (`components/motion/columns-transition.tsx`). Four `bg-foreground` strips,
+  one per grid column (`z-[99]`, under the cursor), cover the screen; the
+  route changes under them; they lift away. Forward (home → page): rise from
+  the bottom, left to right, then lift off the top. Back (page → home): fall
+  from the top, right to left, then drop off the bottom. Each strip 220ms,
+  40ms stagger, `cubic-bezier(0.22, 1, 0.36, 1)` (WAAPI on `transform`).
+  Same-origin left-clicks are intercepted (`preventDefault` makes Next's
+  `Link` stand down) so the cover finishes before `router.push`; browser
+  back / forward can't be delayed, so the strips snap shut in the `popstate`
+  frame and only the reveal plays. A 4s fallback resolves a stalled
+  navigation so the cover can't get stuck. See `decisions.md` for the
+  rejected options.
+- **Everything else: a fade.** Opacity only, 250ms, `easeOut`, enter-only —
+  animating the outgoing page holds stale content on screen and reads as
+  lag. Skipped when the columns already cover the change.
+
+Under reduced motion neither runs: links navigate normally.
 
 ## Hover and press (CSS)
 

@@ -43,7 +43,10 @@ All spacing is the template's 14px unit.
 | <810px | Same, 1 column |
 
 - Intro: sun toggle + `h1` (a row ≥1200, stacked below), paragraphs 7px
-  apart, then two link groups, 14px between groups. Each group has a muted
+  apart ("oh yeah!" is an `<em className="oh-yeah">`: italic, filled with a
+  looping blue OKLCH gradient (hues 225 → 266 → 285 → 245), 4s linear, one
+  lightness per theme, static under reduced motion; defined in
+  `app/globals.css`. The only color on home besides images), then two link groups, 14px between groups. Each group has a muted
   heading with its underlined links 7px below, 4px apart:
   - **Table of Contents** (`nav`): Blog (jumps to `#blog`, the home Blog
     list, until a /blog index exists), About, Resumé (new tab).
@@ -60,8 +63,8 @@ All spacing is the template's 14px unit.
   - More Work: the same grid as Selected Works (1 / 2 / 3 columns, 14px
     column gap, 28px row gap), 13px below its header. Each card is the
     image at its own aspect ratio, then "Company, Year" 7px below and the
-    title in `muted-foreground`. Not linked, so no cursor label; it dims on
-    hover like the cards. A page-local
+    title in `muted-foreground`. Not linked, so no hover state and no
+    cursor label: nothing dims, unlike the cards. A page-local
     array: the "Extras" list and images from the Framer "Yash's Portfolio
     v2" home. Images are static imports from `assets/more-work/` (intrinsic
     size and blur placeholder), not `public/`.
@@ -80,6 +83,8 @@ All spacing is the template's 14px unit.
   screen-reader label swap with the `dark:` variant, so there's no
   hydration flash. Replaced `MonoToggle` (a grayscale switch for the work
   images) on 2026-11-18.
+- **Route transition** — to and from home, four strips (one per grid
+  column) wipe over the change: `ColumnsTransition`, see `motion.md`.
 - **`ClickSound`** — cuelume `press` on every link, button, and lightbox
   image (`toggle` on the theme toggle). See `motion.md`, "Sound".
 - **`SquareCursor`** (`components/brutalist/square-cursor.tsx`) — a sharp
@@ -140,9 +145,9 @@ tokens, type, `Grain`, and `SquareCursor` as home.
   1px dot. Click to scroll there (instant under reduced motion). Below 1200px
   it is a light bar fixed 14px from the bottom showing the current section,
   with Expand / Collapse for the full list.
-- **Footer:** centered "Have an idea in mind? Drop me a line!" (muted) and the
-  email as `CopyEmail`. In the template it sits on the white frame; here it is
-  on the dark page.
+- **No footer.** The page ends at its last section; below 1200px a 90px
+  spacer keeps the fixed contents bar off it. The email lives in the sidebar
+  on home and About.
 - **Authoring:** everything before the first `##` is the intro; each `##` is a
   section; a section's `<Figure>`s are lifted out of its text and rendered
   full width beneath the row. `cover` is the first (Context) image. Images
@@ -151,8 +156,8 @@ tokens, type, `Grain`, and `SquareCursor` as home.
 ## Blog post (`app/blog/[slug]/page.tsx`)
 
 The case study page's shell, so a post reads as part of the same site: same
-tokens, Geist 14/20, `Grain`, `SquareCursor`, `CaseToc`, `CaseLightbox`, and
-the "Drop me a line" footer.
+tokens, Geist 14/20, `Grain`, `SquareCursor`, `CaseToc`, and `CaseLightbox`, and
+no footer.
 
 - **Sidebar** (sticky, `h-dvh`, scrolls if the index is long): Back link
   home, title, `summary` in `muted-foreground`, then "Published:
